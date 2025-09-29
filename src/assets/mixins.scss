@@ -1,0 +1,15 @@
+@mixin hover-with-shadow {
+  transition: var(--transition-duration);
+
+  &:hover {
+    transform: scale(1.02);
+    box-shadow: rgba(0, 0, 0, 0.19) 0px 10px 20px, rgba(0, 0, 0, 0.23) 0px 6px 6px;
+  }
+}
+
+@mixin active {
+  &:active {
+    transform: scale(1);
+    box-shadow: none;
+  }
+}

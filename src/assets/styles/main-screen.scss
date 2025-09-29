@@ -1,0 +1,65 @@
+.main {
+  display: flex;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(to bottom, var(--secondary-color), var(--background-color));
+  padding: 10% 100px;
+
+  &__side {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 50px;
+  }
+
+  &__title {
+    font-size: 2rem;
+    font-weight: bold;
+  }
+
+  &__doc-preview {
+    background-color: #FFFFFF;
+    width: 100%;
+    height: 50%;
+  }
+
+  &__manage-options {
+    width: 100%;
+    display: flex;
+    justify-content: space-around;
+  }
+
+  &__single-option {
+    --button-size: 70px;
+    width: var(--button-size);
+    height: var(--button-size);
+    background-color: var(--primary-color);
+    border-radius: 10px;
+    color: #FFFFFF;
+    cursor: pointer;
+
+    @include hover-with-shadow;
+    @include active;
+  }
+
+  &__modes-list {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+  }
+
+  &__single-mode {
+    padding: 10px 50px;
+    background-color: var(--primary-color);
+    border-radius: 10px;
+    color: #FFFFFF;
+    font-size: 1.5rem;
+    text-align: center;
+    cursor: pointer;
+
+    @include hover-with-shadow;
+    @include active;
+  }
+}
