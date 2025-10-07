@@ -1,0 +1,58 @@
+@import "content-styles";
+
+.scrim {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.popup {
+  border-radius: 10px;
+  min-width: 300px;
+  max-width: 66%;
+  max-height: 400px;
+  display: flex;
+  flex-direction: column;
+
+  @include glass-effect;
+
+  &__header {
+    --header-paddings: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: var(--header-paddings);
+    position: relative;
+  }
+
+  &__title {
+    font-size: 1.5rem;
+    line-height: 1.5rem;
+  }
+
+  &__close {
+    position: absolute;
+    top: var(--header-paddings);
+    right: var(--header-paddings);
+    cursor: pointer;
+    transition: transform .2s;
+
+    &:hover {
+      transform: rotate(90deg);
+    }
+  }
+
+  &__content {
+    margin: 30px 20px;
+    overflow-y: scroll;
+    flex-grow: 1;
+
+    @include custom-scrollbar;
+  }
+}

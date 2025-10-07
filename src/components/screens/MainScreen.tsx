@@ -1,9 +1,18 @@
 'use client'
 
+import Image from "next/image"
 import ClassesMenu from "@components/ClassesMenu";
 import CalendarMenu from "@components/CalendarMenu";
+import AddSourcesPopup from "@components/popups/AddSourcePopup";
+import PopupWrapper from "@components/popups/PopupWrapper";
+import TopicsListPopup from "@components/popups/TopicsListPopup";
+import NewClassPopup from "@components/popups/NewClassPopup";
 
 export default function MainScreen() {
+  const showAddPopup = false
+  const showTopicsPopup = true
+  const showNewPopup = false
+
   return (
     <>
       <ClassesMenu />
@@ -17,16 +26,10 @@ export default function MainScreen() {
           </div>
           <div className="main__manage-options">
             <button className="main__single-option">
-              edt
+              <Image src="icons/add.svg" className="h-full" alt="Add" width={100} height={100} draggable={false} />
             </button>
             <button className="main__single-option">
-              add
-            </button>
-            <button className="main__single-option">
-              dwnld
-            </button>
-            <button className="main__single-option">
-              fnd
+              <Image src="icons/download.svg" className="h-[80%]" alt="Add" width={100} height={100} draggable={false} />
             </button>
           </div>
         </div>
@@ -58,6 +61,43 @@ export default function MainScreen() {
           </ul>
         </div>
       </main>
+
+      {showAddPopup && (
+        <PopupWrapper title="Add Sources">
+          <AddSourcesPopup />
+        </PopupWrapper>
+      )}
+
+      {showTopicsPopup && (
+        <PopupWrapper title="List of Topics">
+          <TopicsListPopup topics={[
+              "Fajny topic dla nauki",
+              "Ekstra topic tez fajny ghj gh jgh jgh ghj gj gh gh jg",
+              "A ten to jest sigma++",
+              "Fajny topic dla nauki",
+              "Ekstra topic tez fajny",
+              "A ten to jest sigma++",
+              "Fajny topic dla nauki",
+              "Ekstra topic tez fajny",
+              "A ten to jest sigma++",
+              "Fajny topic dla nauki",
+              "Ekstra topic tez fajny",
+              "A ten to jest sigma++",
+              "Fajny topic dla nauki",
+              "Ekstra topic tez fajny",
+              "A ten to jest sigma++",
+              "Fajny topic dla nauki",
+              "Ekstra topic tez fajny",
+              "A ten to jest sigma++",
+            ]} />
+        </PopupWrapper>
+      )}
+
+      {showNewPopup && (
+        <PopupWrapper title="New Class">
+          <NewClassPopup />
+        </PopupWrapper>
+      )}
 
       <CalendarMenu />
     </>

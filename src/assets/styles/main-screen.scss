@@ -1,15 +1,21 @@
 .main {
-  display: flex;
+  --spacing: 100px;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-gap: var(--spacing);
   width: 100%;
   height: 100%;
-  background: linear-gradient(to bottom, var(--secondary-color), var(--background-color));
-  padding: 10% 100px;
+  background:
+          linear-gradient(to top, var(--background-color-1), var(--background-color-2));
+  background-size: cover;
+  padding: var(--spacing);
 
   &__side {
     width: 100%;
     display: flex;
     flex-direction: column;
     align-items: center;
+    justify-content: center;
     gap: 50px;
   }
 
@@ -21,44 +27,49 @@
   &__doc-preview {
     background-color: #FFFFFF;
     width: 100%;
-    height: 50%;
+    height: 100%;
   }
 
   &__manage-options {
     width: 100%;
     display: flex;
     justify-content: space-around;
+    gap: 50px;
   }
 
   &__single-option {
-    --button-size: 70px;
-    width: var(--button-size);
-    height: var(--button-size);
-    background-color: var(--primary-color);
+    width: 100%;
+    height: 70px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
     border-radius: 10px;
-    color: #FFFFFF;
+    color: var(--text-color-bright);
     cursor: pointer;
 
+    @include glass-effect;
     @include hover-with-shadow;
     @include active;
   }
 
   &__modes-list {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: repeat(2, 1fr);
     gap: 10px;
   }
 
   &__single-mode {
+    width: 100%;
+    height: 100%;
     padding: 10px 50px;
-    background-color: var(--primary-color);
     border-radius: 10px;
-    color: #FFFFFF;
+    color: var(--text-color-bright);
     font-size: 1.5rem;
     text-align: center;
     cursor: pointer;
 
+    @include glass-effect;
     @include hover-with-shadow;
     @include active;
   }

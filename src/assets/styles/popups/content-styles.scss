@@ -1,0 +1,45 @@
+.add-sources {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  &__button {
+    font-size: 1.25rem;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+
+    @include glass-effect;
+    @include hover-with-shadow;
+    @include active;
+  }
+}
+
+.topics {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+
+  &__element {
+    width: 100%;
+    padding: 5px 10px;
+    background-color: rgba(200, 200, 200, 0.3);
+    border-radius: 5px;
+    display: flex;
+    justify-content: space-between;
+    overflow: hidden;
+
+    &:nth-child(2n) {
+      background-color: rgba(150, 150, 150, 0.3);
+    }
+  }
+
+  &__name {
+    font-size: 1.125rem;
+  }
+
+  &__checkbox {
+    margin: 0 0 0 20px;
+  }
+}
