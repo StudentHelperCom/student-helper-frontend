@@ -1,0 +1,82 @@
+.classes {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 30%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background:
+          linear-gradient(to top right, var(--background-color-1), var(--background-color-2));
+  border-right: 3px solid rgba(200, 200, 200, 0.5);
+  transition: var(--transition-duration);
+
+  &__title {
+    width: 100%;
+    padding: 15px;
+    text-align: center;
+    font-size: 1.5rem;
+  }
+
+  &__list {
+    width: 100%;
+    height: 100%;
+    padding: 15px;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    overflow-y: scroll;
+
+    @include custom-scrollbar;
+  }
+
+  &__add-button {
+    width: 50%;
+    height: 70px;
+    margin: 30px 0;
+    display: flex;
+    justify-content: center;
+    border-radius: 15px;
+
+    @include glass-effect;
+    @include hover-with-shadow;
+    @include active;
+  }
+}
+
+.classes-item {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  border-radius: 15px;
+  padding: 15px;
+  gap: 15px;
+  cursor: default;
+
+  @include glass-effect;
+  @include hover-with-shadow;
+  @include active;
+
+  &__name {
+    font-size: 1.5rem;
+    font-weight: bold;
+  }
+
+  &__delete-button {
+    cursor: pointer;
+    transition: transform .2s;
+
+    &:hover {
+      transform: rotate(90deg);
+    }
+  }
+
+  &__exam {
+    font-size: 1.25rem;
+  }
+
+  &__info {
+    font-size: 0.875rem;
+  }
+}

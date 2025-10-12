@@ -3,8 +3,8 @@ export default function TopicsListPopup({ topics }: { topics: Array<string> }) {
     <ul className="topics">
       {topics.map((topic, index) => (
         <li className="topics__element" key={index}>
-          <span className="topics__name">{(index + 1) + ". " + topic}</span>
-          <input className="topics__checkbox" type="checkbox" />
+          <label className="topics__name" htmlFor={"topic" + index}>{(index + 1) + ". " + topic}</label>
+          <input className="topics__checkbox" type="checkbox" id={"topic" + index} />
         </li>
       ))}
     </ul>

@@ -9,14 +9,8 @@ import TopicsListPopup from "@components/popups/TopicsListPopup";
 import NewClassPopup from "@components/popups/NewClassPopup";
 
 export default function MainScreen() {
-  const showAddPopup = false
-  const showTopicsPopup = true
-  const showNewPopup = false
-
   return (
     <>
-      <ClassesMenu />
-
       <main className="main">
         <div className="main__side">
           <span className="main__title">
@@ -62,44 +56,27 @@ export default function MainScreen() {
         </div>
       </main>
 
-      {showAddPopup && (
-        <PopupWrapper title="Add Sources">
-          <AddSourcesPopup />
-        </PopupWrapper>
-      )}
-
-      {showTopicsPopup && (
-        <PopupWrapper title="List of Topics">
-          <TopicsListPopup topics={[
-              "Fajny topic dla nauki",
-              "Ekstra topic tez fajny ghj gh jgh jgh ghj gj gh gh jg",
-              "A ten to jest sigma++",
-              "Fajny topic dla nauki",
-              "Ekstra topic tez fajny",
-              "A ten to jest sigma++",
-              "Fajny topic dla nauki",
-              "Ekstra topic tez fajny",
-              "A ten to jest sigma++",
-              "Fajny topic dla nauki",
-              "Ekstra topic tez fajny",
-              "A ten to jest sigma++",
-              "Fajny topic dla nauki",
-              "Ekstra topic tez fajny",
-              "A ten to jest sigma++",
-              "Fajny topic dla nauki",
-              "Ekstra topic tez fajny",
-              "A ten to jest sigma++",
-            ]} />
-        </PopupWrapper>
-      )}
-
-      {showNewPopup && (
-        <PopupWrapper title="New Class">
-          <NewClassPopup />
-        </PopupWrapper>
-      )}
-
+      <ClassesMenu />
       <CalendarMenu />
+
+      {/*<PopupWrapper title="Add Sources">*/}
+      {/*  <AddSourcesPopup />*/}
+      {/*</PopupWrapper>*/}
+
+      {/*<PopupWrapper title="List of Topics">*/}
+      {/*  <TopicsListPopup topics={[*/}
+      {/*    "Fajny topic dla nauki",*/}
+      {/*    "Ekstra topic tez fajny",*/}
+      {/*    "A ten to jest sigma++",*/}
+      {/*    "Fajny topic dla nauki",*/}
+      {/*    "Ekstra topic tez fajny",*/}
+      {/*    "A ten to jest sigma++",*/}
+      {/*  ]} />*/}
+      {/*</PopupWrapper>*/}
+
+      {/*<PopupWrapper title="New Class">*/}
+      {/*  <NewClassPopup />*/}
+      {/*</PopupWrapper>*/}
     </>
   )
 }
