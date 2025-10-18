@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import "@assets/globals.scss";
+import Head from "next/head";
 import { Poppins } from "next/font/google";
 
 const poppins = Poppins({
@@ -9,7 +10,7 @@ const poppins = Poppins({
 })
 
 export const metadata: Metadata = {
-  title: "Student Helper",
+  title: "/SH",
 };
 
 export default function RootLayout({
@@ -19,6 +20,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
+    <Head>
+      <link rel="icon" href="/src/app/favicon.ico" />
+    </Head>
       <body
         className={`${poppins} antialiased`}
       >

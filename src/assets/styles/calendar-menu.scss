@@ -1,0 +1,100 @@
+.calendar-menu {
+  $trigger-width: 70px;
+  $calendar-width: 50%;
+  position: absolute;
+  top: 0;
+  right: calc(#{$trigger-width} - #{$calendar-width});
+  width: $calendar-width;
+  height: 100%;
+  display: grid;
+  grid-template-columns: $trigger-width 1fr;
+  background:
+          linear-gradient(to top left, var(--background-color-1), var(--background-color-2));
+  border-left: 3px solid rgba(200, 200, 200, 0.5);
+  transition: var(--transition-duration);
+
+  &--opened {
+    right: 0;
+  }
+
+  &__content {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 0 50px 0 0;
+  }
+
+  &__trigger {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    place-content: center;
+    cursor: pointer;
+  }
+
+  &__calendar-icon {
+    width: 50px;
+    height: auto;
+  }
+
+  &__title {
+    width: 100%;
+    padding: 15px;
+    text-align: center;
+    font-size: 1.5rem;
+  }
+}
+
+.calendar {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  padding: 0 0 50px 0;
+
+  &__days-of-week {
+    width: 100%;
+    height: 50px;
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    place-items: center;
+    border-radius: 10px;
+
+    @include glass-effect;
+  }
+
+  &__grid {
+    width: 100%;
+    height: 100%;
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    grid-template-rows: repeat(6, 1fr);
+    gap: 5px;
+  }
+
+  &__day-cell {
+    width: 100%;
+    height: 100%;
+    border-radius: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1.5rem;
+    cursor: default;
+
+    @include glass-effect;
+
+    &--inactive {
+      opacity: 0.5;
+    }
+
+    &--highlighted {
+      @include hover-with-shadow;
+
+      border-width: 5px;
+    }
+  }
+}
