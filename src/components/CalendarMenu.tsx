@@ -6,15 +6,16 @@ import dayjs from "dayjs";
 
 export default function CalendarMenu() {
   const [menuOpened, setMenuOpened] = React.useState(false);
+  const [currentMonth, setCurrentMonth] = React.useState(dayjs());
 
   function getCellsData() {
     const cellsData: Array<{ day: number }> = [];
 
-    const now = dayjs();
-    const firstDayFormatted = (now.date(1).day() != 0) ? now.date(1).day() : 7;
-    const daysInMonth = now.daysInMonth();
+    const firstDayFormatted =
+      (currentMonth.date(1).day() != 0) ? currentMonth.date(1).day() : 7;
+    const daysInMonth = currentMonth.daysInMonth();
 
-    for (let i = 2 - firstDayFormatted; i < 42; i++) {
+    for (let i = 2 - firstDayFormatted; cellsData.length < 42; i++) {
       if(i > 0 && i <= daysInMonth) {
         cellsData.push({ day: i })
       } else {
@@ -35,6 +36,17 @@ export default function CalendarMenu() {
           Calendar
         </span>
         <div className="calendar">
+          <div className="calendar__nav">
+            <button className="calendar__change-month" onClick={() => setCurrentMonth(currentMonth.subtract(1, "month"))}>
+              <Image src="icons/arrow.svg" className="calendar__arrow-icon--rotated" alt="Go previous" width={100} height={100} draggable={false} />
+            </button>
+            <span className="calendar__current-month">
+              {currentMonth.format('MMMM')}
+            </span>
+            <button className="calendar__change-month" onClick={() => setCurrentMonth(currentMonth.add(1, "month"))}>
+              <Image src="icons/arrow.svg" alt="Go next" width={100} height={100} draggable={false} />
+            </button>
+          </div>
           <ul className="calendar__days-of-week">
             <li className="calendar__day-name">Mon</li>
             <li className="calendar__day-name">Tue</li>
@@ -45,8 +57,6 @@ export default function CalendarMenu() {
             <li className="calendar__day-name">Sun</li>
           </ul>
           <div className="calendar__grid">
-            {/*<div className="calendar__day-cell calendar__day-cell--inactive"></div>*/}
-            {/*<div className="calendar__day-cell">1</div>*/}
             {/*<div className="calendar__day-cell calendar__day-cell--highlighted">7</div>*/}
             {
               getCellsData().map((cell, index) => {

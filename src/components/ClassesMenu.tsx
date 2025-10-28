@@ -1,5 +1,9 @@
+'use client'
+
 import Image from "next/image";
-import React from "react";
+import React, {useContext} from "react";
+import {LoaderContext, useLoaderContext} from "@components/contexts/LoaderContext";
+import {load} from "next/dist/compiled/@edge-runtime/primitives/load";
 
 export default function ClassesMenu() {
   const [menuOpened, setMenuOpened] = React.useState(false);
@@ -15,7 +19,7 @@ export default function ClassesMenu() {
             <div className="flex justify-between">
               <span className="classes-item__name">wdm</span>
               <button className="classes-item__delete-button">
-                <Image src="icons/close.svg" alt="Close" width={30} height={30} draggable={false} />
+                <Image src="icons/close.svg" className="classes-item__delete-icon" alt="Close" width={30} height={30} draggable={false} />
               </button>
             </div>
             <div className="flex justify-between items-end">
@@ -30,7 +34,7 @@ export default function ClassesMenu() {
             <div className="flex justify-between">
               <span className="classes-item__name">bst</span>
               <button className="classes-item__delete-button">
-                <Image src="icons/close.svg" alt="Close" width={30} height={30} draggable={false} />
+                <Image src="icons/close.svg" className="classes-item__delete-icon" alt="Close" width={30} height={30} draggable={false} />
               </button>
             </div>
             <div className="flex justify-between items-end">
@@ -43,7 +47,7 @@ export default function ClassesMenu() {
           </li>
         </ul>
         <button className="classes__add-button">
-          <Image src="icons/add.svg" className="h-full" alt="Add" width={100} height={100} draggable={false} />
+          <Image src="icons/add.svg" className="classes__add-icon" alt="Add" width={100} height={100} draggable={false} />
         </button>
       </div>
       <div className="classes__trigger" onClick={() => setMenuOpened(!menuOpened)}>

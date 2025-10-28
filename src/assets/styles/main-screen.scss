@@ -52,6 +52,11 @@
     @include active;
   }
 
+  &__option-icon {
+    width: auto;
+    height: 100%;
+  }
+
   &__modes-list {
     display: grid;
     grid-template-columns: repeat(2, 1fr);

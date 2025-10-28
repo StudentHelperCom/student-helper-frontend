@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import "@assets/globals.scss";
 import Head from "next/head";
 import { Poppins } from "next/font/google";
+import {createContext} from "node:vm";
+import React from "react";
 
 const poppins = Poppins({
   weight: "400",
