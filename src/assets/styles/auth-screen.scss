@@ -1,0 +1,136 @@
+.auth-screen {
+  width: 100%;
+  height: 100%;
+  background:
+          linear-gradient(to top, var(--background-color-1), var(--background-color-2));
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+
+  &__content {
+    position: relative;
+    width: 50%;
+    height: 50%;
+    perspective: 1000px;
+  }
+
+  &__app-name {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    text-align: center;
+    font-size: 5vw;
+    font-weight: bolder;
+    text-wrap: nowrap;
+    color: transparent;
+    background: linear-gradient(to bottom, var(--background-color-1), rgba(0, 0, 0, 0));
+    background-clip: text;
+    user-select: none;
+    line-height: 100%;
+    transform: translateY(-70%);
+  }
+
+  &__container {
+    width: 100%;
+    height: 100%;
+    transform-style: preserve-3d;
+
+    &--show-register {
+      animation: flip-to-register 1.5s forwards;
+    }
+
+    &--show-login {
+      animation: flip-to-login 1.5s forwards;
+    }
+  }
+
+}
+
+.auth-form {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+  border-radius: 15px;
+  padding: 30px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 15px;
+
+  @include glass-effect;
+
+  &--login {
+    transform: rotateY(0deg);
+  }
+
+  &--register {
+    transform: rotateY(-180deg);
+  }
+
+  &__title {
+    text-align: center;
+    font-size: 2rem;
+    font-weight: bold;
+    margin: 0 0 15px 0;
+  }
+
+  &__field {
+    padding: 10px;
+    border-radius: 10px;
+
+    @include glass-effect;
+    @include active;
+  }
+
+  &__button {
+    cursor: pointer;
+    @include glass-effect;
+    @include hover-with-shadow;
+    @include active;
+
+    &--submit {
+      border-radius: 10px;
+      padding: 10px;
+    }
+
+    &--switch-side {
+      border-radius: 5px;
+      padding: 5px;
+    }
+  }
+}
+
+
+@keyframes flip-to-register {
+  0% {
+    transform: translateZ(0) rotateY(0);
+  }
+  20% {
+    transform: translateZ(100px) rotateY(0);
+  }
+  80% {
+    transform: translateZ(100px) rotateY(180deg);
+  }
+  100% {
+    transform: translateZ(0) rotateY(180deg);
+  }
+}
+
+@keyframes flip-to-login {
+  0% {
+    transform: translateZ(0) rotateY(180deg);
+  }
+  20% {
+    transform: translateZ(100px) rotateY(180deg);
+  }
+  80% {
+    transform: translateZ(100px) rotateY(0);
+  }
+  100% {
+    transform: translateZ(0) rotateY(0);
+  }
+}
