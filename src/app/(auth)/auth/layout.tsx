@@ -9,7 +9,7 @@ const poppins = Poppins({
 })
 
 export const metadata: Metadata = {
-  title: "/SH",
+  title: "/SH sign-in",
 };
 
 export default function RootLayout({
