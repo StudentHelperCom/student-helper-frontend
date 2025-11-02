@@ -20,9 +20,6 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-    <Head>
-      <link rel="icon" href="/src/app/(app)/app/favicon.icoavicon.ico" />
-    </Head>
       <body
         className={`${poppins} antialiased`}
       >
