@@ -1,9 +1,7 @@
 'use client'
 
 import Image from "next/image";
-import React, {useContext} from "react";
-import {LoaderContext, useLoaderContext} from "@components/contexts/LoaderContext";
-import {load} from "next/dist/compiled/@edge-runtime/primitives/load";
+import React from "react";
 
 export default function ClassesMenu() {
   const [menuOpened, setMenuOpened] = React.useState(false);

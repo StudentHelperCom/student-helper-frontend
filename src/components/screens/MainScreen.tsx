@@ -18,7 +18,6 @@ export default function MainScreen() {
     }, 1000)
   }, [setLoaderOpened]);
 
-
   return (
     <>
       <main className="main">
