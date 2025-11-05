@@ -1,18 +1,32 @@
+'use client'
+
 import React from "react";
+import LoaderOverlay from "@components/LoaderOverlay";
 
 type LoaderType = {
   getter: boolean,
   setter: React.Dispatch<React.SetStateAction<boolean>>,
 }
 
-export const LoaderContext = React.createContext<LoaderType | undefined>(undefined);
+const LoaderContext = React.createContext<LoaderType | undefined>(undefined);
+
+export function LoaderProvider({ children }: {children: React.ReactNode}) {
+  const [loaderOpened, setLoaderOpened] = React.useState(false);
+
+  return (
+    <LoaderContext.Provider value={{getter: loaderOpened, setter: setLoaderOpened}}>
+      {loaderOpened && <LoaderOverlay/>}
+      {children}
+    </LoaderContext.Provider>
+  )
+}
 
 export function useLoaderContext() {
-  const loader = React.useContext(LoaderContext);
+  const context = React.useContext(LoaderContext);
 
-  if (loader === undefined) {
+  if (context === undefined) {
     throw new Error("useLoaderContext must be used within the LoaderContext");
   }
 
-  return loader;
+  return context;
 }

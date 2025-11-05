@@ -1,3 +1,5 @@
+'use client'
+
 export default function TopicsListPopup({ topics }: { topics: Array<string> }) {
   return (
     <ul className="topics">

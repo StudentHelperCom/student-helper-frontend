@@ -1,3 +1,5 @@
+'use client'
+
 import {useUpload} from "@src/hooks/useCdn";
 import {useEffect, useState} from "react";
 
