@@ -19,15 +19,6 @@ export default function AddSourcePopup() {
     await handleUpload(selectedFile);
   };
 
-  useEffect(() => {
-    console.log("status: ", status);
-    console.log("error: ", error);
-  }, [handleUpload, status, error]);
-
-  useEffect(() => {
-    console.log("selectedFile: ", selectedFile);
-  }, [selectedFile]);
-
   return (
     <div className="add-sources">
       <span>

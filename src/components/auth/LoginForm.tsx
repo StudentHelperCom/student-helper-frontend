@@ -1,25 +1,67 @@
 'use client'
 
-import React from "react";
+import React, {useEffect} from "react";
+import {useRouter} from "next/navigation";
+import {signIn, useSession} from "next-auth/react";
+import {useLoaderContext} from "@components/contexts/LoaderContext";
 
-export default function LoginForm({flipSetter}: {flipSetter: React.Dispatch<React.SetStateAction<boolean | undefined>>}) {
+interface Props {
+  flipSetter: React.Dispatch<React.SetStateAction<boolean | undefined>>
+}
+
+export default function LoginForm({flipSetter}: Props) {
   const [showPassword, setShowPassword] = React.useState(false);
+  const [login, setLogin] = React.useState("");
+  const [password, setPassword] = React.useState("");
+  const {setter: setLoaderOpened} = useLoaderContext();
+  const router = useRouter();
+  const { status } = useSession();
+  
+  useEffect(() => {
+    if (status === "authenticated") {
+      router.push("/");
+    }
+  }, [router, setLoaderOpened, status]);
+
+  const handleSignIn = async () => {
+    const result = await signIn('credentials', {
+      login: login,
+      password: password,
+      redirect: false,
+    });
+
+    if (result?.ok) {
+      router.push('/');
+    } else {
+      alert("Incorrect login or password");
+    }
+  }
 
   return (
     <form className="auth-form auth-form--login" onSubmit={(e) => e.preventDefault()}>
       <span className="auth-form__title">
-        Login
+        Sign In
       </span>
-      <input className="auth-form__field auth-form__field--login" type="text" placeholder="Username" />
+      <input
+        className="auth-form__field auth-form__field--login"
+        type="text"
+        placeholder="Username"
+        onChange={(e) => setLogin(e.target.value)}
+      />
       <input
         className="auth-form__field auth-form__field--pass"
         type={showPassword ? "text" : "password"}
-        placeholder="Password" />
+        placeholder="Password"
+        onChange={(e) => setPassword(e.target.value)}
+      />
       <div>
         <input type="checkbox" id="login-checkbox" onChange={() => setShowPassword(!showPassword)}/>
         <label htmlFor="login-checkbox"> Show Password</label>
       </div>
-      <button className="auth-form__button auth-form__button--submit">
+      <button
+        className="auth-form__button auth-form__button--submit"
+        onClick={() => handleSignIn()}
+      >
         Login
       </button>
       <div className="self-end mt-[15px]">

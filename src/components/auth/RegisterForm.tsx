@@ -1,25 +1,52 @@
 'use client'
 
-import React from "react";
+import React, {useEffect} from "react";
+import { useRegister } from "@src/hooks/useRegister";
 
-export default function RegisterForm({flipSetter}: {flipSetter: React.Dispatch<React.SetStateAction<boolean | undefined>>}) {
+interface Props {
+  flipSetter: React.Dispatch<React.SetStateAction<boolean | undefined>>
+}
+
+export default function RegisterForm({flipSetter}: Props) {
   const [showPassword, setShowPassword] = React.useState(false);
+  const [login, setLogin] = React.useState("");
+  const [password, setPassword] = React.useState("");
+  const { handleFn: handleRegister } = useRegister();
+
+  const handleSignUp = async () => {
+    const response = await handleRegister({login, password});
+    alert(response);
+    if(response === "USER_ADDED") {
+      flipSetter(false);
+    }
+  }
+
 
   return (
     <form className="auth-form auth-form--register" onSubmit={(e) => e.preventDefault()}>
       <span className="auth-form__title">
         Sign Up
       </span>
-      <input className="auth-form__field auth-form__field--login" type="text" placeholder="Username" />
+      <input
+        className="auth-form__field auth-form__field--login"
+        type="text"
+        placeholder="Username"
+        onChange={(e) => setLogin(e.target.value)}
+      />
       <input
         className="auth-form__field auth-form__field--pass"
         type={showPassword ? "text" : "password"}
-        placeholder="Password" />
+        placeholder="Password"
+        onChange={(e) => setPassword(e.target.value)}
+      />
       <div>
         <input type="checkbox" id="register-checkbox" onChange={() => setShowPassword(!showPassword)} />
         <label htmlFor="register-checkbox"> Show Password</label>
       </div>
-      <button className="auth-form__button auth-form__button--submit">
+      <button
+        className="auth-form__button auth-form__button--submit"
+        onClick={() => handleSignUp()}
+      >
         Sign up
       </button>
       <div className="self-end mt-[15px]">

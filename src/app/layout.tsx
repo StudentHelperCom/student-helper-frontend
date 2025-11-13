@@ -19,11 +19,11 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-    <body
-      className={`${poppins} antialiased`}
-    >
-    {children}
-    </body>
+      <body
+        className={`${poppins} antialiased`}
+      >
+        {children}
+      </body>
     </html>
   );
 }
