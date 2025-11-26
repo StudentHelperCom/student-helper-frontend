@@ -1,5 +1,7 @@
+@use "variables" as *;
+
 @mixin hover-with-shadow {
-  transition: var(--transition-duration);
+  transition: $transition-duration;
   border: 1px solid rgba(255, 255, 255, 0.1);
 
   &:hover {
@@ -40,4 +42,16 @@
     background: rgba(100, 100, 100, 0.35);
   }
 
+}
+
+@mixin smaller-then($breakpoint) {
+  $raw-query: map-get($breakpoints, $breakpoint);
+
+  @if $raw-query {
+    @media (max-width: #{$raw-query}) {
+      @content;
+    }
+  } @else {
+    @error 'Nie znaleziono breakpointa: #{$breakpoint}.';
+  }
 }

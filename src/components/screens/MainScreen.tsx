@@ -75,7 +75,6 @@ export default function MainScreen() {
               )
             })}
           </ul>
-          <Image src="/images/actually.gif" className="rounded-[15px] opacity-3" width={200} height={200} alt="akfuawi" />
         </div>
       </main>
     </>

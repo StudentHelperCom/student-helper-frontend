@@ -1,9 +1,2 @@
-@import "variables";
-@import "mixins";
-@import "styles/popups/popups";
-@import "styles/main-screen";
-@import "styles/calendar-menu";
-@import "styles/classes-menu";
-@import "styles/loading-overlay";
-@import "styles/auth-screen";
-@import "styles/not-found";
+@forward "variables";
+@forward "mixins";

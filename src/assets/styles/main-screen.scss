@@ -9,8 +9,13 @@ $header-height: 80px;
   width: 100%;
   height: 100%;
   background:
-          linear-gradient(to top, var(--background-color-1), var(--background-color-2));
+          linear-gradient(to top, $bg-color-main, $bg-color-secondary);
   padding: 0 $grid-spacing $header-height;
+
+  @include smaller-then('m') {
+    grid-template-columns: repeat(1, 1fr);
+    grid-template-rows: $header-height repeat(2, 1fr);
+  }
 
   &__side {
     width: 100%;
@@ -29,7 +34,7 @@ $header-height: 80px;
   &__doc-preview {
     background-color: #FFFFFF;
     width: 100%;
-    height: 100%;
+    min-height: 100px;
   }
 
   &__manage-options {
@@ -37,6 +42,10 @@ $header-height: 80px;
     display: flex;
     justify-content: space-around;
     gap: 50px;
+
+    @include smaller-then('s') {
+      gap: 20px;
+    }
   }
 
   &__single-option {
@@ -46,12 +55,16 @@ $header-height: 80px;
     justify-content: center;
     align-items: center;
     border-radius: 10px;
-    color: var(--text-color-bright);
+    color: $text-color-bright;
     cursor: pointer;
 
     @include glass-effect;
     @include hover-with-shadow;
     @include active;
+
+    @include smaller-then('m') {
+      height: 40px;
+    }
   }
 
   &__option-icon {
@@ -64,6 +77,12 @@ $header-height: 80px;
     grid-template-columns: repeat(2, 1fr);
     grid-template-rows: repeat(2, 1fr);
     gap: 10px;
+
+    @include smaller-then('l') {
+      grid-template-columns: repeat(1, 1fr);
+      grid-template-rows: repeat(4, 1fr);
+    };
+
   }
 
   &__single-mode {
@@ -71,7 +90,7 @@ $header-height: 80px;
     height: 100%;
     padding: 10px 50px;
     border-radius: 10px;
-    color: var(--text-color-bright);
+    color: $text-color-bright;
     font-size: 1.5rem;
     text-align: center;
     cursor: pointer;
@@ -89,6 +108,10 @@ $header-height: 80px;
   display: flex;
   justify-content: space-between;
   align-items: center;
+
+  @include smaller-then('m') {
+    grid-column: 1 / -1;
+  }
 
   &__user {
     display: flex;

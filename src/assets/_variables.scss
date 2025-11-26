@@ -1,0 +1,17 @@
+:root {
+  --font: poppins;
+}
+
+$bg-color-main: #101828;
+$bg-color-secondary: #3b0366;
+
+$text-color-bright: #cccccc;
+$text-color-dark: #222831;
+
+$transition-duration: 0.2s;
+
+$breakpoints: (
+        's': 480px, // mobile
+        'm': 768px, // tablet
+        'l': 1024px, // desktop
+);

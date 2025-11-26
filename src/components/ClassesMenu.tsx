@@ -3,11 +3,15 @@
 import Image from "next/image";
 import React from "react";
 
-export default function ClassesMenu() {
-  const [menuOpened, setMenuOpened] = React.useState(false);
+interface Props {
+  isOpened: boolean;
+  onToggle: () => void;
+}
+
+export default function ClassesMenu({ isOpened, onToggle }: Props) {
 
   return (
-    <aside className={"classes" + (menuOpened ? " classes--opened" : "")}>
+    <aside className={"classes" + (isOpened ? " classes--opened" : "")}>
       <div className="classes__content">
         <span className="classes__title">
         Classes
@@ -48,7 +52,7 @@ export default function ClassesMenu() {
           <Image src="icons/add.svg" className="classes__add-icon" alt="Add" width={100} height={100} draggable={false} />
         </button>
       </div>
-      <div className="classes__trigger" onClick={() => setMenuOpened(!menuOpened)}>
+      <div className="classes__trigger" onClick={onToggle}>
         <Image src="icons/menu.svg" className="classes__menu-icon" alt="Classes" width={100} height={100} draggable={false} />
       </div>
     </aside>
