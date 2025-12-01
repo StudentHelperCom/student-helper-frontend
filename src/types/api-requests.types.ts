@@ -28,8 +28,10 @@ export interface LoginResponseSuccess {
   idu?: string;
 }
 
-export interface LoginResponseError {
-  message: string[];
-  error: string;
-  statusCode: number;
+// Upload
+
+export interface UploadPayload {
+  files: File[],
+  className: string,
+  token: string,
 }

@@ -8,6 +8,9 @@ import AddSourcesPopup from "@components/popups/AddSourcePopup";
 import TopicsListPopup from "@components/popups/TopicsListPopup";
 import NewClassPopup from "@components/popups/NewClassPopup";
 import {usePopupManager} from "@components/contexts/PopupManagerContext";
+import {SessionProvider} from "next-auth/react";
+import {LoaderProvider} from "@components/contexts/LoaderContext";
+import ContextWrapper from "@components/contexts/ContextWrapper";
 
 type ActiveMenu = 'classes' | 'calendar' | null;
 
@@ -32,24 +35,26 @@ export default function AppShell({children}: {children: ReactNode}) {
         onToggle={() => toggleMenu('calendar')}
       />
 
-      <PopupWrapper title="Add Sources" isOpened={activePopup === "add"} closeAction={closePopup}>
-        <AddSourcesPopup  />
-      </PopupWrapper>
+      <ContextWrapper>
+          <PopupWrapper title="Add Sources" isOpened={activePopup === "add"} closeAction={closePopup}>
+            <AddSourcesPopup  />
+          </PopupWrapper>
 
-      <PopupWrapper title="List of Topics" isOpened={activePopup === "topics"} closeAction={closePopup}>
-        <TopicsListPopup topics={[
-          "Fajny topic dla nauki",
-          "Ekstra topic tez fajny",
-          "A ten to jest sigma++",
-          "Fajny topic dla nauki",
-          "Ekstra topic tez fajny",
-          "A ten to jest sigma++",
-        ]} />
-      </PopupWrapper>
+          <PopupWrapper title="List of Topics" isOpened={activePopup === "topics"} closeAction={closePopup}>
+            <TopicsListPopup topics={[
+              "Fajny topic dla nauki",
+              "Ekstra topic tez fajny",
+              "A ten to jest sigma++",
+              "Fajny topic dla nauki",
+              "Ekstra topic tez fajny",
+              "A ten to jest sigma++",
+            ]} />
+          </PopupWrapper>
 
-      <PopupWrapper title="New Class" isOpened={activePopup === "newClass"} closeAction={closePopup}>
-        <NewClassPopup />
-      </PopupWrapper>
+          <PopupWrapper title="New Class" isOpened={activePopup === "newClass"} closeAction={closePopup}>
+            <NewClassPopup />
+          </PopupWrapper>
+      </ContextWrapper>
     </>
   )
 }

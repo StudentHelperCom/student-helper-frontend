@@ -1,17 +1,14 @@
 'use client'
 
 import MainScreen from "@components/screens/MainScreen";
-import {LoaderProvider} from "@components/contexts/LoaderContext";
-import { SessionProvider } from 'next-auth/react';
+import ContextWrapper from "@components/contexts/ContextWrapper";
 
 export default function Home() {
   return (
     <>
-      <SessionProvider>
-        <LoaderProvider>
-          <MainScreen/>
-        </LoaderProvider>
-      </SessionProvider>
+      <ContextWrapper>
+        <MainScreen/>
+      </ContextWrapper>
     </>
   );
 }

@@ -5,6 +5,23 @@
   align-items: center;
   gap: 15px;
 
+  &__file-list {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 5px;
+  }
+
+  &__file-name {
+    width: 100%;
+    padding: 5px;
+    text-align: center;
+    border-radius:  5px;
+
+    @include glass-effect;
+  }
+
   &__button {
     font-size: 1.25rem;
     padding: 10px 20px;
