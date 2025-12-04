@@ -39,7 +39,6 @@ export default function CalendarMenu({ isOpened, onToggle }: Props) {
         <span className="calendar-menu__title">
           Calendar
         </span>
-        <div className="calendar-wrapper">
           <div className="calendar">
             <div className="calendar__nav">
               <button className="calendar__change-month"
@@ -77,7 +76,6 @@ export default function CalendarMenu({ isOpened, onToggle }: Props) {
             </div>
           </div>
         </div>
-      </div>
     </aside>
   )
 }

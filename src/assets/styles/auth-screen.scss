@@ -13,6 +13,14 @@
     width: 50%;
     height: 50%;
     perspective: 1000px;
+
+    @include smaller-then('m') {
+      width: 75%;
+    }
+
+    @include smaller-then('s') {
+      width: 90%;
+    }
   }
 
   &__app-name {
@@ -30,6 +38,14 @@
     user-select: none;
     line-height: 100%;
     transform: translateY(-70%);
+
+    @include smaller-then('m') {
+      font-size: 8vw;
+    }
+
+    @include smaller-then('s') {
+      font-size: 10vw;
+    }
   }
 
   &__container {

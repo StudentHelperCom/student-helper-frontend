@@ -20,8 +20,8 @@
   &__content {
     width: 100%;
     height: 100%;
-    display: grid;
-    grid-template-rows: 1fr 7fr;
+    display: flex;
+    flex-direction: column;
     padding: 0 30px 50px;
   }
 
@@ -50,22 +50,18 @@
   }
 }
 
-.calendar-wrapper {
-  width: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  container-type: size;
-}
-
 .calendar {
-  width: 100cqmin;
-  height: 100cqmin;
+  width: 100%;
+  height: 100%;
   display: flex;
   flex-direction: column;
   justify-content: center;
   gap: 15px;
   padding: 0 0 50px 0;
+
+  @include smaller-then('s') {
+    height: 70%;
+  }
 
   &__nav {
     width: 100%;
@@ -113,7 +109,8 @@
   }
 
   &__grid {
-    max-height: 100%;
+    width: 100%;
+    height: 100%;
     display: grid;
     grid-template-columns: repeat(7, 1fr);
     grid-template-rows: repeat(6, 1fr);
@@ -122,7 +119,7 @@
 
   &__day-cell {
     width: 100%;
-    aspect-ratio: 1 / 1;
+    height: 100%;
     border-radius: 10px;
     display: flex;
     justify-content: center;

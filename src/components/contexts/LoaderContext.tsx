@@ -24,7 +24,7 @@ export function LoaderProvider({ children }: {children: React.ReactNode}) {
 export function useLoaderContext() {
   const context = React.useContext(LoaderContext);
 
-  if (context === undefined) {
+  if (!context) {
     throw new Error("useLoaderContext must be used within the LoaderContext");
   }
 

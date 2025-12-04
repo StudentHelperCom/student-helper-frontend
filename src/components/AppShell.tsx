@@ -11,6 +11,7 @@ import {usePopupManager} from "@components/contexts/PopupManagerContext";
 import {SessionProvider} from "next-auth/react";
 import {LoaderProvider} from "@components/contexts/LoaderContext";
 import ContextWrapper from "@components/contexts/ContextWrapper";
+import AlertDialog from "@components/popups/AlertDialog";
 
 type ActiveMenu = 'classes' | 'calendar' | null;
 

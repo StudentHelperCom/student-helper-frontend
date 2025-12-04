@@ -4,6 +4,7 @@ import React, {useEffect} from "react";
 import {useRouter} from "next/navigation";
 import {signIn, useSession} from "next-auth/react";
 import {useLoaderContext} from "@components/contexts/LoaderContext";
+import {useAlert} from "@components/contexts/AlertDialogContext";
 
 interface Props {
   flipSetter: React.Dispatch<React.SetStateAction<boolean | undefined>>
@@ -11,9 +12,12 @@ interface Props {
 
 export default function LoginForm({flipSetter}: Props) {
   const [showPassword, setShowPassword] = React.useState(false);
+
   const [login, setLogin] = React.useState("");
   const [password, setPassword] = React.useState("");
+
   const {setter: setLoaderOpened} = useLoaderContext();
+  const {showAlert} = useAlert();
   const router = useRouter();
   const { status } = useSession();
   
@@ -33,7 +37,7 @@ export default function LoginForm({flipSetter}: Props) {
     if (result?.ok) {
       router.push('/');
     } else {
-      alert("Incorrect login or password");
+      showAlert('Incorrect login or password', true);
     }
   }
 
@@ -56,7 +60,7 @@ export default function LoginForm({flipSetter}: Props) {
       />
       <div>
         <input type="checkbox" id="login-checkbox" onChange={() => setShowPassword(!showPassword)}/>
-        <label htmlFor="login-checkbox"> Show Password</label>
+        <label htmlFor="login-checkbox"  className="select-none"> Show Password</label>
       </div>
       <button
         className="auth-form__button auth-form__button--submit"
