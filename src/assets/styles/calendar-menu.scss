@@ -3,18 +3,15 @@
   $calendar-width: calc(100% - $trigger-width);
   position: absolute;
   top: 0;
-  right: calc(#{$trigger-width} - #{$calendar-width});
+  left: 100vw;
   width: $calendar-width;
   height: 100%;
-  display: grid;
-  grid-template-columns: $trigger-width 1fr;
-  background:
-          linear-gradient(to top left, $bg-color-main, $bg-color-secondary);
-  border-left: 3px solid rgba(200, 200, 200, 0.5);
   transition: $transition-duration;
 
+  @include glass-effect;
+
   &--opened {
-    right: 0;
+    left: $trigger-width;
   }
 
   &__content {
@@ -26,11 +23,25 @@
   }
 
   &__trigger {
-    width: 100%;
-    height: 100%;
+    position: absolute;
+    top: 20%;
+    left: -$trigger-width;
+    width: $trigger-width;
+    height: 25%;
     display: flex;
     place-content: center;
     cursor: pointer;
+    border-radius: 15px 0 0 15px;
+    transition: $transition-duration;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-right: none;
+
+    @include glass-effect;
+
+    &:hover {
+      border: 1px solid rgba(255, 255, 255, 0.33);
+      border-right: none;
+    }
   }
 
   &__calendar-icon {
@@ -121,22 +132,24 @@
     width: 100%;
     height: 100%;
     border-radius: 10px;
+    padding: 5px;
     display: flex;
-    justify-content: center;
+    flex-direction: column;
+    justify-content: flex-start;
     align-items: center;
-    font-size: 1.5rem;
     cursor: default;
-
-    @include glass-effect;
+    text-align: center;
+    font-size: 1.5rem;
+    border: 5px solid rgba(255, 255, 255, 0.1);
 
     &--inactive {
-      opacity: 0.5;
+      opacity: 0.3;
     }
 
     &--highlighted {
+      @include glass-effect;
       @include hover-with-shadow;
-
-      border-width: 5px;
+      @include active;
     }
   }
 }
