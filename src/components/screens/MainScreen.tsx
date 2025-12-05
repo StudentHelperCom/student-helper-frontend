@@ -48,9 +48,7 @@ export default function MainScreen() {
           <div className="main__doc-preview">
           </div>
           <div className="main__manage-options">
-            <button className="main__single-option" onClick={() => {
-              openPopup("add")
-            }}>
+            <button className="main__single-option" onClick={() => openPopup("add")}>
               <Image src="/icons/add.svg" className="main__option-icon" alt="Add" width={100} height={100} draggable={false}/>
             </button>
             <button className="main__single-option">

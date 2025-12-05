@@ -43,12 +43,9 @@ export default function AppShell({children}: {children: ReactNode}) {
 
           <PopupWrapper title="List of Topics" isOpened={activePopup === "topics"} closeAction={closePopup}>
             <TopicsListPopup topics={[
-              "Fajny topic dla nauki",
+              "Fajny ",
               "Ekstra topic tez fajny",
-              "A ten to jest sigma++",
-              "Fajny topic dla nauki",
-              "Ekstra topic tez fajny",
-              "A ten to jest sigma++",
+
             ]} />
           </PopupWrapper>
 
