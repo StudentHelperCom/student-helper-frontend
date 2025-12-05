@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import React from "react";
+import {usePopupManager} from "@components/contexts/PopupManagerContext";
 
 interface Props {
   isOpened: boolean;
@@ -9,6 +10,7 @@ interface Props {
 }
 
 export default function ClassesMenu({ isOpened, onToggle }: Props) {
+  const {openPopup} = usePopupManager();
 
   return (
     <aside className={"classes" + (isOpened ? " classes--opened" : "")}>
@@ -27,8 +29,7 @@ export default function ClassesMenu({ isOpened, onToggle }: Props) {
             <div className="flex justify-between items-end">
               <span className="classes-item__exam">21.07</span>
               <div className="flex flex-col">
-                <span className="classes-item__info">Created: 03.05</span>
-                <span className="classes-item__info">Modified: 19.06</span>
+                <span className="classes-item__info">Location: <b>A1, Room 324</b></span>
               </div>
             </div>
           </li>
@@ -42,13 +43,12 @@ export default function ClassesMenu({ isOpened, onToggle }: Props) {
             <div className="flex justify-between items-end">
               <span className="classes-item__exam">25.07</span>
               <div className="flex flex-col">
-                <span className="classes-item__info">Created: 15.05</span>
-                <span className="classes-item__info">Modified: 23.06</span>
+                <span className="classes-item__info">Location: <b>A3, Room 501</b></span>
               </div>
             </div>
           </li>
         </ul>
-        <button className="classes__add-button">
+        <button className="classes__add-button" onClick={() => openPopup('newClass')}>
           <Image src="icons/add.svg" className="classes__add-icon" alt="Add" width={100} height={100} draggable={false} />
         </button>
       </div>

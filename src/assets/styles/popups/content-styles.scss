@@ -37,7 +37,20 @@
 .topics {
   display: flex;
   flex-direction: column;
-  gap: 5px;
+  align-items: center;
+  gap: 15px;
+  flex: 1;
+  min-height: 0;
+
+  &__list {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    overflow-y: auto;
+    flex: 1;
+
+    @include custom-scrollbar;
+  }
 
   &__element {
     width: 100%;
@@ -45,6 +58,7 @@
     background-color: rgba(200, 200, 200, 0.3);
     border-radius: 5px;
     display: flex;
+    flex-shrink: 0;
     justify-content: space-between;
     overflow: hidden;
 
@@ -59,6 +73,16 @@
 
   &__checkbox {
     margin: 0 0 0 20px;
+  }
+
+  &__button {
+    width: 50%;
+    padding: 10px;
+    border-radius: 10px;
+
+    @include glass-effect;
+    @include hover-with-shadow;
+    @include active;
   }
 }
 
@@ -84,4 +108,9 @@
     @include hover-with-shadow;
     @include active;
   }
+}
+
+// fixing width property for react-datepicker component
+.react-datepicker-wrapper {
+  width: 100%;
 }

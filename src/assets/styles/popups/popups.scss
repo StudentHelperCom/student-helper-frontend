@@ -18,13 +18,23 @@
 
 .popup {
   border-radius: 10px;
-  min-width: 300px;
-  max-width: 66%;
+  min-width: 50%;
+  max-width: 75%;
   max-height: 400px;
   display: flex;
   flex-direction: column;
 
   @include glass-effect;
+
+  @include smaller-then('m') {
+    min-width: 75%;
+    max-width: 90%;
+  }
+
+  @include smaller-then('s') {
+    min-width: 90%;
+    max-width: 100%;
+  }
 
   &__header {
     --header-paddings: 15px;
@@ -53,12 +63,11 @@
   }
 
   &__content {
-    margin: 10px 30px 30px 30px;
-    padding: 5px;
-    overflow-y: scroll;
-    flex-grow: 1;
-
-    @include custom-scrollbar;
+    padding: 15px 35px 35px 35px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    flex: 1;
   }
 }
 

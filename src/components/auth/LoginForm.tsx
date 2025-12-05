@@ -25,19 +25,28 @@ export default function LoginForm({flipSetter}: Props) {
     if (status === "authenticated") {
       router.push("/");
     }
+
+    if (status === "loading") {
+      setLoaderOpened(true);
+    } else {
+      setLoaderOpened(false);
+    }
   }, [router, setLoaderOpened, status]);
 
   const handleSignIn = async () => {
+    setLoaderOpened(true);
     const result = await signIn('credentials', {
       login: login,
       password: password,
       redirect: false,
     });
+    setLoaderOpened(false);
 
     if (result?.ok) {
+      showAlert('Logged in successfully', true);
       router.push('/');
     } else {
-      showAlert('Incorrect login or password', true);
+      showAlert('Incorrect login or password', false);
     }
   }
 

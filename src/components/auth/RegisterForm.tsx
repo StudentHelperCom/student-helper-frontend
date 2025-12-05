@@ -21,7 +21,6 @@ export default function RegisterForm({flipSetter}: Props) {
     const {response, message} = await handleRegister({login, password});
 
     if (response) {
-
       showAlert(message, true);
     } else {
       showAlert(message, false);
