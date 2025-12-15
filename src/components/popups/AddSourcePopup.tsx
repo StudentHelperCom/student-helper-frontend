@@ -1,26 +1,52 @@
 'use client'
 
 import {useUpload} from "@src/hooks/useUpload";
-import {useState} from "react";
+import React, {useState} from "react";
 import {useSession} from "next-auth/react";
 import {AxiosResponse} from "axios";
-import {useLoaderContext} from "@components/contexts/LoaderContext";
+import {useLoader} from "@components/contexts/LoaderContext";
+import Image from "next/image";
+import {useAlert} from "@components/contexts/AlertDialogContext";
 
 export default function AddSourcePopup() {
   const { handleUpload } = useUpload();
-  const { setter: setLoading } = useLoaderContext();
-  const [selectedFiles, setSelectedFiles] = useState<File[] | null>(null);
+  const { setLoaderStatus: setLoading } = useLoader();
+  const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
   const { data: session } = useSession();
+  const {showAlert} = useAlert();
+
+  const validateFiles = (filesArray: Array<File>) => {
+    return filesArray.every((file) => {
+      const name = file.name.toLowerCase();
+      return name.endsWith('.pdf') || name.endsWith('.txt');
+    });
+  }
+
+  const removeFile = (index: number) => {
+    const newArray = [...selectedFiles];
+
+    newArray.splice(index, 1);
+
+    setSelectedFiles(newArray);
+  }
 
   const onFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files.length > 0) {
-      setSelectedFiles(Array.from(e.target.files));
+      setSelectedFiles(selectedFiles.concat(Array.from(e.target.files)));
     }
   };
 
   const onSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!selectedFiles) return;
+    if (!selectedFiles.length) {
+      showAlert('No file selected', true);
+      return;
+    }
+
+    if (!validateFiles(selectedFiles)) {
+      showAlert('Incorrect files extensions. Only .pdf and .txt are allowed!', false);
+      return;
+    }
 
     setLoading(true);
 
@@ -42,20 +68,36 @@ export default function AddSourcePopup() {
     }
 
     setLoading(false);
-    setSelectedFiles(null);
+    setSelectedFiles([]);
   };
 
   return (
     <div className="add-sources">
-      <span className="add-sources__file-list">
-        {selectedFiles?.map(
-          (item, index) =>
-            <span className="add-sources__file-name" key={index}>{item.name}</span>)
-          || "Files are not chosen"}
-      </span>
-      <input className="hidden" type="file" id="upload-files" onChange={onFileChange} multiple={true}/>
+      <ul className="add-sources__file-list">
+        {selectedFiles.map(
+          (item, index) => {
+            return (
+              <li className="add-sources__file" key={index}>
+                <span className="add-sources__file-name">{item.name}</span>
+                <button className="add-sources__delete-button" onClick={() => removeFile(index)}>
+                  <Image src="icons/close.svg" alt="Delete" width={20} height={20}/>
+                </button>
+              </li>
+            )
+          })
+        }
+        {!selectedFiles.length && ("Files not chosen")}
+      </ul>
+      <input
+        className="hidden"
+        type="file"
+        id="upload-files"
+        onChange={onFileChange}
+        multiple={true}
+        accept=".pdf,.txt"
+      />
       <label className="add-sources__button" htmlFor="upload-files">
-        Open File Explorer
+        Add New Files
       </label>
       <button className="add-sources__button" onClick={onSubmit}>
         Submit

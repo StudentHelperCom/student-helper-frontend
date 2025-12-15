@@ -1,5 +1,7 @@
 .add-sources {
   width: 100%;
+  flex: 1;
+  min-height: 0;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -7,19 +9,40 @@
 
   &__file-list {
     width: 100%;
+    overflow-y: auto;
+    overflow-x: hidden;
     display: flex;
     flex-direction: column;
     align-items: center;
     gap: 5px;
+
+    @include custom-scrollbar;
   }
 
-  &__file-name {
+  &__file {
     width: 100%;
     padding: 5px;
-    text-align: center;
+    display: flex;
+    justify-content: space-between;
     border-radius:  5px;
 
     @include glass-effect;
+  }
+
+  &__file-name {
+    flex: 1;
+    text-align: center;
+    margin-left: 20px;
+    overflow: hidden;
+  }
+
+  &__delete-button {
+    cursor: pointer;
+    transition: transform .2s;
+
+    &:hover {
+      transform: rotate(90deg);
+    }
   }
 
   &__button {

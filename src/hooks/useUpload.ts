@@ -7,7 +7,7 @@ import {AxiosResponse} from "axios";
 export function useUpload() {
 
   async function handleUpload(uploadPayload: UploadPayload) {
-    const response:AxiosResponse = await cdn.uploadFile(uploadPayload);
+    const response: AxiosResponse = await cdn.uploadFile(uploadPayload);
 
     return response;
   }

@@ -10,12 +10,6 @@ export interface RegisterResponseSuccess {
   idu: string;
 }
 
-export interface RegisterResponseError {
-  message: string[];
-  error: string;
-  statusCode: number;
-}
-
 // Login
 
 export interface LoginPayload {
@@ -34,4 +28,23 @@ export interface UploadPayload {
   files: File[],
   className: string,
   token: string,
+}
+
+// New class
+
+export interface NewClassPayload {
+  className: string,
+  examDate: string,
+  examLocation: string,
+  token: string,
+}
+
+export interface NewClassResponseSuccess {
+  id: string,
+  userId: string,
+  name: string,
+  examDate: string,
+  examLocation: string,
+  createdAt: string,
+  updatedAt: string,
 }

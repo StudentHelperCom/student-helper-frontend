@@ -4,4 +4,5 @@ export const API_ROUTES = {
   upload: '/cdn/upload',
   login: '/auth/login',
   register: '/auth/register',
+  newClass: '/cdn/create-class',
 };

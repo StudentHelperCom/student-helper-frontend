@@ -3,7 +3,7 @@
 import React, {useEffect} from "react";
 import {useRouter} from "next/navigation";
 import {signIn, useSession} from "next-auth/react";
-import {useLoaderContext} from "@components/contexts/LoaderContext";
+import {useLoader} from "@components/contexts/LoaderContext";
 import {useAlert} from "@components/contexts/AlertDialogContext";
 
 interface Props {
@@ -16,7 +16,7 @@ export default function LoginForm({flipSetter}: Props) {
   const [login, setLogin] = React.useState("");
   const [password, setPassword] = React.useState("");
 
-  const {setter: setLoaderOpened} = useLoaderContext();
+  const {setLoaderStatus: setLoaderOpened} = useLoader();
   const {showAlert} = useAlert();
   const router = useRouter();
   const { status } = useSession();

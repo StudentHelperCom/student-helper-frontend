@@ -16,7 +16,9 @@
     "postcss": "^8.5.6",
     "react": "19.1.0",
     "react-datepicker": "^8.7.0",
+    "react-datetime-picker": "^7.0.1",
     "react-dom": "19.1.0",
+    "react-time-picker": "^8.0.2",
     "sass": "^1.93.2",
     "tailwindcss": "^4.1.13"
   },

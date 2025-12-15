@@ -3,6 +3,7 @@
 import React, {useEffect} from "react";
 import {useRegister} from "@src/hooks/useRegister";
 import {useAlert} from "@components/contexts/AlertDialogContext";
+import {useLoader} from "@components/contexts/LoaderContext";
 
 interface Props {
   flipSetter: React.Dispatch<React.SetStateAction<boolean | undefined>>
@@ -15,10 +16,13 @@ export default function RegisterForm({flipSetter}: Props) {
   const [password, setPassword] = React.useState("");
 
   const {handleFn: handleRegister} = useRegister();
+  const {setLoaderStatus: setLoaderOpened} = useLoader();
   const {showAlert} = useAlert();
 
   const handleSignUp = async () => {
+    setLoaderOpened(true);
     const {response, message} = await handleRegister({login, password});
+    setLoaderOpened(false);
 
     if (response) {
       showAlert(message, true);

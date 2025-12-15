@@ -5,7 +5,7 @@ import {AxiosResponse} from "axios";
 
 export const register = {
   async trySignUp(data: RegisterPayload) {
-    const response:AxiosResponse = await axiosClient.post<RegisterResponseSuccess>(API_ROUTES.register, data);
+    const response:AxiosResponse = await axiosClient.post<RegisterResponseSuccess>(API_ROUTES.newClass, data);
 
     return response;
   }

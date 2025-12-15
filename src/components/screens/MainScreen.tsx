@@ -2,14 +2,14 @@
 
 import Image from "next/image"
 import React, {useEffect} from "react";
-import {useLoaderContext} from "@components/contexts/LoaderContext";
+import {useLoader} from "@components/contexts/LoaderContext";
 import {usePopupManager} from "@components/contexts/PopupManagerContext";
 import {signOut, useSession} from "next-auth/react";
 import {useRouter} from "next/navigation";
 
 export default function MainScreen() {
   const {openPopup} = usePopupManager()
-  const {setter: setLoaderOpened} = useLoaderContext();
+  const {setLoaderStatus: setLoaderOpened} = useLoader();
 
   const availableModes = ["Studying", "Test mode", "Expanded answers", "Flip cards"];
 
