@@ -45,7 +45,7 @@ export default function MainScreen() {
         </header>
         <div className="main__side">
           <span className="main__title" onClick={() => console.log(selectedClass)}>
-            wdm
+            {selectedClass || 'Choose a class'}
           </span>
           <div className="main__doc-preview">
           </div>

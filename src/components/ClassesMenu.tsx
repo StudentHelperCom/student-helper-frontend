@@ -6,6 +6,7 @@ import {usePopupManager} from "@components/contexts/PopupManagerContext";
 import {useSession} from "next-auth/react";
 import {useClassesList} from "@src/hooks/useClassesList";
 import {useClassManager} from "@components/contexts/ClassManagerContext";
+import {useAlert} from "@components/contexts/AlertDialogContext";
 
 interface Props {
   isOpened: boolean;
@@ -16,8 +17,8 @@ export default function ClassesMenu({ isOpened, onToggle }: Props) {
   const {openPopup} = usePopupManager();
   const {data: session} = useSession();
   const {classes, isLoading, isError} = useClassesList(session?.user.backendToken);
-  const {selectedClass, setClass} = useClassManager();
-
+  const {setClass} = useClassManager();
+  const {showAlert} = useAlert();
 
   return (
     <aside className={"classes" + (isOpened ? " classes--opened" : "")}>
@@ -29,9 +30,8 @@ export default function ClassesMenu({ isOpened, onToggle }: Props) {
 
           {!isError && !isLoading && classes?.map((item, index) => (
             <li className="classes-item" key={index} onClick={() => {
-              console.log(selectedClass);
               setClass(item.name);
-              console.log(selectedClass);
+              showAlert(`Selected ${item.name.toUpperCase()} class`, true);
             }}>
               <div className="flex justify-between">
                 <span className="classes-item__name">{item.name}</span>
