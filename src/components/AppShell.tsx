@@ -12,11 +12,12 @@ import {SessionProvider} from "next-auth/react";
 import {LoaderProvider} from "@components/contexts/LoaderContext";
 import ContextWrapper from "@components/contexts/ContextWrapper";
 import AlertDialog from "@components/popups/AlertDialog";
+import {QueryClient} from "@tanstack/query-core";
 
 type ActiveMenu = 'classes' | 'calendar' | null;
 
-export default function AppShell({children}: {children: ReactNode}) {
-  const {activePopup, openPopup, closePopup} = usePopupManager()
+export default function AppShell({children}: { children: ReactNode }) {
+  const {activePopup, closePopup} = usePopupManager()
   const [activeMenu, setActiveMenu] = useState<ActiveMenu>(null);
 
   const toggleMenu = (menu: ActiveMenu) => {
@@ -27,31 +28,31 @@ export default function AppShell({children}: {children: ReactNode}) {
     <>
       {children}
 
-      <ClassesMenu
-        isOpened={activeMenu === 'classes'}
-        onToggle={() => toggleMenu('classes')}
-      />
-      <CalendarMenu
-        isOpened={activeMenu === 'calendar'}
-        onToggle={() => toggleMenu('calendar')}
-      />
-
       <ContextWrapper>
-          <PopupWrapper title="Add Sources" isOpened={activePopup === "add"} closeAction={closePopup}>
-            <AddSourcesPopup  />
-          </PopupWrapper>
+        <ClassesMenu
+          isOpened={activeMenu === 'classes'}
+          onToggle={() => toggleMenu('classes')}
+        />
+        <CalendarMenu
+          isOpened={activeMenu === 'calendar'}
+          onToggle={() => toggleMenu('calendar')}
+        />
 
-          <PopupWrapper title="List of Topics" isOpened={activePopup === "topics"} closeAction={closePopup}>
-            <TopicsListPopup topics={[
-              "Fajny ",
-              "Ekstra topic tez fajny",
+        <PopupWrapper title="Add Sources" isOpened={activePopup === "add"} closeAction={closePopup}>
+          <AddSourcesPopup/>
+        </PopupWrapper>
 
-            ]} />
-          </PopupWrapper>
+        <PopupWrapper title="List of Topics" isOpened={activePopup === "topics"} closeAction={closePopup}>
+          <TopicsListPopup topics={[
+            "Fajny ",
+            "Ekstra topic tez fajny",
 
-          <PopupWrapper title="New Class" isOpened={activePopup === "newClass"} closeAction={closePopup}>
-            <NewClassPopup />
-          </PopupWrapper>
+          ]}/>
+        </PopupWrapper>
+
+        <PopupWrapper title="New Class" isOpened={activePopup === "newClass"} closeAction={closePopup}>
+          <NewClassPopup/>
+        </PopupWrapper>
       </ContextWrapper>
     </>
   )

@@ -39,7 +39,9 @@ export interface NewClassPayload {
   token: string,
 }
 
-export interface NewClassResponseSuccess {
+// Class List
+
+export interface ClassListResponse {
   id: string,
   userId: string,
   name: string,

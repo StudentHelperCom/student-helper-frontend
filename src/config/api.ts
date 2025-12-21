@@ -5,4 +5,5 @@ export const API_ROUTES = {
   login: '/auth/login',
   register: '/auth/register',
   newClass: '/cdn/create-class',
+  classesList: '/cdn/classes',
 };

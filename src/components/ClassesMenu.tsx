@@ -3,6 +3,8 @@
 import Image from "next/image";
 import React from "react";
 import {usePopupManager} from "@components/contexts/PopupManagerContext";
+import {useSession} from "next-auth/react";
+import {useClassesList} from "@src/hooks/useClassesList";
 
 interface Props {
   isOpened: boolean;
@@ -11,42 +13,38 @@ interface Props {
 
 export default function ClassesMenu({ isOpened, onToggle }: Props) {
   const {openPopup} = usePopupManager();
+  const {data: session} = useSession();
+  const {classes, isLoading, isError} = useClassesList(session?.user.backendToken);
 
   return (
     <aside className={"classes" + (isOpened ? " classes--opened" : "")}>
       <div className="classes__content">
         <span className="classes__title">
         Classes
-      </span>
+        </span>
         <ul className="classes__list">
-          <li className="classes-item">
-            <div className="flex justify-between">
-              <span className="classes-item__name">wdm</span>
-              <button className="classes-item__delete-button">
-                <Image src="icons/close.svg" className="classes-item__delete-icon" alt="Close" width={30} height={30} draggable={false} />
-              </button>
-            </div>
-            <div className="flex justify-between items-end">
-              <span className="classes-item__exam">21.07</span>
-              <div className="flex flex-col">
-                <span className="classes-item__info">Location: <b>A1, Room 324</b></span>
+
+          {!isError && !isLoading && classes?.map((item, index) => (
+            <li className="classes-item" key={index}>
+              <div className="flex justify-between">
+                <span className="classes-item__name">{item.name}</span>
+                <button className="classes-item__delete-button">
+                  <Image src="icons/close.svg" className="classes-item__delete-icon" alt="Close" width={30} height={30} draggable={false} />
+                </button>
               </div>
-            </div>
-          </li>
-          <li className="classes-item">
-            <div className="flex justify-between">
-              <span className="classes-item__name">bst</span>
-              <button className="classes-item__delete-button">
-                <Image src="icons/close.svg" className="classes-item__delete-icon" alt="Close" width={30} height={30} draggable={false} />
-              </button>
-            </div>
-            <div className="flex justify-between items-end">
-              <span className="classes-item__exam">25.07</span>
-              <div className="flex flex-col">
-                <span className="classes-item__info">Location: <b>A3, Room 501</b></span>
+              <div className="flex justify-between items-end">
+                <span className="classes-item__exam">
+                  {new Date(item.examDate).toLocaleDateString(
+                    'pl-PL',
+                    { day: '2-digit', month: 'short', year: 'numeric'}
+                  )}
+                </span>
+                <div className="flex flex-col">
+                  <span className="classes-item__info">Location: <b>{item.examLocation}</b></span>
+                </div>
               </div>
-            </div>
-          </li>
+            </li>
+          ))}
         </ul>
         <button className="classes__add-button" onClick={() => openPopup('newClass')}>
           <Image src="icons/add.svg" className="classes__add-icon" alt="Add" width={100} height={100} draggable={false} />

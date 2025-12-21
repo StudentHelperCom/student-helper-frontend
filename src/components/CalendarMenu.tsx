@@ -1,34 +1,82 @@
 'use client'
 
 import Image from "next/image";
-import React from "react";
+import React, { useEffect, useState, useMemo } from "react";
 import dayjs from "dayjs";
+import { useClassesList } from "@src/hooks/useClassesList";
+import { useSession } from "next-auth/react";
+import { useAlert } from "@components/contexts/AlertDialogContext";
 
 interface Props {
   isOpened: boolean;
   onToggle: () => void;
 }
 
-export default function CalendarMenu({isOpened, onToggle}: Props) {
-  const [currentMonth, setCurrentMonth] = React.useState(dayjs());
+type CellType = {
+  day: number;
+  isCurrentMonth: boolean;
+  highlight: boolean;
+  examClasses: string[];
+};
 
-  function getCellsData() {
-    const cellsData: Array<{ day: number }> = [];
+export default function CalendarMenu({ isOpened, onToggle }: Props) {
+  const [currentMonth, setCurrentMonth] = useState(dayjs());
+  const { showAlert } = useAlert();
+  const { data: session } = useSession();
 
-    const firstDayFormatted =
-      (currentMonth.date(1).day() != 0) ? currentMonth.date(1).day() : 7;
+  const { classes, isLoading, isError } = useClassesList(session?.user?.backendToken || null);
+
+  const cellsData = useMemo(() => {
+    if (!classes) return [];
+
+    // {day: [examName1, examName2]}
+    const examsOnDays: Record<number, string[]> = {};
+
+    classes.forEach((item) => {
+      const examDate = dayjs(item.examDate);
+
+      if (examDate.isSame(currentMonth, 'month')) {
+        const dayNumber = examDate.date();
+
+        if (!examsOnDays[dayNumber]) {
+          examsOnDays[dayNumber] = [];
+        }
+        examsOnDays[dayNumber].push(item.name);
+      }
+    });
+
+    // data for grid render
+    const data: CellType[] = [];
+
+    const firstDayOfMonth = currentMonth.date(1).day();
+    const firstDayAdjusted = firstDayOfMonth === 0 ? 7 : firstDayOfMonth;
     const daysInMonth = currentMonth.daysInMonth();
 
-    for (let i = 2 - firstDayFormatted; cellsData.length < 42; i++) {
-      if (i > 0 && i <= daysInMonth) {
-        cellsData.push({day: i})
+    for (let i = 2 - firstDayAdjusted; data.length < 42; i++) {
+      const isDayInCurrentMonth = i > 0 && i <= daysInMonth;
+
+      if (isDayInCurrentMonth) {
+        const examsForThisDay = examsOnDays[i] || [];
+
+        data.push({
+          day: i,
+          isCurrentMonth: true,
+          highlight: examsForThisDay.length > 0,
+          examClasses: examsForThisDay,
+        });
       } else {
-        cellsData.push({day: -1})
+        data.push({
+          day: -1,
+          isCurrentMonth: false,
+          highlight: false,
+          examClasses: [],
+        });
       }
     }
 
-    return cellsData;
-  }
+    return data;
+  }, [currentMonth, classes]);
+
 
   return (
     <aside className={"calendar-menu" + (isOpened ? " calendar-menu--opened" : "")}>
@@ -44,12 +92,13 @@ export default function CalendarMenu({isOpened, onToggle}: Props) {
                      height={100} draggable={false}/>
             </button>
             <span className="calendar__current-month">
-              {currentMonth.format('MMMM')}
+              {currentMonth.format('MMMM YYYY')}
             </span>
             <button className="calendar__change-month" onClick={() => setCurrentMonth(currentMonth.add(1, "month"))}>
               <Image src="icons/arrow.svg" alt="Go next" width={100} height={100} draggable={false}/>
             </button>
           </div>
+
           <ul className="calendar__days-of-week">
             <li className="calendar__day-name">Mon</li>
             <li className="calendar__day-name">Tue</li>
@@ -59,25 +108,28 @@ export default function CalendarMenu({isOpened, onToggle}: Props) {
             <li className="calendar__day-name">Sat</li>
             <li className="calendar__day-name">Sun</li>
           </ul>
+
           <div className="calendar__grid">
-            {/*<div className="calendar__day-cell calendar__day-cell--highlighted">7</div>*/}
-            {
-              getCellsData().map((cell, index) => {
-                let setOfClassNames = "calendar__day-cell";
+            {!isError && !isLoading && cellsData.map((cell, index) => {
 
-                (cell.day === -1) ? setOfClassNames += " calendar__day-cell--inactive" : 0;
+              let setOfClassNames = "calendar__day-cell";
+              if (!cell.isCurrentMonth) setOfClassNames += " calendar__day-cell--inactive";
+              if (cell.highlight) setOfClassNames += " calendar__day-cell--highlighted";
 
-                // remember: replace below testing line with correct condition
-                (cell.day === 17 || cell.day === 9 || cell.day === 27) ?
-                  setOfClassNames += " calendar__day-cell--highlighted" : 0;
-
-                return (
-                  <div className={setOfClassNames} key={index}>
-                    {(cell.day !== -1) ? cell.day : ''}
-                  </div>
-                )
-              })
-            }
+              return (
+                <div
+                  className={setOfClassNames}
+                  key={index}
+                  onClick={() => {
+                    if (cell.highlight && cell.examClasses.length > 0) {
+                      showAlert('Assigned exams: ' + cell.examClasses.join(', '), false);
+                    }
+                  }}
+                >
+                  {cell.isCurrentMonth ? cell.day : ''}
+                </div>
+              )
+            })}
           </div>
         </div>
       </div>

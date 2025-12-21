@@ -2,14 +2,14 @@ import {AxiosResponse, isAxiosError} from "axios";
 import {newClass} from "@src/services/newClass";
 import {NewClassPayload} from "@src/types/api-requests.types";
 
-interface newClassResponse {
+interface NewClassResponse {
   response: AxiosResponse | null;
   message: string;
 }
 
 export function useNewClass() {
 
-  async function createNewClass(newClassPayload: NewClassPayload): Promise<newClassResponse> {
+  async function createNewClass(newClassPayload: NewClassPayload): Promise<NewClassResponse> {
     try {
       const response: AxiosResponse = await newClass.createNewClass(newClassPayload);
 
