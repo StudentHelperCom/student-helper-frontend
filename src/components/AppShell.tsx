@@ -28,32 +28,30 @@ export default function AppShell({children}: { children: ReactNode }) {
     <>
       {children}
 
-      <ContextWrapper>
-        <ClassesMenu
-          isOpened={activeMenu === 'classes'}
-          onToggle={() => toggleMenu('classes')}
-        />
-        <CalendarMenu
-          isOpened={activeMenu === 'calendar'}
-          onToggle={() => toggleMenu('calendar')}
-        />
+      <ClassesMenu
+        isOpened={activeMenu === 'classes'}
+        onToggle={() => toggleMenu('classes')}
+      />
+      <CalendarMenu
+        isOpened={activeMenu === 'calendar'}
+        onToggle={() => toggleMenu('calendar')}
+      />
 
-        <PopupWrapper title="Add Sources" isOpened={activePopup === "add"} closeAction={closePopup}>
-          <AddSourcesPopup/>
-        </PopupWrapper>
+      <PopupWrapper title="Add Sources" isOpened={activePopup === "add"} closeAction={closePopup}>
+        <AddSourcesPopup/>
+      </PopupWrapper>
 
-        <PopupWrapper title="List of Topics" isOpened={activePopup === "topics"} closeAction={closePopup}>
-          <TopicsListPopup topics={[
-            "Fajny ",
-            "Ekstra topic tez fajny",
+      <PopupWrapper title="List of Topics" isOpened={activePopup === "topics"} closeAction={closePopup}>
+        <TopicsListPopup topics={[
+          "Fajny ",
+          "Ekstra topic tez fajny",
 
-          ]}/>
-        </PopupWrapper>
+        ]}/>
+      </PopupWrapper>
 
-        <PopupWrapper title="New Class" isOpened={activePopup === "newClass"} closeAction={closePopup}>
-          <NewClassPopup/>
-        </PopupWrapper>
-      </ContextWrapper>
+      <PopupWrapper title="New Class" isOpened={activePopup === "newClass"} closeAction={closePopup}>
+        <NewClassPopup/>
+      </PopupWrapper>
     </>
   )
 }

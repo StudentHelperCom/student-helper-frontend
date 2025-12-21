@@ -6,9 +6,7 @@ import ContextWrapper from "@components/contexts/ContextWrapper";
 export default function Home() {
   return (
     <>
-      <ContextWrapper>
-        <MainScreen/>
-      </ContextWrapper>
+      <MainScreen/>
     </>
   );
 }
