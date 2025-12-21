@@ -6,9 +6,11 @@ import {useLoader} from "@components/contexts/LoaderContext";
 import {usePopupManager} from "@components/contexts/PopupManagerContext";
 import {signOut, useSession} from "next-auth/react";
 import {useRouter} from "next/navigation";
+import {useClassManager} from "@components/contexts/ClassManagerContext";
 
 export default function MainScreen() {
   const {openPopup} = usePopupManager()
+  const {selectedClass} = useClassManager();
   const {setLoaderStatus: setLoaderOpened} = useLoader();
 
   const availableModes = ["Studying", "Test mode", "Expanded answers", "Flip cards"];
@@ -42,7 +44,7 @@ export default function MainScreen() {
           </button>
         </header>
         <div className="main__side">
-          <span className="main__title">
+          <span className="main__title" onClick={() => console.log(selectedClass)}>
             wdm
           </span>
           <div className="main__doc-preview">

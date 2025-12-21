@@ -61,10 +61,18 @@ export default function NewClassPopup() {
         selected={dateTime}
         dateFormat="dd.MM.yyyy HH:mm"
         onChange={(date) => setDateTime(date)}
+        minDate={new Date()}
         // time
         showTimeSelect={true}
         timeFormat="HH:mm"
         timeIntervals={10}
+        filterTime={(date) => {
+          const isToday = new Date().getDate() === date.getDate() &&
+            new Date().getMonth() === date.getMonth() &&
+            new Date().getFullYear() === date.getFullYear();
+
+          return isToday ? date > new Date() : true;
+        }}
         // other
         className="new-class__field"
         placeholderText="Exam date"

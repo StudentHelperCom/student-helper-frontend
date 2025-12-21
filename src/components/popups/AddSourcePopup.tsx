@@ -1,12 +1,13 @@
 'use client'
 
 import {useUpload} from "@src/hooks/useUpload";
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import {useSession} from "next-auth/react";
 import {AxiosResponse} from "axios";
 import {useLoader} from "@components/contexts/LoaderContext";
 import Image from "next/image";
 import {useAlert} from "@components/contexts/AlertDialogContext";
+import {useClassManager} from "@components/contexts/ClassManagerContext";
 
 export default function AddSourcePopup() {
   const { handleUpload } = useUpload();
