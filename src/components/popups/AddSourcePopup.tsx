@@ -15,6 +15,7 @@ export default function AddSourcePopup() {
   const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
   const { data: session } = useSession();
   const {showAlert} = useAlert();
+  const {selectedClass} = useClassManager();
 
   const validateFiles = (filesArray: Array<File>) => {
     return filesArray.every((file) => {
@@ -54,8 +55,8 @@ export default function AddSourcePopup() {
     try {
       const response:AxiosResponse | undefined = await handleUpload({
         files: selectedFiles,
-        className: "max_superclass",
-        token: session?.user.backendToken
+        className: selectedClass?.name || '',
+        token: session?.user.backendToken || '',
       });
 
       if(response && response.status === 201) {

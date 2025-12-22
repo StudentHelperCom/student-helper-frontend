@@ -17,7 +17,7 @@ import {QueryClient} from "@tanstack/query-core";
 type ActiveMenu = 'classes' | 'calendar' | null;
 
 export default function AppShell({children}: { children: ReactNode }) {
-  const {activePopup, closePopup} = usePopupManager()
+  const {activePopup, closePopup, popupData} = usePopupManager()
   const [activeMenu, setActiveMenu] = useState<ActiveMenu>(null);
 
   const toggleMenu = (menu: ActiveMenu) => {
@@ -42,11 +42,9 @@ export default function AppShell({children}: { children: ReactNode }) {
       </PopupWrapper>
 
       <PopupWrapper title="List of Topics" isOpened={activePopup === "topics"} closeAction={closePopup}>
-        <TopicsListPopup topics={[
-          "Fajny ",
-          "Ekstra topic tez fajny",
-
-        ]}/>
+        <TopicsListPopup
+          currentMode={popupData as string}
+        />
       </PopupWrapper>
 
       <PopupWrapper title="New Class" isOpened={activePopup === "newClass"} closeAction={closePopup}>

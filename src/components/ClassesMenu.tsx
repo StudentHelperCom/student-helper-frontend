@@ -1,7 +1,7 @@
 'use client'
 
 import Image from "next/image";
-import React from "react";
+import React, {useEffect} from "react";
 import {usePopupManager} from "@components/contexts/PopupManagerContext";
 import {useSession} from "next-auth/react";
 import {useClassesList} from "@src/hooks/useClassesList";
@@ -30,8 +30,11 @@ export default function ClassesMenu({ isOpened, onToggle }: Props) {
 
           {!isError && !isLoading && classes?.map((item, index) => (
             <li className="classes-item" key={index} onClick={() => {
-              setClass(item.name);
-              showAlert(`Selected ${item.name.toUpperCase()} class`, true);
+              setClass({
+                name: item.name,
+                id: item.id,
+              });
+              showAlert(`Selected ${item.name.toUpperCase()} class`, false);
             }}>
               <div className="flex justify-between">
                 <span className="classes-item__name">{item.name}</span>

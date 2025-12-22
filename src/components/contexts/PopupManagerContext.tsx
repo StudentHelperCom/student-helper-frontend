@@ -6,25 +6,29 @@ type PopupName = 'add' | 'topics' | 'newClass' | null;
 
 type PopupManagerType = {
   activePopup: PopupName;
-  openPopup: (name: PopupName) => void;
+  openPopup: (name: PopupName, data?: string) => void;
   closePopup: () => void;
+  popupData: string | null;
 }
 
 const PopupManagerContext = React.createContext<PopupManagerType | undefined>(undefined);
 
 export function PopupManagerProvider({ children }: { children: React.ReactNode }) {
   const [activePopup, setActivePopup] = useState<PopupName>(null);
+  const [popupData, setPopupData] = useState<string | null>(null);
 
-  const openPopup = (name: PopupName) => {
+  const openPopup = (name: PopupName, data?: string) => {
     setActivePopup(name);
+    if (data) setPopupData(data);
   };
 
   const closePopup = () => {
     setActivePopup(null);
+    setPopupData(null);
   };
 
   return (
-    <PopupManagerContext.Provider value={{ activePopup, openPopup, closePopup }}>
+    <PopupManagerContext.Provider value={{ activePopup, openPopup, closePopup, popupData }}>
       {children}
     </PopupManagerContext.Provider>
   );

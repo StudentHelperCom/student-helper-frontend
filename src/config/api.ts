@@ -6,4 +6,5 @@ export const API_ROUTES = {
   register: '/auth/register',
   newClass: '/cdn/create-class',
   classesList: '/cdn/classes',
+  classTopics: (classId: string) => `/cdn/class/${classId}/topics`,
 };

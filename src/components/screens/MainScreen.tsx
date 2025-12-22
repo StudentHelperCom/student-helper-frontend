@@ -7,13 +7,12 @@ import {usePopupManager} from "@components/contexts/PopupManagerContext";
 import {signOut, useSession} from "next-auth/react";
 import {useRouter} from "next/navigation";
 import {useClassManager} from "@components/contexts/ClassManagerContext";
+import {availableModes, availableModesNames} from "@components/popups/TopicsListPopup";
 
 export default function MainScreen() {
   const {openPopup} = usePopupManager()
   const {selectedClass} = useClassManager();
   const {setLoaderStatus: setLoaderOpened} = useLoader();
-
-  const availableModes = ["Studying", "Test mode", "Expanded answers", "Flip cards"];
 
   const { data: session, status } = useSession({
     required: true,
@@ -45,7 +44,7 @@ export default function MainScreen() {
         </header>
         <div className="main__side">
           <span className="main__title" onClick={() => console.log(selectedClass)}>
-            {selectedClass || 'Choose a class'}
+            {selectedClass?.name || 'Choose a class'}
           </span>
           <div className="main__doc-preview">
           </div>
@@ -63,11 +62,11 @@ export default function MainScreen() {
             Choose mode
           </span>
           <ul className="main__modes-list">
-            {availableModes.map((modeName, index) => {
+            {availableModesNames.map((modeName, index) => {
               return (
                 <li key={index}>
                   <button className="main__single-mode" onClick={() => {
-                    openPopup("topics")
+                    openPopup("topics", availableModes[index])
                   }}>
                     {modeName}
                   </button>

@@ -50,3 +50,14 @@ export interface ClassListResponse {
   createdAt: string,
   updatedAt: string,
 }
+
+// Topics List
+
+export interface TopicItem {
+  id: string;
+  classId: string;
+  topicName: string;
+  createdAt: string;
+}
+
+export type TopicsListResponse = TopicItem[];
