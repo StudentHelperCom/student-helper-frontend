@@ -60,13 +60,13 @@ export default function AddSourcePopup() {
       });
 
       if(response && response.status === 201) {
-        alert('SUCCESS');
+        showAlert('The files has been sent. Give us some time (may take 2-5 min). 😉', false);
       } else {
         throw new Error('Bad status');
       }
     } catch (err) {
+      showAlert('Error while uploading file', false);
       console.error('Error while uploading files', err);
-      alert('Error while uploading file');
     }
 
     setLoading(false);

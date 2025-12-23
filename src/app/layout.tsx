@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import "@assets/globals.scss";
 import { Poppins } from "next/font/google";
 import React from "react";
+import ContextWrapper from "@components/contexts/ContextWrapper";
 const poppins = Poppins({
   weight: "400",
   variable: "--poppins",
@@ -22,7 +23,9 @@ export default function RootLayout({
       <body
         className={`${poppins} antialiased`}
       >
-        {children}
+        <ContextWrapper>
+          {children}
+        </ ContextWrapper>
       </body>
     </html>
   );

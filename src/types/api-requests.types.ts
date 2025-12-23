@@ -61,3 +61,26 @@ export interface TopicItem {
 }
 
 export type TopicsListResponse = TopicItem[];
+
+// Quiz
+
+export interface GenerateQuizPayload {
+  mode: string;
+  topicIds: string[];
+}
+
+export interface QuizAnswer {
+  text: string;
+  is_correct: boolean;
+}
+
+export interface QuizQuestion {
+  id: number;
+  question: string;
+  answers: QuizAnswer[];
+}
+
+export interface GenerateQuizResponse {
+  mode: string;
+  questions: QuizQuestion[];
+}

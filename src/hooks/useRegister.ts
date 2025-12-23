@@ -1,68 +1,48 @@
-import {register} from "@src/services/register";
-import {RegisterPayload} from "@src/types/api-requests.types";
-import {AxiosResponse, isAxiosError} from "axios";
-
-interface RegisterResponse {
-  response: AxiosResponse | null;
-  message: string;
-}
+import { useMutation } from "@tanstack/react-query";
+import { axiosClient } from "@src/lib/axiosClient";
+import { API_ROUTES } from "@src/config/api";
+import { RegisterPayload, RegisterResponseSuccess } from "@src/types/api-requests.types";
+import { isAxiosError } from "axios";
 
 export function useRegister() {
+  const mutationFn = async (data: RegisterPayload) => {
+    const response = await axiosClient.post<RegisterResponseSuccess>(API_ROUTES.register, data);
+    return response.data;
+  };
 
-  async function handleFn(data: RegisterPayload): Promise<RegisterResponse> {
-    try {
-      const response:AxiosResponse = await register.trySignUp(data);
+  const mutation = useMutation({
+    mutationFn: mutationFn,
+  });
 
-      if (response.data.status === "USER_ADDED") {
-        return {response, message: 'Successfully registered'};
-      }
+  const getErrorMessage = () => {
+    const err = mutation.error;
+    if (!err) return null;
 
-      if (response.data.status === "USER_ALREADY_EXISTS") {
-        return {response, message: 'User already exists'};
-      }
-
-      throw new Error("Unknown success status");
-
-    } catch (err) {
-      if (isAxiosError(err)) {
-
-        if (err.response) {
-          console.error('Server error:', err.response.status);
-
-          return {
-            response: null,
-            message: err.response.data?.message || "Server error",
-          };
+    if (isAxiosError(err)) {
+      if (err.response) {
+        if (err.response.data?.status === "USER_ALREADY_EXISTS") {
+          return "User already exists";
         }
-
-        if (err.request) {
-          console.error('No response:', err.request);
-
-          return {
-            response: null,
-            message: "Server connection error, check your internet",
-          };
-        }
-
-        return {
-          response: null,
-          message: "Error request configuration.",
-        }
+        return err.response.data?.message || `Server error: ${err.response.status}`;
       }
 
-      if (err instanceof Error) {
-        return {
-          response: null,
-          message: err.message,
-        }
-      }
-
-      return {
-        response: null,
-        message: "Unknown error",
-      }
+      if (err.request) return "Server connection error, check your internet";
     }
-  }
 
-  return { handleFn };
+    if (err instanceof Error) return err.message;
+
+    return "Unknown error";
+  };
+
+  return {
+    register: mutation.mutate,
+    registerAsync: mutation.mutateAsync,
+
+    isLoading: mutation.isPending,
+    isSuccess: mutation.isSuccess,
+    isError: mutation.isError,
+    errorMessage: getErrorMessage(),
+
+    data: mutation.data
+  };
 }

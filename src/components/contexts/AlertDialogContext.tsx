@@ -1,7 +1,7 @@
 'use client'
 
 import React, {createContext, useContext, useState} from "react";
-import AlertDialog from "@components/popups/AlertDialog";
+import AlertDialog from "@components/popups/dialogs/AlertDialog";
 
 interface AlertDialogType {
   showAlert: (message: string, autoCloseOn: boolean) => void;

@@ -4,14 +4,14 @@ import React, {ReactNode, useState} from "react";
 import ClassesMenu from "@components/ClassesMenu";
 import CalendarMenu from "@components/CalendarMenu";
 import PopupWrapper from "@components/popups/PopupWrapper";
-import AddSourcesPopup from "@components/popups/AddSourcePopup";
-import TopicsListPopup from "@components/popups/TopicsListPopup";
-import NewClassPopup from "@components/popups/NewClassPopup";
+import AddSourcesPopup from "@components/popups/dialogs/AddSourcePopup";
+import TopicsListPopup from "@components/popups/dialogs/TopicsListPopup";
+import NewClassPopup from "@components/popups/dialogs/NewClassPopup";
 import {usePopupManager} from "@components/contexts/PopupManagerContext";
 import {SessionProvider} from "next-auth/react";
 import {LoaderProvider} from "@components/contexts/LoaderContext";
 import ContextWrapper from "@components/contexts/ContextWrapper";
-import AlertDialog from "@components/popups/AlertDialog";
+import AlertDialog from "@components/popups/dialogs/AlertDialog";
 import {QueryClient} from "@tanstack/query-core";
 
 type ActiveMenu = 'classes' | 'calendar' | null;

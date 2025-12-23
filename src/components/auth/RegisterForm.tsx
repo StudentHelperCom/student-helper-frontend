@@ -1,34 +1,53 @@
 'use client'
 
-import React, {useEffect} from "react";
-import {useRegister} from "@src/hooks/useRegister";
-import {useAlert} from "@components/contexts/AlertDialogContext";
-import {useLoader} from "@components/contexts/LoaderContext";
+import React, { useEffect, useState } from "react";
+import { useRegister } from "@src/hooks/useRegister";
+import { useAlert } from "@components/contexts/AlertDialogContext";
+import { useLoader } from "@components/contexts/LoaderContext";
 
 interface Props {
   flipSetter: React.Dispatch<React.SetStateAction<boolean | undefined>>
 }
 
-export default function RegisterForm({flipSetter}: Props) {
-  const [showPassword, setShowPassword] = React.useState(false);
+export default function RegisterForm({ flipSetter }: Props) {
+  const [showPassword, setShowPassword] = useState(false);
+  const [login, setLogin] = useState("");
+  const [password, setPassword] = useState("");
 
-  const [login, setLogin] = React.useState("");
-  const [password, setPassword] = React.useState("");
+  const {
+    register,
+    isLoading,
+    isError,
+    isSuccess,
+    errorMessage
+  } = useRegister();
 
-  const {handleFn: handleRegister} = useRegister();
-  const {setLoaderStatus: setLoaderOpened} = useLoader();
-  const {showAlert} = useAlert();
+  const { setLoaderStatus: setLoaderOpened } = useLoader();
+  const { showAlert } = useAlert();
 
-  const handleSignUp = async () => {
-    setLoaderOpened(true);
-    const {response, message} = await handleRegister({login, password});
-    setLoaderOpened(false);
+  useEffect(() => {
+    setLoaderOpened(isLoading);
+  }, [isLoading, setLoaderOpened]);
 
-    if (response) {
-      showAlert(message, true);
-    } else {
-      showAlert(message, false);
+  useEffect(() => {
+    if (isError && errorMessage) {
+      showAlert(errorMessage, false);
     }
+  }, [isError, errorMessage, showAlert]);
+
+  useEffect(() => {
+    if (isSuccess) {
+      showAlert("Successfully registered! You can now log in.", true);
+
+      flipSetter(false);
+
+      setLogin("");
+      setPassword("");
+    }
+  }, [isSuccess, showAlert, flipSetter]);
+
+  const handleSignUp = () => {
+    register({ login, password });
   }
 
   return (
@@ -40,27 +59,42 @@ export default function RegisterForm({flipSetter}: Props) {
         className="auth-form__field auth-form__field--login"
         type="text"
         placeholder="Username"
+        value={login}
         onChange={(e) => setLogin(e.target.value)}
       />
       <input
         className="auth-form__field auth-form__field--pass"
         type={showPassword ? "text" : "password"}
         placeholder="Password"
+        value={password}
         onChange={(e) => setPassword(e.target.value)}
       />
       <div>
-        <input type="checkbox" id="register-checkbox" onChange={() => setShowPassword(!showPassword)}/>
+        <input
+          type="checkbox"
+          id="register-checkbox"
+          checked={showPassword}
+          onChange={() => setShowPassword(!showPassword)}
+        />
         <label htmlFor="register-checkbox" className="select-none"> Show Password</label>
       </div>
+
       <button
         className="auth-form__button auth-form__button--submit"
-        onClick={() => handleSignUp()}
+        onClick={handleSignUp}
+        disabled={isLoading}
       >
-        Sign up
+        {isLoading ? 'Creating account...' : 'Sign up'}
       </button>
+
       <div className="self-end mt-[15px]">
         <span>Already have an account?👉 </span>
-        <button className="auth-form__button auth-form__button--switch-side" onClick={() => flipSetter(false)}>Sign in
+        <button
+          className="auth-form__button auth-form__button--switch-side"
+          onClick={() => flipSetter(false)}
+          type="button"
+        >
+          Sign in
         </button>
       </div>
     </form>

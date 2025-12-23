@@ -8,6 +8,7 @@ import {NewClassPayload} from "@src/types/api-requests.types";
 import {useAlert} from "@components/contexts/AlertDialogContext";
 import {useLoader} from "@components/contexts/LoaderContext";
 import {useSession} from "next-auth/react";
+import {useClassesList} from "@src/hooks/useClassesList";
 
 export default function NewClassPopup() {
   const [dateTime, setDateTime] = useState<Date | null>(null);
@@ -18,6 +19,7 @@ export default function NewClassPopup() {
   const {createNewClass} = useNewClass();
   const {showAlert} = useAlert();
   const { data: session } = useSession();
+  const {refreshClasses} = useClassesList(session?.user.backendToken);
   const {setLoaderStatus} = useLoader();
 
   const onSubmit = async () => {
@@ -36,11 +38,8 @@ export default function NewClassPopup() {
       token: session?.user.backendToken,
     } as NewClassPayload);
 
-    if (!response) {
-      showAlert(message, false);
-    } else {
-      showAlert(message, true);
-    }
+    showAlert(message, !response);
+    refreshClasses();
 
     setLoaderStatus(false);
   }
