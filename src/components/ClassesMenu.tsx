@@ -56,7 +56,7 @@ export default function ClassesMenu({ isOpened, onToggle }: Props) {
             </li>
           ))}
         </ul>
-        <button className="classes__add-button" onClick={() => openPopup('newClass')}>
+        <button className="classes__add-button" onClick={() => openPopup('NewClass')}>
           <Image src="icons/add.svg" className="classes__add-icon" alt="Add" width={100} height={100} draggable={false} />
         </button>
       </div>

@@ -7,7 +7,7 @@ import {usePopupManager} from "@components/contexts/PopupManagerContext";
 import {signOut, useSession} from "next-auth/react";
 import {useRouter} from "next/navigation";
 import {useClassManager} from "@components/contexts/ClassManagerContext";
-import {availableModes, availableModesNames} from "@components/popups/dialogs/TopicsListPopup";
+import {availableModes} from "@components/popups/dialogs/TopicsListPopup";
 import {useTopicsList} from "@src/hooks/useTopicsList";
 import {useAlert} from "@components/contexts/AlertDialogContext";
 
@@ -57,16 +57,12 @@ export default function MainScreen() {
           <div className="main__manage-options">
             <button className="main__single-option" onClick={() => {
               if (selectedClass?.name) {
-                openPopup("add");
+                openPopup("Add");
               } else {
                 showAlert('First select a class', true);
               }
             }}>
               <Image src="/icons/add.svg" className="main__option-icon" alt="Add" width={100} height={100}
-                     draggable={false}/>
-            </button>
-            <button className="main__single-option">
-              <Image src="/icons/download.svg" className="main__option-icon" alt="Add" width={100} height={100}
                      draggable={false}/>
             </button>
           </div>
@@ -76,17 +72,21 @@ export default function MainScreen() {
             Choose mode
           </span>
           <ul className="main__modes-list">
-            {availableModesNames.map((modeName, index) => {
+            {Object.entries(availableModes).map(([mode, modeName], index) => {
               return (
                 <li key={index}>
-                  <button className="main__single-mode" onClick={() => {
-                    if (selectedClass?.name) {
-                      openPopup("topics", availableModes[index]);
-                      refreshTopics();
-                    } else {
-                      showAlert('First select a class', true);
-                    }
-                  }}>
+                  <button
+                    className="main__single-mode"
+                    onClick={() => {
+                      if (selectedClass?.name) {
+                        openPopup("Topics", mode);
+                        refreshTopics();
+                      } else {
+                        showAlert('First select a class', true);
+                      }
+                    }}
+                    disabled={mode !== 'Quiz'}
+                  >
                     {modeName}
                   </button>
                 </li>

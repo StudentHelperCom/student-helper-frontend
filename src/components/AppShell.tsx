@@ -5,14 +5,11 @@ import ClassesMenu from "@components/ClassesMenu";
 import CalendarMenu from "@components/CalendarMenu";
 import PopupWrapper from "@components/popups/PopupWrapper";
 import AddSourcesPopup from "@components/popups/dialogs/AddSourcePopup";
-import TopicsListPopup from "@components/popups/dialogs/TopicsListPopup";
+import TopicsListPopup, {availableModes} from "@components/popups/dialogs/TopicsListPopup";
 import NewClassPopup from "@components/popups/dialogs/NewClassPopup";
 import {usePopupManager} from "@components/contexts/PopupManagerContext";
-import {SessionProvider} from "next-auth/react";
-import {LoaderProvider} from "@components/contexts/LoaderContext";
-import ContextWrapper from "@components/contexts/ContextWrapper";
-import AlertDialog from "@components/popups/dialogs/AlertDialog";
-import {QueryClient} from "@tanstack/query-core";
+import QuizMode from "@components/popups/modes/QuizMode";
+import {QuizModeType} from "@src/types/api-requests.types";
 
 type ActiveMenu = 'classes' | 'calendar' | null;
 
@@ -37,18 +34,22 @@ export default function AppShell({children}: { children: ReactNode }) {
         onToggle={() => toggleMenu('calendar')}
       />
 
-      <PopupWrapper title="Add Sources" isOpened={activePopup === "add"} closeAction={closePopup}>
+      <PopupWrapper title="Add Sources" isOpened={activePopup === "Add"} closeAction={closePopup}>
         <AddSourcesPopup/>
       </PopupWrapper>
 
-      <PopupWrapper title="List of Topics" isOpened={activePopup === "topics"} closeAction={closePopup}>
+      <PopupWrapper title="List of Topics" isOpened={activePopup === "Topics"} closeAction={closePopup}>
         <TopicsListPopup
-          currentMode={popupData as string}
+          currentMode={popupData as availableModes}
         />
       </PopupWrapper>
 
-      <PopupWrapper title="New Class" isOpened={activePopup === "newClass"} closeAction={closePopup}>
+      <PopupWrapper title="New Class" isOpened={activePopup === "NewClass"} closeAction={closePopup}>
         <NewClassPopup/>
+      </PopupWrapper>
+
+      <PopupWrapper title="Test" isOpened={activePopup === 'Quiz'} closeAction={closePopup}>
+        <QuizMode tasksData={popupData as QuizModeType}/>
       </PopupWrapper>
     </>
   )

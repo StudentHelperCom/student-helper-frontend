@@ -1,16 +1,16 @@
 import { useMutation } from "@tanstack/react-query";
 import { axiosClient } from "@src/lib/axiosClient";
 import { API_ROUTES } from "@src/config/api";
-import { GenerateQuizPayload, GenerateQuizResponse } from "@src/types/api-requests.types";
+import {ModeGeneratorPayload, ModeGeneratorResponse} from "@src/types/api-requests.types";
 import { isAxiosError } from "axios";
 
-export function useQuiz(token: string | null) {
+export function useModeGenerator(token: string | null) {
 
-  const mutationFn = async (payload: GenerateQuizPayload) => {
+  const mutationFn = async (payload: ModeGeneratorPayload) => {
     if (!token) throw new Error("No token provided");
 
-    const response = await axiosClient.post<GenerateQuizResponse>(
-      API_ROUTES.generateQuiz,
+    const response = await axiosClient.post<ModeGeneratorResponse>(
+      API_ROUTES.generateTasks,
       payload,
       {
         headers: {
@@ -42,7 +42,7 @@ export function useQuiz(token: string | null) {
   };
 
   return {
-    generateQuiz: mutation.mutate,
+    generate: mutation.mutate,
     data: mutation.data,
     isLoading: mutation.isPending,
     isSuccess: mutation.isSuccess,

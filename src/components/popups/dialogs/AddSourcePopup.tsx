@@ -60,7 +60,7 @@ export default function AddSourcePopup() {
       });
 
       if(response && response.status === 201) {
-        showAlert('The files has been sent. Give us some time (may take 2-5 min). 😉', false);
+        showAlert('The files has been sent. Give us some time (may take 2-5 min), then check topics list. 😉', false);
       } else {
         throw new Error('Bad status');
       }

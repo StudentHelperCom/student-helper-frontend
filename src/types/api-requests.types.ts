@@ -25,30 +25,30 @@ export interface LoginResponseSuccess {
 // Upload
 
 export interface UploadPayload {
-  files: File[],
-  className: string,
-  token: string,
+  files: File[];
+  className: string;
+  token: string;
 }
 
 // New class
 
 export interface NewClassPayload {
-  className: string,
-  examDate: string,
-  examLocation: string,
-  token: string,
+  className: string;
+  examDate: string;
+  examLocation: string;
+  token: string;
 }
 
 // Class List
 
 export interface ClassListResponse {
-  id: string,
-  userId: string,
-  name: string,
-  examDate: string,
-  examLocation: string,
-  createdAt: string,
-  updatedAt: string,
+  id: string;
+  userId: string;
+  name: string;
+  examDate: string;
+  examLocation: string;
+  createdAt: string;
+  updatedAt: string;
 }
 
 // Topics List
@@ -62,14 +62,9 @@ export interface TopicItem {
 
 export type TopicsListResponse = TopicItem[];
 
-// Quiz
+// Quiz Mode
 
-export interface GenerateQuizPayload {
-  mode: string;
-  topicIds: string[];
-}
-
-export interface QuizAnswer {
+export interface QuizAnswers {
   text: string;
   is_correct: boolean;
 }
@@ -77,10 +72,32 @@ export interface QuizAnswer {
 export interface QuizQuestion {
   id: number;
   question: string;
-  answers: QuizAnswer[];
+  answers: QuizAnswers[];
 }
 
-export interface GenerateQuizResponse {
-  mode: string;
+export interface QuizModeType {
+  mode: 'quiz';
   questions: QuizQuestion[];
 }
+
+// Flip cards Mode
+
+export interface Card {
+  answer: string;
+  id: number;
+  question: string;
+}
+
+export interface CardsModeType {
+  mode: 'cards';
+  flashcards: Card[];
+}
+
+// Modes
+
+export interface ModeGeneratorPayload {
+  mode: string;
+  topicIds: string[];
+}
+
+export type ModeGeneratorResponse = QuizModeType | CardsModeType;

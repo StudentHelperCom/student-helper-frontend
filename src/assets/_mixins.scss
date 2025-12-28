@@ -44,6 +44,44 @@
 
 }
 
+@mixin radio-style($size: 20px, $color: #ccc, $border-color: #878787) {
+  appearance: none;
+  width: $size;
+  height: $size;
+  border: 2px solid $border-color;
+  border-radius: $size;
+
+  display: grid;
+  place-content: center;
+
+  transition: 0.2s ease-in-out;
+  cursor: pointer;
+  flex-shrink: 0;
+
+  &::before {
+    content: "";
+    width: $size;
+    height: $size;
+    background: $color;
+    border-radius: $size;
+    transform: scale(0);
+    transition: 0.2s transform ease-in-out;
+  }
+
+  &:checked {
+    border-color: $color;
+    &::before {
+      transform: scale(1);
+    }
+  }
+
+  &:disabled {
+    cursor: not-allowed;
+    border-color: $border-color;
+    opacity: 0.5;
+  }
+}
+
 @mixin smaller-then($breakpoint) {
   $raw-query: map-get($breakpoints, $breakpoint);
 

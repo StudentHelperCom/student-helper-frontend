@@ -1,25 +1,26 @@
 'use client'
 
 import React, {useContext, useState} from "react";
+import {availableModes} from "@components/popups/dialogs/TopicsListPopup";
 
-type PopupName = 'add' | 'topics' | 'newClass' | null;
+export type PopupName = 'Add' | 'Topics' | 'NewClass' | null | keyof typeof availableModes;
 
 type PopupManagerType = {
   activePopup: PopupName;
-  openPopup: (name: PopupName, data?: string) => void;
+  openPopup: <T>(name: PopupName, data?: T) => void;
   closePopup: () => void;
-  popupData: string | null;
+  popupData: unknown;
 }
 
 const PopupManagerContext = React.createContext<PopupManagerType | undefined>(undefined);
 
 export function PopupManagerProvider({ children }: { children: React.ReactNode }) {
   const [activePopup, setActivePopup] = useState<PopupName>(null);
-  const [popupData, setPopupData] = useState<string | null>(null);
+  const [popupData, setPopupData] = useState<unknown>(null);
 
-  const openPopup = (name: PopupName, data?: string) => {
+  const openPopup = <T = unknown>(name: PopupName, data?: T) => {
     setActivePopup(name);
-    if (data) setPopupData(data);
+    setPopupData(data || null);
   };
 
   const closePopup = () => {

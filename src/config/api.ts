@@ -7,5 +7,5 @@ export const API_ROUTES = {
   newClass: '/cdn/create-class',
   classesList: '/cdn/classes',
   classTopics: (classId: string) => `/cdn/class/${classId}/topics`,
-  generateQuiz: '/quiz/generate',
+  generateTasks: '/quiz/generate',
 };
