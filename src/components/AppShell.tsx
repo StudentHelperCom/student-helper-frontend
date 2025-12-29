@@ -9,7 +9,8 @@ import TopicsListPopup, {availableModes} from "@components/popups/dialogs/Topics
 import NewClassPopup from "@components/popups/dialogs/NewClassPopup";
 import {usePopupManager} from "@components/contexts/PopupManagerContext";
 import QuizMode from "@components/popups/modes/QuizMode";
-import {QuizModeType} from "@src/types/api-requests.types";
+import {CardsModeType, QuizModeType} from "@src/types/api-requests.types";
+import CardsMode from "@components/popups/modes/CardsMode";
 
 type ActiveMenu = 'classes' | 'calendar' | null;
 
@@ -50,6 +51,10 @@ export default function AppShell({children}: { children: ReactNode }) {
 
       <PopupWrapper title="Test" isOpened={activePopup === 'Quiz'} closeAction={closePopup}>
         <QuizMode tasksData={popupData as QuizModeType}/>
+      </PopupWrapper>
+
+      <PopupWrapper title="Flip cards" isOpened={activePopup === 'Cards'} closeAction={closePopup}>
+        <CardsMode tasksData={popupData as CardsModeType}/>
       </PopupWrapper>
     </>
   )

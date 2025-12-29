@@ -15,7 +15,7 @@ type PopupManagerType = {
 const PopupManagerContext = React.createContext<PopupManagerType | undefined>(undefined);
 
 export function PopupManagerProvider({ children }: { children: React.ReactNode }) {
-  const [activePopup, setActivePopup] = useState<PopupName>(null);
+  const [activePopup, setActivePopup] = useState<PopupName>('Cards');
   const [popupData, setPopupData] = useState<unknown>(null);
 
   const openPopup = <T = unknown>(name: PopupName, data?: T) => {

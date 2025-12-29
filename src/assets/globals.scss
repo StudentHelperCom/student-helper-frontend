@@ -24,6 +24,7 @@ body {
   height: 100vh;
   color: $text-color-bright;
   overflow-x: hidden;
+  user-select: none;
 }
 
 @import "styles/popups/popups";
