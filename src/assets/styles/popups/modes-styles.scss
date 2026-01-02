@@ -97,7 +97,7 @@
     height: 200px;
     bottom: 0;
     text-align: center;
-    transition: 0.5s;
+    transition: bottom 0.1s, transform 0.5s;
     transform-style: preserve-3d;
   }
 
@@ -106,7 +106,7 @@
   }
 
   &__card.is-hidden {
-    bottom: -400px;
+    bottom: -20px;
   }
 
   &__side-front, &__side-back {
@@ -137,6 +137,11 @@
 
   &__side-back {
     transform: rotateY(180deg);
+  }
+
+  &__pages {
+    font-size: 1.25rem;
+    font-weight: bold;
   }
 
   &__nav {

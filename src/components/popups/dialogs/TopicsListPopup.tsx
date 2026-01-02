@@ -29,7 +29,7 @@ export default function TopicsListPopup({currentMode}: Props) {
     topics,
     isLoading,
     isError,
-  } = useTopicsList(session?.user.backendToken, selectedClass?.id || null);
+  } = useTopicsList(session?.user.backendToken, selectedClass?.classID || null);
 
   const {
     generate,
@@ -43,7 +43,7 @@ export default function TopicsListPopup({currentMode}: Props) {
   useEffect(() => {
     if (topics && topics.length > 0) {
       const initialState = topics.reduce(
-        (acc, topic) => ({...acc, [topic.id]: false}),
+        (acc, topic) => ({...acc, [topic.topicID]: false}),
         {} as Record<string, boolean>
       );
       setSelectedTopics(initialState);
@@ -83,17 +83,17 @@ export default function TopicsListPopup({currentMode}: Props) {
         {isError && <li className="topics__element" style={{color: 'red'}}>Error loading topics.</li>}
 
         {!isError && !isLoading && topics?.map((topic, index) => (
-          <li className="topics__element" key={topic.id}>
-            <label className="topics__name" htmlFor={`topic-${topic.id}`}>
-              {(index + 1) + ". " + topic.topicName}
+          <li className="topics__element" key={index}>
+            <label className="topics__name" htmlFor={`topic-${topic.topicID}`}>
+              {(index + 1) + ". " + topic.name}
             </label>
             <input
               className="topics__checkbox"
               type="checkbox"
-              id={`topic-${topic.id}`}
+              id={`topic-${topic.topicID}`}
 
-              checked={!!selectedTopics[topic.id]}
-              onChange={() => handleToggle(topic.id)}
+              checked={!!selectedTopics[topic.topicID]}
+              onChange={() => handleToggle(topic.topicID)}
             />
           </li>
         ))}

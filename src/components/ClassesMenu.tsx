@@ -32,7 +32,7 @@ export default function ClassesMenu({ isOpened, onToggle }: Props) {
             <li className="classes-item" key={index} onClick={() => {
               setClass({
                 name: item.name,
-                id: item.id,
+                classID: item.classID,
               });
               showAlert(`Selected ${item.name.toUpperCase()} class`, false);
             }}>

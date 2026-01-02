@@ -24,7 +24,7 @@ export default function MainScreen() {
   });
   const router = useRouter();
   const {selectedClass} = useClassManager();
-  const {refreshTopics} = useTopicsList(session?.user.backendToken || null, selectedClass?.id || null);
+  const {refreshTopics} = useTopicsList(session?.user.backendToken || null, selectedClass?.classID || null);
 
   useEffect(() => {
     setLoaderOpened(status === 'loading');
@@ -85,7 +85,7 @@ export default function MainScreen() {
                         showAlert('First select a class', true);
                       }
                     }}
-                    disabled={mode !== 'Quiz'}
+                    disabled={mode !== 'Quiz' && mode !== 'Cards'}
                   >
                     {modeName}
                   </button>

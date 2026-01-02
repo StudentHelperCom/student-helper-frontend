@@ -42,8 +42,7 @@ export interface NewClassPayload {
 // Class List
 
 export interface ClassListResponse {
-  id: string;
-  userId: string;
+  classID: string;
   name: string;
   examDate: string;
   examLocation: string;
@@ -54,10 +53,10 @@ export interface ClassListResponse {
 // Topics List
 
 export interface TopicItem {
-  id: string;
-  classId: string;
-  topicName: string;
+  topicID: string;
+  name: string;
   createdAt: string;
+  updatedAt: string;
 }
 
 export type TopicsListResponse = TopicItem[];

@@ -7,29 +7,28 @@ interface Props {
   tasksData: CardsModeType;
 }
 
-const mockTasksData = {
-  mode: 'cards',
-  flashcards: [
-    {id: 1, question: "question (1)", answer: "answer (1)"},
-    {id: 2, question: "question (2)", answer: "answer (2)"},
-    {id: 3, question: "question (3)", answer: "answer (3)"},
-    {id: 4, question: "question (4)", answer: "answer (4)"},
-    {id: 5, question: "question (5)", answer: "answer (5)"},
-  ]
-}
-
 export default function CardsMode({tasksData}: Props) {
   const [currentCardId, setCurrentCardId] = React.useState<number>(0);
   const [isFlipped, setFlipped] = React.useState<boolean>(false);
   const [isHidden, setHidden] = React.useState<boolean>(false);
 
-  const changeCard = (direction: 'l' | 'r') => {
+  const flashcards = tasksData?.flashcards || [];
+  const currentCard = flashcards[currentCardId];
+  const hasCards = flashcards.length > 0;
+
+  const changeCard = (isNext: boolean) => {
+    // true - right; false - left;
+    if (!hasCards) return;
+    if (isNext && currentCardId >= flashcards.length - 1) return;
+    if (!isNext && currentCardId <= 0) return;
+
     setHidden(true);
+    setCurrentCardId((prev) => prev + (isNext ? 1 : -1));
+
     setTimeout(() => {
       setFlipped(false);
-      console.log('changed content');
       setHidden(false);
-    }, 500);
+    }, 100);
   }
 
   return (
@@ -43,17 +42,28 @@ export default function CardsMode({tasksData}: Props) {
         onClick={() => setFlipped(!isFlipped)}
       >
         <div className="cards-mode__side-front">
-          FRONT
+          {currentCard ? currentCard.question : "No flashcards available"}
         </div>
         <div className="cards-mode__side-back">
-          BACK
+          {currentCard ? currentCard.answer : ""}
         </div>
       </div>
+      <span className="cards-mode__pages">
+        {currentCardId + 1}/{flashcards.length}
+      </span>
       <nav className="cards-mode__nav">
-        <button className="cards-mode__nav-prev" onClick={() => changeCard('l')}>
+        <button
+          className="cards-mode__nav-prev"
+          onClick={() => changeCard(false)}
+          disabled={!hasCards || currentCardId === 0}
+        >
           ←
         </button>
-        <button className="cards-mode__nav-next" onClick={() => changeCard('r')}>
+        <button
+          className="cards-mode__nav-next"
+          onClick={() => changeCard(true)}
+          disabled={!hasCards || currentCardId === flashcards.length - 1}
+        >
           →
         </button>
       </nav>

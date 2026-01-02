@@ -20,7 +20,6 @@ export const cdn = {
       },
     });
 
-    console.log(response);
     return response;
   },
 };

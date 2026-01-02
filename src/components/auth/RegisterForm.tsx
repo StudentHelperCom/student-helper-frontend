@@ -47,6 +47,16 @@ export default function RegisterForm({ flipSetter }: Props) {
   }, [isSuccess, showAlert, flipSetter]);
 
   const handleSignUp = () => {
+    if (!login.trim() || !password.trim()) {
+      showAlert("Login and password cannot be empty.", false);
+      return;
+    }
+
+    if (password.length < 6) {
+      showAlert("Password is too short.", false);
+      return;
+    }
+
     register({ login, password });
   }
 
