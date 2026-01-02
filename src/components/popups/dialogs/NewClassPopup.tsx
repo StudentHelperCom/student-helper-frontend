@@ -9,13 +9,19 @@ import {useAlert} from "@components/contexts/AlertDialogContext";
 import {useLoader} from "@components/contexts/LoaderContext";
 import {useSession} from "next-auth/react";
 import {useClassesList} from "@src/hooks/useClassesList";
+import {usePopupManager} from "@components/contexts/PopupManagerContext";
 
-export default function NewClassPopup() {
+interface Props {
+  closeMenu: () => void;
+}
+
+export default function NewClassPopup({closeMenu}: Props) {
   const [dateTime, setDateTime] = useState<Date | null>(null);
   const [classData, setClassData] = useState({
     className: '',
     examLocation: '',
   });
+  const {closePopup} = usePopupManager();
   const {createNewClass} = useNewClass();
   const {showAlert} = useAlert();
   const { data: session } = useSession();
@@ -42,6 +48,8 @@ export default function NewClassPopup() {
     refreshClasses();
 
     setLoaderStatus(false);
+    closePopup();
+    closeMenu();
   }
 
   return (

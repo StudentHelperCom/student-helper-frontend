@@ -46,7 +46,7 @@ export default function AppShell({children}: { children: ReactNode }) {
       </PopupWrapper>
 
       <PopupWrapper title="New Class" isOpened={activePopup === "NewClass"} closeAction={closePopup}>
-        <NewClassPopup/>
+        <NewClassPopup closeMenu={() => setActiveMenu(null)}/>
       </PopupWrapper>
 
       <PopupWrapper title="Test" isOpened={activePopup === 'Quiz'} closeAction={closePopup}>

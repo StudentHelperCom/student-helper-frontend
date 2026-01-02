@@ -34,6 +34,7 @@ export default function ClassesMenu({ isOpened, onToggle }: Props) {
                 name: item.name,
                 classID: item.classID,
               });
+              onToggle();
               showAlert(`Selected ${item.name.toUpperCase()} class`, false);
             }}>
               <div className="flex justify-between">

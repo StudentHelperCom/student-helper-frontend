@@ -105,7 +105,11 @@ export default function TopicsListPopup({currentMode}: Props) {
         )}
       </ul>
 
-      <button className="topics__button" onClick={handleSubmit}>
+      <button
+        className="topics__button"
+        onClick={handleSubmit}
+        disabled={!isLoading && !isError && topics?.length === 0}
+      >
         Submit topics
       </button>
     </div>
