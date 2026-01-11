@@ -3,11 +3,14 @@ import { axiosClient } from "@src/lib/axiosClient";
 import { API_ROUTES } from "@src/config/api";
 import {useQuery, useQueryClient, UseQueryResult} from "@tanstack/react-query";
 import {ClassListResponse} from "@src/types/api-requests.types";
+import {useEffect} from "react";
+import {useLoader} from "@components/contexts/LoaderContext";
 
 export const CLASSES_QUERY_KEY = ['classes'];
 
 export function useClassesList(token: string | null) {
   const queryClient = useQueryClient();
+  const {setLoaderStatus} = useLoader();
 
   const fetchClasses = async () => {
     if (!token) throw new Error("No token provided");
@@ -28,6 +31,10 @@ export function useClassesList(token: string | null) {
     enabled: !!token,
     retry: 0,
   });
+  
+  useEffect(() => {
+    console.log(query.data);
+  }, [query.data])
 
   const getErrorMessage = () => {
     const err = query.error;

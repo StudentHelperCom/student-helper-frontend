@@ -33,7 +33,7 @@ export default function RegisterForm({ flipSetter }: Props) {
     if (isError && errorMessage) {
       showAlert(errorMessage, false);
     }
-  }, [isError, errorMessage, showAlert]);
+  }, [isError, errorMessage]);
 
   useEffect(() => {
     if (isSuccess) {
@@ -44,7 +44,7 @@ export default function RegisterForm({ flipSetter }: Props) {
       setLogin("");
       setPassword("");
     }
-  }, [isSuccess, showAlert, flipSetter]);
+  }, [isSuccess, flipSetter]);
 
   const handleSignUp = () => {
     if (!login.trim() || !password.trim()) {

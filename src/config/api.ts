@@ -1,4 +1,4 @@
-export const BASE_URL = (process.env.NEXT_PUBLIC_API_URL || 'http://localhost:4001') + "/api" ;
+export const BASE_URL = (process.env.NEXT_PUBLIC_API_URL) + "/api" ;
 
 export const API_ROUTES = {
   upload: '/cdn/upload',
@@ -7,5 +7,7 @@ export const API_ROUTES = {
   newClass: '/cdn/create-class',
   classesList: '/cdn/classes',
   classTopics: (classId: string) => `/cdn/class/${classId}/topics`,
+  classFiles: (classId: string) => `/cdn/class/${classId}/files`,
   generateTasks: '/quiz/generate',
 };
+

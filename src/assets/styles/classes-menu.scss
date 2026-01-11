@@ -38,6 +38,12 @@
 
     @include glass-effect;
 
+    @include smaller-then('s') {
+      bottom: unset;
+      top: 0;
+      height: $trigger-width;
+    }
+
     &:hover {
       border: 1px solid rgba(255, 255, 255, 0.33);
       border-left: none;

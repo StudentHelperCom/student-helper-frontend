@@ -17,6 +17,11 @@ $header-height: 80px;
     grid-template-rows: $header-height repeat(2, 1fr);
   }
 
+  @include smaller-then('s') {
+    padding: 0 ($grid-spacing / 2) ($header-height / 2);
+    grid-gap: 15px;
+  }
+
   &__side {
     width: 100%;
     display: flex;
@@ -24,6 +29,10 @@ $header-height: 80px;
     align-items: center;
     justify-content: center;
     gap: 50px;
+
+    @include smaller-then('s') {
+      gap: 15px;
+    }
   }
 
   &__title {
@@ -31,10 +40,32 @@ $header-height: 80px;
     font-weight: bold;
   }
 
-  &__doc-preview {
-    background-color: #4e4e4e;
+  &__uploads-preview {
     width: 100%;
-    min-height: 100px;
+    min-height: 50px;
+    max-height: 200px;
+    overflow-y: auto;
+    border-radius: 15px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+
+    @include custom-scrollbar;
+  }
+
+  &__uploads-item {
+    width: 100%;
+    padding: 10px;
+    border-radius: 15px;
+    display: flex;
+    flex-direction: column;
+
+    @include glass-effect;
+  }
+
+  &__uploads-name {
+    font-weight: bold;
+    font-size: 1.5rem;
   }
 
   &__manage-options {
@@ -111,6 +142,10 @@ $header-height: 80px;
 
   @include smaller-then('m') {
     grid-column: 1 / -1;
+  }
+
+  @include smaller-then('s') {
+    justify-content: space-around;
   }
 
   &__user {

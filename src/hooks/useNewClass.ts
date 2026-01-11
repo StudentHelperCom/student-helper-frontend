@@ -1,59 +1,52 @@
-import {AxiosResponse, isAxiosError} from "axios";
-import {newClass} from "@src/services/newClass";
-import {NewClassPayload} from "@src/types/api-requests.types";
-
-interface NewClassResponse {
-  response: AxiosResponse | null;
-  message: string;
-}
+import { isAxiosError } from "axios";
+import { axiosClient } from "@src/lib/axiosClient";
+import { API_ROUTES } from "@src/config/api";
+import { useMutation, UseMutationResult } from "@tanstack/react-query";
+import { NewClassPayload } from "@src/types/api-requests.types";
+import { useEffect } from "react";
+import { useLoader } from "@components/contexts/LoaderContext";
 
 export function useNewClass() {
+  const { setLoaderStatus } = useLoader();
 
-  async function createNewClass(newClassPayload: NewClassPayload): Promise<NewClassResponse> {
-    try {
-      const response: AxiosResponse = await newClass.createNewClass(newClassPayload);
+  const createNewClassFn = async ({ token, ...data }: NewClassPayload) => {
+    const response = await axiosClient.post(API_ROUTES.newClass, data, {
+      headers: {
+        'Authorization': `Bearer ${token}`,
+      },
+    });
 
-      return { response, message: 'Successfully created' };
-    } catch (err) {
-      if (isAxiosError(err)) {
+    return response.data;
+  };
 
-        if (err.response) {
-          console.error('Server error:', err.response.status);
+  const mutation: UseMutationResult<any, Error, NewClassPayload> = useMutation({
+    mutationFn: createNewClassFn,
+    retry: 0,
+  });
 
-          return {
-            response: null,
-            message: err.response.data?.message || "Server error",
-          };
-        }
+  useEffect(() => {
+    setLoaderStatus(mutation.isPending);
+  }, [mutation.isPending, setLoaderStatus]);
 
-        if (err.request) {
-          console.error('No response:', err.request);
 
-          return {
-            response: null,
-            message: "Server connection error, check your internet",
-          };
-        }
+  const getErrorMessage = () => {
+    const err = mutation.error;
+    if (!err) return null;
 
-        return {
-          response: null,
-          message: "Error request configuration.",
-        }
-      }
-
-      if (err instanceof Error) {
-        return {
-          response: null,
-          message: err.message,
-        }
-      }
-
-      return {
-        response: null,
-        message: "Unknown error",
-      }
+    if (isAxiosError(err)) {
+      if (err.response) return err.response.data?.message || "Server error";
+      if (err.request) return "Server connection error, check your internet";
     }
-  }
+    if (err instanceof Error) return err.message;
+    return "Unknown error";
+  };
 
-  return { createNewClass };
+  return {
+    createNewClass: mutation.mutate,
+    isLoading: mutation.isPending,
+    isSuccess: mutation.isSuccess,
+    isError: mutation.isError,
+    errorMessage: getErrorMessage(),
+    reset: mutation.reset,
+  };
 }

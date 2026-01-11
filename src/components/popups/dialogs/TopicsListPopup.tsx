@@ -9,7 +9,7 @@ import {useLoader} from "@components/contexts/LoaderContext";
 import {PopupName, usePopupManager} from "@components/contexts/PopupManagerContext";
 
 export enum availableModes {
-  'Quiz' = 'Test mode',
+  'Quiz' = 'Quiz mode',
   'Study' = 'Studying',
   'Expanded' = 'Expanded answers',
   'Cards' = 'Flip cards',
@@ -71,7 +71,7 @@ export default function TopicsListPopup({currentMode}: Props) {
           openPopup(currentMode as unknown as PopupName, data);
         },
         onError: (error) => {
-          console.error("Błąd generowania:", error);
+          console.error("Generating error:", error);
         }
       }
     );

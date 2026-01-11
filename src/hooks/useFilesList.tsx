@@ -1,0 +1,64 @@
+import { isAxiosError } from "axios";
+import { axiosClient } from "@src/lib/axiosClient";
+import { API_ROUTES } from "@src/config/api";
+import { useQuery, useQueryClient, UseQueryResult } from "@tanstack/react-query";
+import { FilesListResponse } from "@src/types/api-requests.types";
+import { useEffect } from "react";
+import { useLoader } from "@components/contexts/LoaderContext";
+
+export const FILES_QUERY_KEY = 'files';
+
+export function useFilesList(token: string | null, classId: string | null) {
+  const queryClient = useQueryClient();
+  const queryKey = [FILES_QUERY_KEY, classId];
+  const { setLoaderStatus } = useLoader();
+
+  const fetchFiles = async () => {
+    if (!token) throw new Error("No token provided");
+    if (!classId) throw new Error("No classId provided");
+
+    const response = await axiosClient.get(API_ROUTES.classFiles(classId), {
+      headers: {
+        'Content-Type': undefined,
+        'Authorization': `Bearer ${token}`,
+      },
+    });
+
+    return response.data;
+  };
+
+  const query: UseQueryResult<FilesListResponse> = useQuery({
+    queryKey: queryKey,
+    queryFn: fetchFiles,
+    enabled: !!token && !!classId,
+    retry: 0,
+  });
+
+  useEffect(() => {
+    setLoaderStatus(query.isLoading);
+  }, [query.isLoading, setLoaderStatus])
+
+  const getErrorMessage = () => {
+    const err = query.error;
+    if (!err) return null;
+
+    if (isAxiosError(err)) {
+      if (err.response) return err.response.data?.message || "Server error";
+      if (err.request) return "Server connection error, check your internet";
+    }
+    if (err instanceof Error) return err.message;
+    return "Unknown error";
+  };
+
+  const refreshFiles = () => {
+    queryClient.invalidateQueries({ queryKey: queryKey });
+  };
+
+  return {
+    files: query.data,
+    isLoading: query.isLoading,
+    isError: query.isError,
+    errorMessage: getErrorMessage(),
+    refreshFiles,
+  };
+}

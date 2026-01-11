@@ -18,7 +18,6 @@ export default function ClassesMenu({ isOpened, onToggle }: Props) {
   const {data: session} = useSession();
   const {classes, isLoading, isError} = useClassesList(session?.user.backendToken);
   const {setClass} = useClassManager();
-  const {showAlert} = useAlert();
 
   return (
     <aside className={"classes" + (isOpened ? " classes--opened" : "")}>
@@ -29,14 +28,17 @@ export default function ClassesMenu({ isOpened, onToggle }: Props) {
         <ul className="classes__list">
 
           {!isError && !isLoading && classes?.map((item, index) => (
-            <li className="classes-item" key={index} onClick={() => {
-              setClass({
-                name: item.name,
-                classID: item.classID,
-              });
-              onToggle();
-              showAlert(`Selected ${item.name.toUpperCase()} class`, false);
-            }}>
+            <li
+              className="classes-item"
+              key={index}
+              onClick={() => {
+                setClass({
+                  name: item.name,
+                  classID: item.classID,
+                });
+                onToggle();
+              }}
+            >
               <div className="flex justify-between">
                 <span className="classes-item__name">{item.name}</span>
                 <button className="classes-item__delete-button">

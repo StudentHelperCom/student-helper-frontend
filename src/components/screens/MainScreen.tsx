@@ -10,6 +10,8 @@ import {useClassManager} from "@components/contexts/ClassManagerContext";
 import {availableModes} from "@components/popups/dialogs/TopicsListPopup";
 import {useTopicsList} from "@src/hooks/useTopicsList";
 import {useAlert} from "@components/contexts/AlertDialogContext";
+import {useFilesList} from "@src/hooks/useFilesList";
+import {FileItem} from "@src/types/api-requests.types";
 
 export default function MainScreen() {
   const {openPopup} = usePopupManager();
@@ -25,6 +27,8 @@ export default function MainScreen() {
   const router = useRouter();
   const {selectedClass} = useClassManager();
   const {refreshTopics} = useTopicsList(session?.user.backendToken || null, selectedClass?.classID || null);
+  const {files, isLoading, isError, refreshFiles} = useFilesList(session?.user.backendToken || null, selectedClass?.classID || null);
+  const filesList = Array.isArray(files) ? files : (files)?.files || [];
 
   useEffect(() => {
     setLoaderOpened(status === 'loading');
@@ -52,8 +56,33 @@ export default function MainScreen() {
           <span className="main__title">
             {selectedClass?.name || 'Choose a class'}
           </span>
-          <div className="main__doc-preview">
-          </div>
+          {!isLoading && !isError && (
+            <ul className="main__uploads-preview">
+              {filesList.length > 0 ? (
+                filesList.map((item: FileItem, index: number) => (
+                  <li className="main__uploads-item" key={index}>
+                      <span className="main__uploads-name" title={item.filename}>
+                        {item.filename || item.filename}
+                      </span>
+                    <span className="text-xs text-gray-400">
+                        {Math.ceil((item.size || 0) / 1024)} KB
+                      </span>
+                    <span className="text-xs text-gray-400">
+                        {item.created
+                          ? new Date(item.created).toLocaleDateString('pl-PL', { day: '2-digit', month: 'short', year: 'numeric' })
+                          : '-'
+                        }
+                      </span>
+                  </li>
+                ))
+              ) : (
+                // 4. Stan pustej listy
+                <li className="text-gray-400 text-sm p-4 text-center">
+                  No files uploaded yet.
+                </li>
+              )}
+            </ul>
+          )}
           <div className="main__manage-options">
             <button className="main__single-option" onClick={() => {
               if (selectedClass?.name) {

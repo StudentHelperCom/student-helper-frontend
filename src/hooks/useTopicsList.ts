@@ -3,12 +3,15 @@ import { axiosClient } from "@src/lib/axiosClient";
 import { API_ROUTES } from "@src/config/api";
 import {useQuery, useQueryClient, UseQueryResult} from "@tanstack/react-query";
 import {TopicsListResponse} from "@src/types/api-requests.types";
+import {useEffect} from "react";
+import {useLoader} from "@components/contexts/LoaderContext";
 
 export const TOPICS_QUERY_KEY = 'topics';
 
 export function useTopicsList(token: string | null, classId: string | null) {
   const queryClient = useQueryClient();
   const queryKey = [TOPICS_QUERY_KEY, classId];
+  const {setLoaderStatus} = useLoader();
 
   const fetchTopics = async () => {
     if (!token) throw new Error("No token provided");
@@ -30,6 +33,10 @@ export function useTopicsList(token: string | null, classId: string | null) {
     enabled: !!token && !!classId,
     retry: 0,
   });
+  
+  useEffect(() => {
+    setLoaderStatus(query.isLoading);
+  }, [query.isLoading, setLoaderStatus])
 
   const getErrorMessage = () => {
     const err = query.error;

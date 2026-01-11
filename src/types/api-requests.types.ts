@@ -61,6 +61,21 @@ export interface TopicItem {
 
 export type TopicsListResponse = TopicItem[];
 
+// Files List
+
+export interface FileItem {
+  size: number;
+  filename: string;
+  created: string;
+}
+
+export type FilesListResponse = {
+  classId: string,
+  className: string,
+  totalFiles: number,
+  files: FileItem[],
+};
+
 // Quiz Mode
 
 export interface QuizAnswers {

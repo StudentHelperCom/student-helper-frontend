@@ -38,6 +38,11 @@
 
     @include glass-effect;
 
+    @include smaller-then('s') {
+      top: $trigger-width;
+      height: $trigger-width;
+    }
+
     &:hover {
       border: 1px solid rgba(255, 255, 255, 0.33);
       border-right: none;
@@ -141,6 +146,14 @@
     text-align: center;
     font-size: 1.5rem;
     border: 5px solid rgba(255, 255, 255, 0.1);
+
+    @include smaller-then('s') {
+      padding: 1px;
+      border-radius: 5px;
+      font-size: 1.25rem;
+      border: 2px solid rgba(255, 255, 255, 0.1);
+      justify-content: center;
+    }
 
     &--inactive {
       opacity: 0.3;
