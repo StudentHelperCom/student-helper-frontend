@@ -10,7 +10,7 @@ interface Props {
 export default function CardsMode({tasksData}: Props) {
   const [currentCardId, setCurrentCardId] = React.useState<number>(0);
   const [isFlipped, setFlipped] = React.useState<boolean>(false);
-  const [isHidden, setHidden] = React.useState<boolean>(false);
+  const [isChangingCard, setChangingCard] = React.useState<boolean>(false);
 
   const flashcards = tasksData?.flashcards || [];
   const currentCard = flashcards[currentCardId];
@@ -22,13 +22,13 @@ export default function CardsMode({tasksData}: Props) {
     if (isNext && currentCardId >= flashcards.length - 1) return;
     if (!isNext && currentCardId <= 0) return;
 
-    setHidden(true);
-    setCurrentCardId((prev) => prev + (isNext ? 1 : -1));
+    setChangingCard(true);
+    setFlipped(false);
 
     setTimeout(() => {
-      setFlipped(false);
-      setHidden(false);
-    }, 100);
+      setCurrentCardId((prev) => prev + (isNext ? 1 : -1));
+      setChangingCard(false);
+    }, 500);
   }
 
   return (
@@ -37,7 +37,7 @@ export default function CardsMode({tasksData}: Props) {
         className={
           "cards-mode__card"
           + ((isFlipped) ? " is-flipped" : "")
-          + ((isHidden) ? " is-hidden" : "")
+          + ((isChangingCard) ? " is-hidden" : "")
         }
         onClick={() => setFlipped(!isFlipped)}
       >

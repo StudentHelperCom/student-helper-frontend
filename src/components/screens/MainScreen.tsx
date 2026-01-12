@@ -98,7 +98,7 @@ export default function MainScreen() {
         </div>
         <div className="main__side">
           <span className="main__title">
-            Choose mode
+            Modes
           </span>
           <ul className="main__modes-list">
             {Object.entries(availableModes).map(([mode, modeName], index) => {

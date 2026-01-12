@@ -1,4 +1,4 @@
-import { isAxiosError } from "axios";
+import {AxiosResponse, isAxiosError} from "axios";
 import { axiosClient } from "@src/lib/axiosClient";
 import { API_ROUTES } from "@src/config/api";
 import { useMutation, UseMutationResult } from "@tanstack/react-query";
@@ -19,7 +19,7 @@ export function useNewClass() {
     return response.data;
   };
 
-  const mutation: UseMutationResult<any, Error, NewClassPayload> = useMutation({
+  const mutation: UseMutationResult<AxiosResponse, Error, NewClassPayload> = useMutation({
     mutationFn: createNewClassFn,
     retry: 0,
   });
