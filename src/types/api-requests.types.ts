@@ -30,6 +30,14 @@ export interface UploadPayload {
   token: string;
 }
 
+// Processing status
+
+export interface ProcessStatusResponse {
+  isComplete: boolean;
+  status: 'processing' | 'success' | 'failed';
+  details: string;
+}
+
 // New class
 
 export interface NewClassPayload {

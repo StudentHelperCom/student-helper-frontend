@@ -12,6 +12,10 @@ export const axiosClient = axios.create({
 
 axiosClient.interceptors.request.use(
   async (config) => {
+    if (config.headers['Authorization']) {
+      return config;
+    }
+
     const session = await getSession();
 
     if (session?.user?.backendToken) {

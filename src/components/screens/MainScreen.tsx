@@ -1,7 +1,7 @@
 'use client'
 
 import Image from "next/image"
-import React from "react";
+import React, {useEffect} from "react";
 import {usePopupManager} from "@components/contexts/PopupManagerContext";
 import {signOut, useSession} from "next-auth/react";
 import {useRouter} from "next/navigation";
@@ -11,6 +11,7 @@ import {useTopicsList} from "@src/hooks/useTopicsList";
 import {useAlert} from "@components/contexts/AlertDialogContext";
 import {useFilesList} from "@src/hooks/useFilesList";
 import {FileItem} from "@src/types/api-requests.types";
+import {useProcessStatus} from "@src/hooks/useProcessingStatus";
 
 export default function MainScreen() {
   const {openPopup} = usePopupManager();
@@ -28,6 +29,33 @@ export default function MainScreen() {
   const {files, isLoading, isError} = useFilesList(selectedClass?.classID || null);
   const filesList = Array.isArray(files) ? files : (files)?.files || [];
 
+  const { currentStatus } = useProcessStatus(selectedClass?.classID || null);
+  const displayStatus = {
+    text: '',
+    color: '',
+  };
+  switch (currentStatus) {
+    case 'processing':
+      displayStatus.text = 'In progress...';
+      displayStatus.color = '#f1b534';
+      break;
+    case 'success':
+      displayStatus.text = 'Finished successfully';
+      displayStatus.color = '#465acf';
+      break;
+    case 'failed':
+      displayStatus.text = 'Processing failed';
+      displayStatus.color = '#F53838';
+      break;
+    case undefined:
+      displayStatus.text = 'Idle 💤';
+      displayStatus.color = '#CCCCCC';
+      break;
+    default:
+      displayStatus.text = 'Error';
+      displayStatus.color = 'red';
+  }
+
   return (
     <>
       <main className="main">
@@ -41,7 +69,14 @@ export default function MainScreen() {
               <span className="header__user-name">{session?.user.login}</span>
             </span>
           </div>
-          <button onClick={() => signOut()}>
+          <div className="flex flex-col items-center leading-[115%]">
+            <span className="text-[0.75rem] opacity-70">Processing status:</span>
+            <span
+              className='font-bold'
+              style={{ color: displayStatus.color }}
+            >{displayStatus.text}</span>
+          </div>
+          <button className="justify-self-end" onClick={() => signOut()}>
             <Image src="/icons/logout.svg" className="header__logout" alt="Logout" width={100} height={100}
                    draggable={false}/>
           </button>

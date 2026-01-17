@@ -6,6 +6,7 @@ import { useSession } from "next-auth/react";
 import Image from "next/image";
 import { useAlert } from "@components/contexts/AlertDialogContext";
 import { useClassManager } from "@components/contexts/ClassManagerContext";
+import {useProcessStatus} from "@src/hooks/useProcessingStatus";
 
 export default function AddSourcePopup() {
   const { upload, isLoading } = useUpload();
@@ -14,7 +15,8 @@ export default function AddSourcePopup() {
   const { data: session } = useSession();
   const { showAlert } = useAlert();
   const { selectedClass } = useClassManager();
-
+  const { startPolling } = useProcessStatus(selectedClass?.classID || null);
+  
   const validateFiles = (filesArray: Array<File>) => {
     return filesArray.every((file) => {
       const name = file.name.toLowerCase();
@@ -38,7 +40,7 @@ export default function AddSourcePopup() {
 
   const onSubmit = () => {
     if (!selectedFiles.length) {
-      showAlert('No file selected',);
+      showAlert('No file selected');
       return;
     }
 
@@ -62,6 +64,9 @@ export default function AddSourcePopup() {
         onSuccess: () => {
           showAlert('The files have been sent. Give us some time (may take 1-4 min), then check topics list. 😉');
           setSelectedFiles([]);
+          setTimeout(()=> {
+            startPolling();
+          }, 2000)
         },
         onError: (error) => {
           console.error('Error while uploading files', error);

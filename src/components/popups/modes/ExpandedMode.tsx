@@ -59,8 +59,6 @@ export default function ExpandedMode({tasksData}: Props) {
       }
     );
   }
-  
-  useEffect(() => {console.log(suggestions)}, [suggestions])
 
   return (
     <div className="expanded-mode">

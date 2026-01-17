@@ -136,9 +136,9 @@ $header-height: 80px;
   width: 100%;
   height: $header-height;
   grid-column: span 2 / span 2;
-  display: flex;
-  justify-content: space-between;
+  display: grid;
   align-items: center;
+  grid-template-columns: repeat(3, 1fr);
 
   @include smaller-then('m') {
     grid-column: 1 / -1;
