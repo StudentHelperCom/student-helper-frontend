@@ -1,28 +1,25 @@
 import { isAxiosError } from "axios";
 import { axiosClient } from "@src/lib/axiosClient";
 import { API_ROUTES } from "@src/config/api";
-import {useQuery, useQueryClient, UseQueryResult} from "@tanstack/react-query";
-import {TopicsListResponse} from "@src/types/api-requests.types";
-import {useEffect} from "react";
+import { useQuery, useQueryClient, UseQueryResult } from "@tanstack/react-query";
+import { TopicsListResponse } from "@src/types/api-requests.types";
+import { useSession } from "next-auth/react";
 import {useLoader} from "@components/contexts/LoaderContext";
+import {useEffect} from "react";
 
 export const TOPICS_QUERY_KEY = 'topics';
+const LOADER_ID = 'topics';
 
-export function useTopicsList(token: string | null, classId: string | null) {
+export function useTopicsList(classId: string | null) {
   const queryClient = useQueryClient();
   const queryKey = [TOPICS_QUERY_KEY, classId];
-  const {setLoaderStatus} = useLoader();
+  const {startLoading, stopLoading} = useLoader();
+  const { status } = useSession();
 
   const fetchTopics = async () => {
-    if (!token) throw new Error("No token provided");
     if (!classId) throw new Error("No classId provided");
 
-    const response = await axiosClient.get(API_ROUTES.classTopics(classId), {
-      headers: {
-        'Content-Type': undefined,
-        'Authorization': `Bearer ${token}`,
-      },
-    });
+    const response = await axiosClient.get(API_ROUTES.classTopics(classId));
 
     return response.data;
   };
@@ -30,13 +27,21 @@ export function useTopicsList(token: string | null, classId: string | null) {
   const query: UseQueryResult<TopicsListResponse> = useQuery({
     queryKey: queryKey,
     queryFn: fetchTopics,
-    enabled: !!token && !!classId,
+    enabled: status === 'authenticated' && !!classId,
     retry: 0,
   });
-  
+
   useEffect(() => {
-    setLoaderStatus(query.isLoading);
-  }, [query.isLoading, setLoaderStatus])
+    if (query.isFetching) {
+      startLoading(LOADER_ID);
+    } else {
+      stopLoading(LOADER_ID);
+    }
+
+    return () => {
+      stopLoading(LOADER_ID);
+    };
+  }, [query.isFetching, startLoading, stopLoading]);
 
   const getErrorMessage = () => {
     const err = query.error;

@@ -65,6 +65,17 @@
   flex: 1;
   min-height: 0;
 
+  &__selection-button {
+    border-radius: 10px;
+    margin: 5px;
+    align-self: flex-start;
+    padding: 5px 10px;
+
+    @include glass-effect;
+    @include hover-with-shadow;
+    @include active;
+  }
+
   &__list {
     display: flex;
     flex-direction: column;

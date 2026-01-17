@@ -1,7 +1,7 @@
 'use client'
 
-import React, { useState } from "react";
-import { useUpload } from "@src/hooks/useUpload"; // Upewnij się, że importujesz nowy hook
+import React, { useState} from "react";
+import { useUpload } from "@src/hooks/useUpload";
 import { useSession } from "next-auth/react";
 import Image from "next/image";
 import { useAlert } from "@components/contexts/AlertDialogContext";
@@ -18,8 +18,10 @@ export default function AddSourcePopup() {
   const validateFiles = (filesArray: Array<File>) => {
     return filesArray.every((file) => {
       const name = file.name.toLowerCase();
-      return name.endsWith('.pdf') || name.endsWith('.txt');
-    });
+      const sumOfSizes = selectedFiles.reduce((sum, file) => sum + file.size, 0);
+      return (name.endsWith('.pdf') || name.endsWith('.txt')) // limit of formats
+        && sumOfSizes < 20 * Math.pow(2, 20); // 10 * 2 ^ 20 = 20MB
+    }) && filesArray.length <= 5; // limit of files
   }
 
   const removeFile = (index: number) => {
@@ -34,19 +36,19 @@ export default function AddSourcePopup() {
     }
   };
 
-  const onSubmit = (e: React.FormEvent) => {
+  const onSubmit = () => {
     if (!selectedFiles.length) {
-      showAlert('No file selected', true);
+      showAlert('No file selected',);
       return;
     }
 
     if (!validateFiles(selectedFiles)) {
-      showAlert('Incorrect files extensions. Only .pdf and .txt are allowed!', true);
+      showAlert('Check your selection. Requirements: (1) .pdf/.txt files; (2) maximum number of files: 5; (3) maximum total size: 20MB');
       return;
     }
 
     if (!session?.user.backendToken) {
-      showAlert('You are not authorized', true);
+      showAlert('You are not authorized');
       return;
     }
 
@@ -58,12 +60,12 @@ export default function AddSourcePopup() {
       },
       {
         onSuccess: () => {
-          showAlert('The files have been sent. Give us some time (may take 2-5 min), then check topics list. 😉', false);
+          showAlert('The files have been sent. Give us some time (may take 1-4 min), then check topics list. 😉');
           setSelectedFiles([]);
         },
         onError: (error) => {
           console.error('Error while uploading files', error);
-          showAlert('Error while uploading file. Please try again.', true);
+          showAlert('Error while uploading file. Please try again.');
         }
       }
     );

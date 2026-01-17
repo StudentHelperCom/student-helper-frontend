@@ -3,31 +3,37 @@ import { axiosClient } from "@src/lib/axiosClient";
 import { API_ROUTES } from "@src/config/api";
 import { useMutation, UseMutationResult } from "@tanstack/react-query";
 import { NewClassPayload } from "@src/types/api-requests.types";
-import { useEffect } from "react";
-import { useLoader } from "@components/contexts/LoaderContext";
+import {useEffect} from "react";
+import {useLoader} from "@components/contexts/LoaderContext";
+
+const LOADER_ID = 'new-class';
 
 export function useNewClass() {
-  const { setLoaderStatus } = useLoader();
+  const {startLoading, stopLoading} = useLoader();
 
-  const createNewClassFn = async ({ token, ...data }: NewClassPayload) => {
-    const response = await axiosClient.post(API_ROUTES.newClass, data, {
-      headers: {
-        'Authorization': `Bearer ${token}`,
-      },
-    });
+  const createNewClassFn = async (data: NewClassPayload) => {
+    const response = await axiosClient.post(API_ROUTES.newClass, data);
 
     return response.data;
   };
 
+  // useMutation is waiting for instruction to send request
   const mutation: UseMutationResult<AxiosResponse, Error, NewClassPayload> = useMutation({
     mutationFn: createNewClassFn,
     retry: 0,
   });
 
   useEffect(() => {
-    setLoaderStatus(mutation.isPending);
-  }, [mutation.isPending, setLoaderStatus]);
+    if (mutation.isPending) {
+      startLoading(LOADER_ID);
+    } else {
+      stopLoading(LOADER_ID);
+    }
 
+    return () => {
+      stopLoading(LOADER_ID);
+    };
+  }, [mutation.isPending, startLoading, stopLoading]);
 
   const getErrorMessage = () => {
     const err = mutation.error;

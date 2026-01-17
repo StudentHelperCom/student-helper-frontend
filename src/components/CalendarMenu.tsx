@@ -22,9 +22,8 @@ type CellType = {
 export default function CalendarMenu({ isOpened, onToggle }: Props) {
   const [currentMonth, setCurrentMonth] = useState(dayjs());
   const { showAlert } = useAlert();
-  const { data: session } = useSession();
 
-  const { classes, isLoading, isError } = useClassesList(session?.user?.backendToken || null);
+  const { classes, isLoading, isError } = useClassesList();
 
   const cellsData = useMemo(() => {
     if (!classes) return [];
@@ -122,7 +121,7 @@ export default function CalendarMenu({ isOpened, onToggle }: Props) {
                   key={index}
                   onClick={() => {
                     if (cell.highlight && cell.examClasses.length > 0) {
-                      showAlert('Assigned exams: ' + cell.examClasses.join(', '), false);
+                      showAlert('Assigned exams: ' + cell.examClasses.join(', '));
                     }
                   }}
                 >

@@ -1,13 +1,15 @@
-import { useEffect } from "react";
 import {AxiosError, isAxiosError} from "axios";
 import { useMutation, UseMutationResult } from "@tanstack/react-query";
 import { axiosClient } from "@src/lib/axiosClient";
 import { API_ROUTES } from "@src/config/api";
 import { RegisterPayload, RegisterResponseSuccess } from "@src/types/api-requests.types";
-import { useLoader } from "@components/contexts/LoaderContext";
+import {useLoader} from "@components/contexts/LoaderContext";
+import {useEffect} from "react";
+
+const LOADER_ID = 'register';
 
 export function useRegister() {
-  const { setLoaderStatus } = useLoader();
+  const {startLoading, stopLoading} = useLoader();
 
   const registerFn = async (data: RegisterPayload) => {
     const response = await axiosClient.post<RegisterResponseSuccess>(API_ROUTES.register, data);
@@ -21,8 +23,16 @@ export function useRegister() {
   });
 
   useEffect(() => {
-    setLoaderStatus(mutation.isPending);
-  }, [mutation.isPending, setLoaderStatus]);
+    if (mutation.isPending) {
+      startLoading(LOADER_ID);
+    } else {
+      stopLoading(LOADER_ID);
+    }
+
+    return () => {
+      stopLoading(LOADER_ID);
+    };
+  }, [mutation.isPending, startLoading, stopLoading]);
 
   const getErrorMessage = () => {
     const err = mutation.error;

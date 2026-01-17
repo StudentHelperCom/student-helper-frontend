@@ -3,40 +3,46 @@ import { axiosClient } from "@src/lib/axiosClient";
 import { API_ROUTES } from "@src/config/api";
 import { useQuery, useQueryClient, UseQueryResult } from "@tanstack/react-query";
 import { FilesListResponse } from "@src/types/api-requests.types";
-import { useEffect } from "react";
-import { useLoader } from "@components/contexts/LoaderContext";
+import {useSession} from "next-auth/react";
+import {useEffect} from "react";
+import {useLoader} from "@components/contexts/LoaderContext";
 
 export const FILES_QUERY_KEY = 'files';
+const LOADER_ID = 'files';
 
-export function useFilesList(token: string | null, classId: string | null) {
+export function useFilesList(classId: string | null) {
   const queryClient = useQueryClient();
+  const {status} = useSession();
+  const {startLoading, stopLoading} = useLoader();
   const queryKey = [FILES_QUERY_KEY, classId];
-  const { setLoaderStatus } = useLoader();
 
   const fetchFiles = async () => {
-    if (!token) throw new Error("No token provided");
     if (!classId) throw new Error("No classId provided");
 
-    const response = await axiosClient.get(API_ROUTES.classFiles(classId), {
-      headers: {
-        'Content-Type': undefined,
-        'Authorization': `Bearer ${token}`,
-      },
-    });
+    const response = await axiosClient.get(API_ROUTES.classFiles(classId));
 
     return response.data;
   };
 
+  // useQuery frequently sends requests to keep information up to date
   const query: UseQueryResult<FilesListResponse> = useQuery({
     queryKey: queryKey,
     queryFn: fetchFiles,
-    enabled: !!token && !!classId,
+    enabled: status === 'authenticated' && !!classId,
     retry: 0,
   });
 
   useEffect(() => {
-    setLoaderStatus(query.isLoading);
-  }, [query.isLoading, setLoaderStatus])
+    if (query.isFetching) {
+      startLoading(LOADER_ID);
+    } else {
+      stopLoading(LOADER_ID);
+    }
+
+    return () => {
+      stopLoading(LOADER_ID);
+    };
+  }, [query.isFetching, startLoading, stopLoading]);
 
   const getErrorMessage = () => {
     const err = query.error;

@@ -1,12 +1,11 @@
 'use client'
 
 import Image from "next/image";
-import React, {useEffect} from "react";
+import React from "react";
 import {usePopupManager} from "@components/contexts/PopupManagerContext";
-import {useSession} from "next-auth/react";
 import {useClassesList} from "@src/hooks/useClassesList";
 import {useClassManager} from "@components/contexts/ClassManagerContext";
-import {useAlert} from "@components/contexts/AlertDialogContext";
+import {useDeleteClass} from "@src/hooks/useDeleteClass";
 
 interface Props {
   isOpened: boolean;
@@ -15,9 +14,9 @@ interface Props {
 
 export default function ClassesMenu({ isOpened, onToggle }: Props) {
   const {openPopup} = usePopupManager();
-  const {data: session} = useSession();
-  const {classes, isLoading, isError} = useClassesList(session?.user.backendToken);
+  const {classes, isLoading, isError} = useClassesList();
   const {setClass} = useClassManager();
+  const {deleteClass} = useDeleteClass();
 
   return (
     <aside className={"classes" + (isOpened ? " classes--opened" : "")}>
@@ -41,7 +40,13 @@ export default function ClassesMenu({ isOpened, onToggle }: Props) {
             >
               <div className="flex justify-between">
                 <span className="classes-item__name">{item.name}</span>
-                <button className="classes-item__delete-button">
+                <button
+                  className="classes-item__delete-button"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    deleteClass({classId: item.classID});
+                  }}
+                >
                   <Image src="icons/close.svg" className="classes-item__delete-icon" alt="Close" width={30} height={30} draggable={false} />
                 </button>
               </div>

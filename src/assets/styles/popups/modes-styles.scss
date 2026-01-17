@@ -160,3 +160,125 @@
     @include active;
   }
 }
+
+.expanded-mode {
+  width: 100%;
+  min-height: 0;
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 15px;
+
+  &__list {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+    overflow-y: auto;
+    border-radius: 5px;
+
+    @include custom-scrollbar;
+  }
+
+  &__question-text {
+    font-size: 1.125rem;
+    font-weight: bold;
+  }
+
+  &__answer-area {
+    display: flex;
+    width: 100%;
+    min-height: 100px;
+    max-height: 150px;
+    align-items: center;
+    gap: 10px;
+    padding: 5px 10px;
+    border-radius: 5px;
+    resize: none;
+    overflow-y: auto;
+
+    @include glass-effect;
+    @include active;
+
+    &--correct {
+      border: 2px solid #465acf;
+    }
+
+    &--incorrect {
+      border: 2px solid #F53838;
+    }
+
+    &::-webkit-scrollbar {
+      width: 10px;
+    }
+    &::-webkit-scrollbar-track {
+      background: transparent;
+      cursor: default;
+    }
+    &::-webkit-scrollbar-thumb {
+      background: rgba(100, 100, 100);
+      border-radius: 5px;
+    }
+    &::-webkit-scrollbar-thumb:hover {
+      background: rgba(100, 100, 100, 0.8);
+      cursor: default;
+    }
+  }
+
+  &__buttons {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+  }
+
+  &__button {
+    padding: 10px;
+    border-radius: 10px;
+
+    @include glass-effect;
+    @include hover-with-shadow;
+    @include active;
+
+    &--larger {
+      flex: 2;
+    }
+
+    &--smaller {
+      flex: 1;
+    }
+  }
+}
+
+.summary-mode {
+  width: 100%;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+
+  &__content {
+    width: 100%;
+    height: 100%;
+    overflow-y: auto;
+    padding: 10px;
+    user-select: text;
+
+    @include custom-scrollbar;
+  }
+
+  &__heading {
+    text-align: center;
+    font-size: 1.5rem;
+    font-weight: bold;
+    margin: 5px 0 15px;
+  }
+
+  &__text {
+    text-align: justify;
+  }
+
+  &__list {
+    list-style: disc;
+  }
+}

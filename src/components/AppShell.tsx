@@ -9,9 +9,10 @@ import TopicsListPopup, {availableModes} from "@components/popups/dialogs/Topics
 import NewClassPopup from "@components/popups/dialogs/NewClassPopup";
 import {usePopupManager} from "@components/contexts/PopupManagerContext";
 import QuizMode from "@components/popups/modes/QuizMode";
-import {CardsModeType, QuizModeType} from "@src/types/api-requests.types";
+import {CardsModeType, ExpandedModeType, QuizModeType, SummaryModeType} from "@src/types/api-requests.types";
 import CardsMode from "@components/popups/modes/CardsMode";
 import ExpandedMode from "@components/popups/modes/ExpandedMode";
+import SummaryMode from "@components/popups/modes/SummaryMode";
 
 type ActiveMenu = 'classes' | 'calendar' | null;
 
@@ -36,7 +37,7 @@ export default function AppShell({children}: { children: ReactNode }) {
         onToggle={() => toggleMenu('calendar')}
       />
 
-      <PopupWrapper title="Add Sources" isOpened={activePopup === "Add"} closeAction={closePopup}>
+      <PopupWrapper title="Re-fill Sources" isOpened={activePopup === "Add"} closeAction={closePopup}>
         <AddSourcesPopup/>
       </PopupWrapper>
 
@@ -59,7 +60,11 @@ export default function AppShell({children}: { children: ReactNode }) {
       </PopupWrapper>
 
       <PopupWrapper title="Expanded answers" isOpened={activePopup === 'Expanded'} closeAction={closePopup}>
-        <ExpandedMode/>
+        <ExpandedMode tasksData={popupData as { data: ExpandedModeType; selectedIds: string[] }}/>
+      </PopupWrapper>
+
+      <PopupWrapper title="Summary" isOpened={activePopup === 'Summary'} closeAction={closePopup}>
+        <SummaryMode tasksData={popupData as SummaryModeType}/>
       </PopupWrapper>
     </>
   )

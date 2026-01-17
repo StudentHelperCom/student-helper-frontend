@@ -1,8 +1,7 @@
 'use client'
 
 import Image from "next/image"
-import React, {useEffect} from "react";
-import {useLoader} from "@components/contexts/LoaderContext";
+import React from "react";
 import {usePopupManager} from "@components/contexts/PopupManagerContext";
 import {signOut, useSession} from "next-auth/react";
 import {useRouter} from "next/navigation";
@@ -15,10 +14,9 @@ import {FileItem} from "@src/types/api-requests.types";
 
 export default function MainScreen() {
   const {openPopup} = usePopupManager();
-  const {setLoaderStatus: setLoaderOpened} = useLoader();
   const {showAlert} = useAlert();
 
-  const {data: session, status} = useSession({
+  const {data: session} = useSession({
     required: true,
     onUnauthenticated() {
       router.push('/auth');
@@ -26,13 +24,9 @@ export default function MainScreen() {
   });
   const router = useRouter();
   const {selectedClass} = useClassManager();
-  const {refreshTopics} = useTopicsList(session?.user.backendToken || null, selectedClass?.classID || null);
-  const {files, isLoading, isError, refreshFiles} = useFilesList(session?.user.backendToken || null, selectedClass?.classID || null);
+  const {refreshTopics} = useTopicsList(selectedClass?.classID || null);
+  const {files, isLoading, isError} = useFilesList(selectedClass?.classID || null);
   const filesList = Array.isArray(files) ? files : (files)?.files || [];
-
-  useEffect(() => {
-    setLoaderOpened(status === 'loading');
-  }, [status, setLoaderOpened]);
 
   return (
     <>
@@ -76,7 +70,6 @@ export default function MainScreen() {
                   </li>
                 ))
               ) : (
-                // 4. Stan pustej listy
                 <li className="text-gray-400 text-sm p-4 text-center">
                   No files uploaded yet.
                 </li>
@@ -88,7 +81,7 @@ export default function MainScreen() {
               if (selectedClass?.name) {
                 openPopup("Add");
               } else {
-                showAlert('First select a class', true);
+                showAlert('First select a class');
               }
             }}>
               <Image src="/icons/add.svg" className="main__option-icon" alt="Add" width={100} height={100}
@@ -111,10 +104,9 @@ export default function MainScreen() {
                         openPopup("Topics", mode);
                         refreshTopics();
                       } else {
-                        showAlert('First select a class', true);
+                        showAlert('First select a class');
                       }
                     }}
-                    disabled={mode !== 'Quiz' && mode !== 'Cards'}
                   >
                     {modeName}
                   </button>

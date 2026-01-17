@@ -1,13 +1,17 @@
-export const BASE_URL = (process.env.NEXT_PUBLIC_API_URL) + "/api" ;
+import {env} from "@src/env.mjs";
+
+export const BASE_URL = (env.NEXT_PUBLIC_API_URL) + "/api" ;
 
 export const API_ROUTES = {
   upload: '/cdn/upload',
   login: '/auth/login',
   register: '/auth/register',
   newClass: '/cdn/create-class',
+  deleteClass: (classId: string) => `/cdn/class/${classId}`,
   classesList: '/cdn/classes',
   classTopics: (classId: string) => `/cdn/class/${classId}/topics`,
   classFiles: (classId: string) => `/cdn/class/${classId}/files`,
   generateTasks: '/quiz/generate',
+  evaluateTasks: '/quiz/evaluate',
 };
 

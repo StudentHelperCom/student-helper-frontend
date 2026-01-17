@@ -3,7 +3,6 @@
 import React, { useEffect, useState } from "react";
 import { useRegister } from "@src/hooks/useRegister";
 import { useAlert } from "@components/contexts/AlertDialogContext";
-import { useLoader } from "@components/contexts/LoaderContext";
 
 interface Props {
   flipSetter: React.Dispatch<React.SetStateAction<boolean | undefined>>
@@ -22,22 +21,17 @@ export default function RegisterForm({ flipSetter }: Props) {
     errorMessage
   } = useRegister();
 
-  const { setLoaderStatus: setLoaderOpened } = useLoader();
   const { showAlert } = useAlert();
 
   useEffect(() => {
-    setLoaderOpened(isLoading);
-  }, [isLoading, setLoaderOpened]);
-
-  useEffect(() => {
     if (isError && errorMessage) {
-      showAlert(errorMessage, false);
+      showAlert(errorMessage);
     }
   }, [isError, errorMessage]);
 
   useEffect(() => {
     if (isSuccess) {
-      showAlert("Successfully registered! You can now log in.", true);
+      showAlert("Successfully registered! You can now log in.");
 
       flipSetter(false);
 
@@ -48,12 +42,12 @@ export default function RegisterForm({ flipSetter }: Props) {
 
   const handleSignUp = () => {
     if (!login.trim() || !password.trim()) {
-      showAlert("Login and password cannot be empty.", false);
+      showAlert("Login and password cannot be empty.");
       return;
     }
 
     if (password.length < 6) {
-      showAlert("Password is too short.", false);
+      showAlert("Password is too short.");
       return;
     }
 

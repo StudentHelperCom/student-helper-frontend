@@ -9,11 +9,7 @@ import { useSession } from "next-auth/react";
 import { useClassesList } from "@src/hooks/useClassesList";
 import { usePopupManager } from "@components/contexts/PopupManagerContext";
 
-interface Props {
-  closeMenu: () => void;
-}
-
-export default function NewClassPopup({ closeMenu }: Props) {
+export default function NewClassPopup() {
   const [dateTime, setDateTime] = useState<Date | null>(null);
   const [classData, setClassData] = useState({
     className: '',
@@ -26,18 +22,18 @@ export default function NewClassPopup({ closeMenu }: Props) {
   const { showAlert } = useAlert();
   const { data: session } = useSession();
 
-  const { refreshClasses } = useClassesList(session?.user.backendToken || null);
+  const { refreshClasses } = useClassesList();
 
   const onSubmit = () => {
     const isValid = Object.values(classData).every(value => value.trim().length > 0);
 
     if (!isValid || dateTime === null) {
-      showAlert('The fields were filled out incorrectly. Please check the entered data.', true);
+      showAlert('The fields were filled out incorrectly. Please check the entered data.',);
       return;
     }
 
     if (!session?.user.backendToken) {
-      showAlert('Authorization error', true);
+      showAlert('Authorization error');
       return;
     }
 
@@ -45,18 +41,16 @@ export default function NewClassPopup({ closeMenu }: Props) {
       {
         ...classData,
         examDate: dateTime.toISOString(),
-        token: session.user.backendToken,
       },
       {
         onSuccess: () => {
-          showAlert('Successfully created class!', false);
+          showAlert('Successfully created class!');
           refreshClasses();
           closePopup();
-          closeMenu();
         },
         onError: (error) => {
           console.error(error);
-          showAlert('Failed to create new class. Please try again.', true);
+          showAlert('Failed to create new class. Please try again.');
         }
       }
     );
@@ -69,6 +63,7 @@ export default function NewClassPopup({ closeMenu }: Props) {
         type="text"
         placeholder="Class name"
         value={classData.className}
+        maxLength={100}
         onChange={(e) =>
           setClassData({
             ...classData, className: e.target.value
@@ -100,6 +95,7 @@ export default function NewClassPopup({ closeMenu }: Props) {
         type="text"
         placeholder="Location (e.g. Room 235)"
         value={classData.examLocation}
+        maxLength={100}
         onChange={(e) =>
           setClassData({
             ...classData, examLocation: e.target.value

@@ -3,50 +3,55 @@
 import React, {useEffect} from "react";
 import {useRouter} from "next/navigation";
 import {signIn, useSession} from "next-auth/react";
-import {useLoader} from "@components/contexts/LoaderContext";
 import {useAlert} from "@components/contexts/AlertDialogContext";
+// 1. Importujemy hooka
+import { useLoader } from "@components/contexts/LoaderContext";
 
 interface Props {
   flipSetter: React.Dispatch<React.SetStateAction<boolean | undefined>>
 }
 
+// 2. Definiujemy unikalne ID dla tego procesu
+const LOADER_ID = 'LOGIN_PROCESS';
+
 export default function LoginForm({flipSetter}: Props) {
   const [showPassword, setShowPassword] = React.useState(false);
-
   const [login, setLogin] = React.useState("");
   const [password, setPassword] = React.useState("");
 
-  const {setLoaderStatus: setLoaderOpened} = useLoader();
   const {showAlert} = useAlert();
   const router = useRouter();
   const { status } = useSession();
-  
+
+  // 3. Pobieramy funkcje sterujące
+  const { startLoading, stopLoading } = useLoader();
+
   useEffect(() => {
     if (status === "authenticated") {
       router.push("/");
     }
-
-    if (status === "loading") {
-      setLoaderOpened(true);
-    } else {
-      setLoaderOpened(false);
-    }
-  }, [router, setLoaderOpened, status]);
+  }, [router, status]);
 
   const handleSignIn = async () => {
-    setLoaderOpened(true);
-    const result = await signIn('credentials', {
-      login: login,
-      password: password,
-      redirect: false,
-    });
-    setLoaderOpened(false);
+    startLoading(LOADER_ID);
 
-    if (result?.ok) {
-      showAlert('Logged in successfully', true);
-      router.push('/');
-    } else {
-      showAlert('Incorrect login or password', false);
+    try {
+      const result = await signIn('credentials', {
+        login: login,
+        password: password,
+        redirect: false,
+      });
+
+      if (result?.ok) {
+        showAlert('Logged in successfully');
+        router.push('/');
+      } else {
+        showAlert('Incorrect login or password');
+      }
+    } catch (error) {
+      showAlert('An unexpected error occurred');
+    } finally {
+      stopLoading(LOADER_ID);
     }
   }
 

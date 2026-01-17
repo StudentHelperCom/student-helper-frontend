@@ -3,24 +3,20 @@ import { axiosClient } from "@src/lib/axiosClient";
 import { API_ROUTES } from "@src/config/api";
 import {useQuery, useQueryClient, UseQueryResult} from "@tanstack/react-query";
 import {ClassListResponse} from "@src/types/api-requests.types";
-import {useEffect} from "react";
+import {useSession} from "next-auth/react";
 import {useLoader} from "@components/contexts/LoaderContext";
+import {useEffect} from "react";
 
 export const CLASSES_QUERY_KEY = ['classes'];
+const LOADER_ID = 'classes';
 
-export function useClassesList(token: string | null) {
+export function useClassesList() {
   const queryClient = useQueryClient();
-  const {setLoaderStatus} = useLoader();
+  const {status} = useSession();
+  const {startLoading, stopLoading} = useLoader();
 
   const fetchClasses = async () => {
-    if (!token) throw new Error("No token provided");
-
-    const response = await axiosClient.get(API_ROUTES.classesList, {
-      headers: {
-        'Content-Type': undefined,
-        'Authorization': `Bearer ${token}`,
-      },
-    });
+    const response = await axiosClient.get(API_ROUTES.classesList);
 
     return response.data;
   };
@@ -28,13 +24,21 @@ export function useClassesList(token: string | null) {
   const query: UseQueryResult<ClassListResponse[]> = useQuery({
     queryKey: CLASSES_QUERY_KEY,
     queryFn: fetchClasses,
-    enabled: !!token,
+    enabled: status === 'authenticated',
     retry: 0,
   });
-  
+
   useEffect(() => {
-    console.log(query.data);
-  }, [query.data])
+    if (query.isFetching) {
+      startLoading(LOADER_ID);
+    } else {
+      stopLoading(LOADER_ID);
+    }
+
+    return () => {
+      stopLoading(LOADER_ID);
+    };
+  }, [query.isFetching, startLoading, stopLoading]);
 
   const getErrorMessage = () => {
     const err = query.error;

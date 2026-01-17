@@ -1,7 +1,6 @@
 'use client'
 
-import React, {createContext, useContext, useEffect, useState} from "react";
-import {ClassListResponse} from "@src/types/api-requests.types";
+import React, {createContext, useContext, useState} from "react";
 
 export interface ClassInfo {
   classID: string;
@@ -17,10 +16,6 @@ const ClassManagerContext = createContext<ClassManagerType | undefined>(undefine
 
 export function ClassManagerProvider({children}: { children: React.ReactNode }) {
   const [selectedClass, setSelectedClass] = useState<ClassInfo | null>(null);
-
-  useEffect(() => {
-    console.log(selectedClass);
-  }, [selectedClass])
 
   return (
     <ClassManagerContext.Provider value={{selectedClass, setClass: setSelectedClass}}>

@@ -2,15 +2,13 @@
 
 import React, {useEffect, useState} from "react";
 import {useTopicsList} from "@src/hooks/useTopicsList";
-import {useSession} from "next-auth/react";
 import {useClassManager} from "@components/contexts/ClassManagerContext";
 import {useModeGenerator} from "@src/hooks/useModeGenerator";
-import {useLoader} from "@components/contexts/LoaderContext";
 import {PopupName, usePopupManager} from "@components/contexts/PopupManagerContext";
 
 export enum availableModes {
   'Quiz' = 'Quiz mode',
-  'Study' = 'Studying',
+  'Summary' = 'Summary',
   'Expanded' = 'Expanded answers',
   'Cards' = 'Flip cards',
 }
@@ -20,23 +18,16 @@ interface Props {
 }
 
 export default function TopicsListPopup({currentMode}: Props) {
-  const {data: session} = useSession();
   const {selectedClass} = useClassManager();
-  const {setLoaderStatus} = useLoader();
   const {openPopup} = usePopupManager();
 
   const {
     topics,
     isLoading,
     isError,
-  } = useTopicsList(session?.user.backendToken, selectedClass?.classID || null);
+  } = useTopicsList(selectedClass?.classID || null);
 
-  const {
-    generate,
-    data: generatedData,
-    isLoading: isGenerating,
-    isError: isGeneratorError
-  } = useModeGenerator(session?.user.backendToken);
+  const {generate} = useModeGenerator();
 
   const [selectedTopics, setSelectedTopics] = useState<Record<string, boolean>>({});
 
@@ -49,10 +40,6 @@ export default function TopicsListPopup({currentMode}: Props) {
       setSelectedTopics(initialState);
     }
   }, [topics]);
-
-  useEffect(() => {
-    setLoaderStatus(isGenerating);
-  }, [isGenerating, setLoaderStatus]);
 
   const handleToggle = (topicId: string) => {
     setSelectedTopics(prev => ({
@@ -68,7 +55,11 @@ export default function TopicsListPopup({currentMode}: Props) {
       {mode: currentMode, topicIds: selectedIds},
       {
         onSuccess: (data) => {
-          openPopup(currentMode as unknown as PopupName, data);
+          if (currentMode as string !== 'Expanded') {
+            openPopup(currentMode as unknown as PopupName, data);
+          } else {
+            openPopup(currentMode as unknown as PopupName, {data, selectedIds});
+          }
         },
         onError: (error) => {
           console.error("Generating error:", error);
@@ -77,8 +68,26 @@ export default function TopicsListPopup({currentMode}: Props) {
     );
   };
 
+  const handleSelectionAll = (setValue: boolean) => {
+    setSelectedTopics(
+      Object.fromEntries(Object.keys(selectedTopics)
+        .map(key => [key, setValue])
+      )
+    );
+  };
+
   return (
     <div className="topics">
+      {!isLoading && !isError && (topics?.length ?? 0) > 0 && (
+        <div className="flex w-full">
+          <button className="topics__selection-button" onClick={() => handleSelectionAll(true)}>
+            Select All
+          </button>
+          <button className="topics__selection-button" onClick={() => handleSelectionAll(false)}>
+            Unselect All
+          </button>
+        </div>
+      )}
       <ul className="topics__list">
         {isError && <li className="topics__element" style={{color: 'red'}}>Error loading topics.</li>}
 

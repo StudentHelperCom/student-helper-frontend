@@ -36,7 +36,12 @@ export interface NewClassPayload {
   className: string;
   examDate: string;
   examLocation: string;
-  token: string;
+}
+
+// Delete class
+
+export interface DeleteClassPayload {
+  classId: string;
 }
 
 // Class List
@@ -107,6 +112,42 @@ export interface CardsModeType {
   flashcards: Card[];
 }
 
+// Expanded answers Mode
+
+export interface ExpQuestion {
+  id: number;
+  question: string;
+}
+
+export interface ExpandedModeType {
+  mode: 'expanded';
+  questions: ExpQuestion[];
+}
+
+// Summary Mode
+
+export type SummaryHeading = {
+  type: 'heading';
+  value: string;
+};
+
+export type SummaryText = {
+  type: 'text';
+  value: string;
+};
+
+export type SummaryList = {
+  type: 'list';
+  items: string[];
+};
+
+export type SummaryBlock = SummaryHeading | SummaryText | SummaryList;
+
+export interface SummaryModeType {
+  mode: 'summary';
+  summary: SummaryBlock[];
+}
+
 // Modes
 
 export interface ModeGeneratorPayload {
@@ -114,4 +155,31 @@ export interface ModeGeneratorPayload {
   topicIds: string[];
 }
 
-export type ModeGeneratorResponse = QuizModeType | CardsModeType;
+export type ModeGeneratorResponse = QuizModeType | CardsModeType | ExpandedModeType;
+
+// Evaluate answers
+
+export interface EvaluatePair {
+  id: number;
+  question: string;
+  answers: string;
+}
+
+export interface EvaluatePayload {
+  topicIds: string[];
+  answers: EvaluatePair[];
+}
+
+export interface EvaluatedQuestion {
+  id: number;
+  question: string;
+  user_answer: string;
+  correct_answer: string;
+  is_correct: boolean;
+  problems: string[];
+}
+
+export interface EvaluatedResponse {
+  status: 'evaluated';
+  results: EvaluatedQuestion[];
+}

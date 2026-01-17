@@ -3,21 +3,18 @@ import { axiosClient } from "@src/lib/axiosClient";
 import { API_ROUTES } from "@src/config/api";
 import {ModeGeneratorPayload, ModeGeneratorResponse} from "@src/types/api-requests.types";
 import { isAxiosError } from "axios";
+import {useEffect} from "react";
+import {useLoader} from "@components/contexts/LoaderContext";
 
-export function useModeGenerator(token: string | null) {
+const LOADER_ID = 'new-class';
+
+export function useModeGenerator() {
+  const {startLoading, stopLoading} = useLoader();
 
   const mutationFn = async (payload: ModeGeneratorPayload) => {
-    if (!token) throw new Error("No token provided");
-
     const response = await axiosClient.post<ModeGeneratorResponse>(
       API_ROUTES.generateTasks,
       payload,
-      {
-        headers: {
-          'Content-Type': undefined,
-          'Authorization': `Bearer ${token}`
-        }
-      }
     );
     return response.data;
   };
@@ -25,6 +22,18 @@ export function useModeGenerator(token: string | null) {
   const mutation = useMutation({
     mutationFn: mutationFn,
   });
+
+  useEffect(() => {
+    if (mutation.isPending) {
+      startLoading(LOADER_ID);
+    } else {
+      stopLoading(LOADER_ID);
+    }
+
+    return () => {
+      stopLoading(LOADER_ID);
+    };
+  }, [mutation.isPending, startLoading, stopLoading]);
 
   const getErrorMessage = () => {
     const err = mutation.error;

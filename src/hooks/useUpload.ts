@@ -3,13 +3,15 @@ import { axiosClient } from "@src/lib/axiosClient";
 import { API_ROUTES } from "@src/config/api";
 import { useMutation, UseMutationResult } from "@tanstack/react-query";
 import { UploadPayload } from "@src/types/api-requests.types";
-import { useEffect } from "react";
-import { useLoader } from "@components/contexts/LoaderContext";
+import {useLoader} from "@components/contexts/LoaderContext";
+import {useEffect} from "react";
+
+const LOADER_ID = 'upload';
 
 export function useUpload() {
-  const { setLoaderStatus } = useLoader();
+  const {startLoading, stopLoading} = useLoader();
 
-  const uploadFileFn = async ({ files, className, token }: UploadPayload) => {
+  const uploadFileFn = async ({ files, className }: UploadPayload) => {
     const formData = new FormData();
 
     formData.append('className', className);
@@ -21,7 +23,6 @@ export function useUpload() {
     const response = await axiosClient.post(API_ROUTES.upload, formData, {
       headers: {
         'Content-Type': undefined,
-        'Authorization': `Bearer ${token}`,
       },
     });
 
@@ -34,8 +35,16 @@ export function useUpload() {
   });
 
   useEffect(() => {
-    setLoaderStatus(mutation.isPending);
-  }, [mutation.isPending, setLoaderStatus]);
+    if (mutation.isPending) {
+      startLoading(LOADER_ID);
+    } else {
+      stopLoading(LOADER_ID);
+    }
+
+    return () => {
+      stopLoading(LOADER_ID);
+    };
+  }, [mutation.isPending, startLoading, stopLoading]);
 
   const getErrorMessage = () => {
     const err = mutation.error;

@@ -49,12 +49,12 @@ export default function QuizMode({tasksData}: Props) {
     }
 
     const percentage = scoreRatio.toLocaleString(undefined, { style: 'percent' });
-    showAlert(`${message} You scored ${correctAnsCounter} (${percentage}) out of ${totalQuestions}.`, false);
+    showAlert(`${message} You scored ${correctAnsCounter} (${percentage}) out of ${totalQuestions}.`);
   }
 
   const onCheckAnswer = () => {
     if (Object.keys(chosenAnswers).length < tasksData.questions.length) {
-      showAlert('Select an answer to each question before completing the test', true);
+      showAlert('Select an answer to each question before completing the test');
       return;
     }
 
