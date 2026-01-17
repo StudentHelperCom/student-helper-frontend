@@ -10,7 +10,19 @@ $header-height: 80px;
   height: 100%;
   background:
           linear-gradient(to top, $bg-color-main, $bg-color-secondary);
+  background-size: 100% 150%;
+  animation: bg-breathing 3s infinite alternate;
+
   padding: 0 $grid-spacing $header-height;
+
+  @keyframes bg-breathing {
+    0% {
+      background-position: bottom;
+    }
+    100% {
+      background-position: top;
+    }
+  }
 
   @include smaller-then('m') {
     grid-template-columns: repeat(1, 1fr);
