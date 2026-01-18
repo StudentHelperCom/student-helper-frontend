@@ -10,7 +10,7 @@ export const STATUS_QUERY_KEY = 'processStatus';
 export function useProcessStatus(classId: string | null) {
   const queryClient = useQueryClient();
   const { data: session } = useSession();
-  const queryKey = [STATUS_QUERY_KEY, classId];
+  const queryKey = useMemo(() => [STATUS_QUERY_KEY, classId], [classId]);
   const [currentStatus, setCurrentStatus] = useState<'processing' | 'success' | 'failed' | undefined>(undefined);
 
   const [isTracking, setIsTracking] = useState(false);

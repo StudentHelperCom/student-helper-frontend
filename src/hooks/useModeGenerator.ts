@@ -46,8 +46,7 @@ export function useModeGenerator() {
       if (err.request) return "Server connection error, check your internet";
     }
 
-    if (err instanceof Error) return err.message;
-    return "Unknown error";
+    return err.message;
   };
 
   return {

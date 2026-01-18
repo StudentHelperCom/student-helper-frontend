@@ -1,10 +1,9 @@
 'use client'
 
 import Image from "next/image";
-import React, { useEffect, useState, useMemo } from "react";
+import React, { useState, useMemo } from "react";
 import dayjs from "dayjs";
 import { useClassesList } from "@src/hooks/useClassesList";
-import { useSession } from "next-auth/react";
 import { useAlert } from "@components/contexts/AlertDialogContext";
 
 interface Props {

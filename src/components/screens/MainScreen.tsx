@@ -1,7 +1,7 @@
 'use client'
 
 import Image from "next/image"
-import React, {useEffect} from "react";
+import React from "react";
 import {usePopupManager} from "@components/contexts/PopupManagerContext";
 import {signOut, useSession} from "next-auth/react";
 import {useRouter} from "next/navigation";

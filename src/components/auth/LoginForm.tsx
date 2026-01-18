@@ -49,7 +49,8 @@ export default function LoginForm({flipSetter}: Props) {
         showAlert('Incorrect login or password');
       }
     } catch (error) {
-      showAlert('An unexpected error occurred');
+      showAlert('An unexpected error occurred ');
+      console.error(error);
     } finally {
       stopLoading(LOADER_ID);
     }

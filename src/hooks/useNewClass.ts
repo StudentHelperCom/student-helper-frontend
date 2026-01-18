@@ -43,8 +43,7 @@ export function useNewClass() {
       if (err.response) return err.response.data?.message || "Server error";
       if (err.request) return "Server connection error, check your internet";
     }
-    if (err instanceof Error) return err.message;
-    return "Unknown error";
+    return err.message;
   };
 
   return {

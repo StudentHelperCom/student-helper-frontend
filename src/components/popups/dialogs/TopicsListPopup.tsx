@@ -101,7 +101,7 @@ export default function TopicsListPopup({currentMode}: Props) {
               type="checkbox"
               id={`topic-${topic.topicID}`}
 
-              checked={!!selectedTopics[topic.topicID]}
+              checked={selectedTopics[topic.topicID]}
               onChange={() => handleToggle(topic.topicID)}
             />
           </li>

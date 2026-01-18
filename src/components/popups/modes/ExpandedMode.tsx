@@ -1,5 +1,5 @@
 import {EvaluatePair, EvaluatePayload, ExpandedModeType} from "@src/types/api-requests.types";
-import {ChangeEvent, useEffect, useState} from "react";
+import {ChangeEvent, useState} from "react";
 import {useEvaluate} from "@src/hooks/useEvaluate";
 import {useAlert} from "@components/contexts/AlertDialogContext";
 
