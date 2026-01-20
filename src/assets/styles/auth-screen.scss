@@ -3,10 +3,21 @@
   height: 100%;
   background:
           linear-gradient(to top, $bg-color-main, $bg-color-secondary);
+  background-size: 100% 150%;
+  animation: bg-breathing 3s infinite alternate;
   display: flex;
   justify-content: center;
   align-items: center;
   overflow: hidden;
+
+  @keyframes bg-breathing {
+    0% {
+      background-position: bottom;
+    }
+    100% {
+      background-position: top;
+    }
+  }
 
   &__content {
     position: relative;

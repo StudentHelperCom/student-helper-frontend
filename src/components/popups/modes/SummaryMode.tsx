@@ -1,4 +1,6 @@
+import { PDFDownloadLink } from "@react-pdf/renderer";
 import {SummaryBlock, SummaryModeType} from "@src/types/api-requests.types";
+import {SummaryPdfDocument} from "@components/popups/modes/SummaryDocument";
 
 interface Props {
   tasksData: SummaryModeType;
@@ -35,7 +37,7 @@ export default function SummaryMode({tasksData}: Props) {
         return (
           <ul className="summary-mode__list" key={index}>
             {block?.items?.map((item, index) => (
-              <li key={index}>{parseBoldText(item)}</li>
+              <li className="pl-1" key={index}>{parseBoldText(item)}</li>
             ))}
           </ul>
         );
@@ -55,6 +57,23 @@ export default function SummaryMode({tasksData}: Props) {
           })
         }
       </div>
+      {tasksData?.summary ? (
+        <PDFDownloadLink
+          document={<SummaryPdfDocument data={tasksData.summary} />}
+          fileName="podsumowanie_tematu.pdf"
+          className="summary-mode__button"
+        >
+          {({ blob, url, loading, error }) =>
+            loading ?
+              'Generating PDF...' :
+              `Download PDF [${ Math.ceil((blob?.size || 0) / 1024) }KB]`
+          }
+        </PDFDownloadLink>
+      ) : (
+        <button className="summary-mode__button" disabled>
+          Data loading...
+        </button>
+      )}
     </div>
   );
 }
