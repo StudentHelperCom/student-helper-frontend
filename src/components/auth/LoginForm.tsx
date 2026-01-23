@@ -4,14 +4,12 @@ import React, {useEffect} from "react";
 import {useRouter} from "next/navigation";
 import {signIn, useSession} from "next-auth/react";
 import {useAlert} from "@components/contexts/AlertDialogContext";
-// 1. Importujemy hooka
 import { useLoader } from "@components/contexts/LoaderContext";
 
 interface Props {
   flipSetter: React.Dispatch<React.SetStateAction<boolean | undefined>>
 }
 
-// 2. Definiujemy unikalne ID dla tego procesu
 const LOADER_ID = 'LOGIN_PROCESS';
 
 export default function LoginForm({flipSetter}: Props) {
@@ -23,7 +21,6 @@ export default function LoginForm({flipSetter}: Props) {
   const router = useRouter();
   const { status } = useSession();
 
-  // 3. Pobieramy funkcje sterujące
   const { startLoading, stopLoading } = useLoader();
 
   useEffect(() => {

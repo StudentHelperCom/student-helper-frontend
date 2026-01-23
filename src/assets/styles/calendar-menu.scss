@@ -39,7 +39,9 @@
     @include glass-effect;
 
     @include smaller-then('s') {
-      top: $trigger-width;
+      top: $header-height + $trigger-width;
+      left: -$trigger-width + ($trigger-width * 0.34);
+      width: $trigger-width * 0.66;
       height: $trigger-width;
     }
 
