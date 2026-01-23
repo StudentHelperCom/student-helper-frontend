@@ -30,7 +30,7 @@ $header-height: 80px;
   }
 
   @include smaller-then('s') {
-    padding: 0 ($grid-spacing / 2) calc($header-height / 2);
+    padding: 0 20px calc($header-height / 2);
     grid-gap: 15px;
   }
 
@@ -157,7 +157,7 @@ $header-height: 80px;
   }
 
   @include smaller-then('s') {
-    justify-content: space-around;
+    grid-template-columns: 2fr 1fr 1fr;
   }
 
   &__user {

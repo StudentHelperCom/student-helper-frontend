@@ -39,9 +39,11 @@
     @include glass-effect;
 
     @include smaller-then('s') {
+      top: $header-height;
       bottom: unset;
-      top: 0;
       height: $trigger-width;
+      width: $trigger-width * 0.66;
+      right: -$trigger-width + ($trigger-width * 0.34);
     }
 
     &:hover {
