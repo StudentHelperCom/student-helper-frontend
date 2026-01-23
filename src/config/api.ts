@@ -1,6 +1,10 @@
 import {env} from "@src/env.mjs";
 
-export const BASE_URL = (env.NEXT_PUBLIC_API_URL) + "/api" ;
+const API_ORIGIN = typeof window === 'undefined'
+  ? env.INTERNAL_API_URL
+  : env.NEXT_PUBLIC_API_URL;
+
+export const BASE_URL = API_ORIGIN.replace(/\/+$/, '') + "/api" ;
 
 export const API_ROUTES = {
   upload: '/cdn/upload',
