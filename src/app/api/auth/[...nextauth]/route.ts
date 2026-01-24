@@ -3,6 +3,7 @@ import CredentialsProvider from "next-auth/providers/credentials";
 import {login} from "@src/services/login";
 import {AxiosError} from "axios";
 import {JWT} from "next-auth/jwt";
+import {jwtDecode} from "jwt-decode";
 
 const authOptions: NextAuthOptions = {
   providers: [
@@ -24,10 +25,13 @@ const authOptions: NextAuthOptions = {
           })
 
           if (response?.idu) {
+            const decoded = jwtDecode(response.idu);
+
             return {
               id: String(response.idu),
               login: credentials.login,
-              backendToken: response.idu
+              backendToken: response.idu,
+              backendExp: ((decoded.exp || 0) * 1000),
             };
           }
 
@@ -42,8 +46,13 @@ const authOptions: NextAuthOptions = {
     }),
   ],
 
+  pages: {
+    signIn: '/auth'
+  },
+
   session: {
     strategy: "jwt",
+    maxAge: 24 * 60 * 60,
   },
 
   callbacks: {
@@ -52,7 +61,13 @@ const authOptions: NextAuthOptions = {
         token.id = user.id;
         token.login = user.login;
         token.backendToken = user.backendToken;
+        token.backendExp = user.backendExp;
       }
+
+      if (token.backendExp && Date.now() > token.backendExp) {
+        return { ...token, error: "AccessTokenError" };
+      }
+
       return token;
     },
 
@@ -62,6 +77,11 @@ const authOptions: NextAuthOptions = {
         session.user.login = token.login as string;
         session.user.backendToken = token.backendToken as string;
       }
+
+      if (token.error) {
+        session.error = token.error;
+      }
+
       return session;
     }
   }

@@ -3,6 +3,7 @@ import "@assets/globals.scss";
 import { Poppins } from "next/font/google";
 import React from "react";
 import ContextWrapper from "@components/contexts/ContextWrapper";
+import SessionWatcher from "@components/auth/SessionWatcher";
 const poppins = Poppins({
   weight: "400",
   variable: "--poppins",
@@ -24,6 +25,7 @@ export default function RootLayout({
         className={`${poppins} antialiased`}
       >
         <ContextWrapper>
+          <SessionWatcher />
           {children}
         </ ContextWrapper>
       </body>
