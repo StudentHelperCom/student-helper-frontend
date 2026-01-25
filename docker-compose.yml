@@ -6,7 +6,7 @@ services:
       args:
         NEXT_PUBLIC_API_URL: ${NEXT_PUBLIC_API_URL}
       target: runner
-    image: mionmu/student-helper-frontend
+    image: mionmu/student-helper-frontend:latest
     container_name: student-helper-frontend
     profiles: ["frontend","all"]
     restart: unless-stopped
