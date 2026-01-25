@@ -1,43 +1,193 @@
 services:
-  frontend: # Next.js frontend
+  frontend:
     build:
       context: .
       dockerfile: Dockerfile
-      args: # Build-time env
+      args:
         NEXT_PUBLIC_API_URL: ${NEXT_PUBLIC_API_URL}
-        NEXTAUTH_URL: ${NEXTAUTH_URL}
-        NEXTAUTH_SECRET: ${NEXTAUTH_SECRET}
-        INTERNAL_API_URL: ${INTERNAL_API_URL}
       target: runner
-
+    image: mionmu/student-helper-frontend
     container_name: student-helper-frontend
+    profiles: ["frontend","all"]
     restart: unless-stopped
     ports:
       - "3000:3000"
-    environment:
-      NODE_ENV: production
-      NEXT_PUBLIC_API_URL: ${NEXT_PUBLIC_API_URL}
-      NEXTAUTH_URL: ${NEXTAUTH_URL}
-      NEXTAUTH_SECRET: ${NEXTAUTH_SECRET}
-      INTERNAL_API_URL: ${INTERNAL_API_URL}
-      NEXT_TELEMETRY_DISABLED: 1
-      PORT: 3000
-      HOSTNAME: "0.0.0.0"
+    env_file:
+      - .env
     networks:
       - student-helper-network
-    healthcheck: # Checks /api/health
-      test: ["CMD", "node", "-e", "require('http').get('http://localhost:3000/api/health', (r) => {process.exit(r.statusCode === 200 ? 0 : 1)})"]
-      interval: 30s
+    healthcheck:
+      test: ["CMD", "sh", "-c", "curl -f http://$(hostname -i):3000/api/health || exit 1"]
+      interval: 10s
       timeout: 3s
       retries: 3
       start_period: 10s
     deploy:
-      resources: # Basic guardrails
+      resources:
         limits:
-          cpus: '0.5'
+          cpus: '0.1'
           memory: 512M
         reservations:
-          cpus: '0.25'
+          cpus: '0.05'
+          memory: 256M
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  api-gateway:
+    image: mionmu/student-helper-api-gateway:latest
+    container_name: student-helper-api-gateway
+    profiles: ["backend","all"]
+    restart: unless-stopped
+    ports:
+      - "4001:4001"
+    env_file:
+      - env/.env.api-gateway
+    networks:
+      - student-helper-network
+    healthcheck:
+      test: ["CMD", "node", "-e", "require('http').get('http://localhost:4001/api/health', (r) => {process.exit(r.statusCode === 200 ? 0 : 1)})"]
+      interval: 10s
+      timeout: 3s
+      retries: 3
+      start_period: 10s
+    deploy:
+      resources:
+        limits:
+          cpus: '0.1'
+          memory: 512M
+        reservations:
+          cpus: '0.05'
+          memory: 256M
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  cdn-service:
+    image: mionmu/student-helper-cdn-service:latest
+    container_name: student-helper-cdn-service
+    profiles: ["backend","all"]
+    restart: unless-stopped
+    ports:
+      - "3001:3001"
+    env_file:
+      - env/.env.cdn-service
+      - env/.env.common
+    networks:
+      - student-helper-network
+    healthcheck:
+      test: ["CMD", "node", "-e", "require('http').get('http://localhost:3001/cdn/health', (r) => {process.exit(r.statusCode === 200 ? 0 : 1)})"]
+      interval: 10s
+      timeout: 3s
+      retries: 3
+      start_period: 10s
+    deploy:
+      resources:
+        limits:
+          cpus: '0.1'
+          memory: 512M
+        reservations:
+          cpus: '0.05'
+          memory: 256M
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  auth-service:
+    image: mionmu/student-helper-auth-service:latest
+    container_name: student-helper-auth-service
+    profiles: ["backend","all"]
+    restart: unless-stopped
+    ports:
+      - "3002:3002"
+    env_file:
+      - env/.env.auth-service
+      - env/.env.common
+    networks:
+      - student-helper-network
+    healthcheck:
+      test: ["CMD", "node", "-e", "require('http').get('http://localhost:3002/auth/health', (r) => {process.exit(r.statusCode === 200 ? 0 : 1)})"]
+      interval: 10s
+      timeout: 3s
+      retries: 3
+      start_period: 10s
+    deploy:
+      resources:
+        limits:
+          cpus: '0.1'
+          memory: 512M
+        reservations:
+          cpus: '0.05'
+          memory: 256M
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  processing-service:
+    image: mionmu/student-helper-processing-service:latest
+    container_name: student-helper-processing-service
+    profiles: ["backend","all"]
+    restart: unless-stopped
+    ports:
+      - "3003:3003"
+    env_file:
+      - env/.env.processing-service
+      - env/.env.common
+    networks:
+      - student-helper-network
+    healthcheck:
+      test: ["CMD", "node", "-e", "require('http').get('http://localhost:3003/processing/health', (r) => {process.exit(r.statusCode === 200 ? 0 : 1)})"]
+      interval: 10s
+      timeout: 3s
+      retries: 3
+      start_period: 10s
+    deploy:
+      resources:
+        limits:
+          cpus: '0.1'
+          memory: 512M
+        reservations:
+          cpus: '0.05'
+          memory: 256M
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  quiz-service:
+    image: mionmu/student-helper-quiz-service:latest
+    container_name: student-helper-quiz-service
+    profiles: ["backend","all"]
+    restart: unless-stopped
+    ports:
+      - "3004:3004"
+    env_file:
+      - env/.env.quiz-service
+      - env/.env.common
+    networks:
+      - student-helper-network
+    healthcheck:
+      test: ["CMD", "node", "-e", "require('http').get('http://localhost:3004/quiz/health', (r) => {process.exit(r.statusCode === 200 ? 0 : 1)})"]
+      interval: 10s
+      timeout: 3s
+      retries: 3
+      start_period: 10s
+    deploy:
+      resources:
+        limits:
+          cpus: '0.1'
+          memory: 512M
+        reservations:
+          cpus: '0.05'
           memory: 256M
     logging:
       driver: "json-file"

@@ -29,6 +29,7 @@ __tests__/
 .env.test.local
 .env.production.local
 *.log
+env/
 
 # IDE and Editor files
 .vscode/
