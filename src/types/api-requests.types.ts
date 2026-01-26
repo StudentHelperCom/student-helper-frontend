@@ -183,7 +183,7 @@ export interface EvaluatedQuestion {
   question: string;
   user_answer: string;
   correct_answer: string;
-  is_correct: boolean;
+  score: number;
   problems: string[];
 }
 

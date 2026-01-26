@@ -66,7 +66,7 @@ export default function AddSourcePopup() {
           setSelectedFiles([]);
           setTimeout(()=> {
             startPolling();
-          }, 2000)
+          }, 500)
         },
         onError: (error) => {
           console.error('Error while uploading files', error);

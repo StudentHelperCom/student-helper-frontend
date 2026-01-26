@@ -1,7 +1,7 @@
 'use client'
 
 import Image from "next/image"
-import React from "react";
+import React, {useEffect} from "react";
 import {usePopupManager} from "@components/contexts/PopupManagerContext";
 import {signOut, useSession} from "next-auth/react";
 import {useRouter} from "next/navigation";
@@ -26,7 +26,7 @@ export default function MainScreen() {
   const router = useRouter();
   const {selectedClass} = useClassManager();
   const {refreshTopics} = useTopicsList(selectedClass?.classID || null);
-  const {files, isLoading, isError} = useFilesList(selectedClass?.classID || null);
+  const {files, isLoading, isError, refreshFiles} = useFilesList(selectedClass?.classID || null);
   const filesList = Array.isArray(files) ? files : (files)?.files || [];
 
   const { currentStatus } = useProcessStatus(selectedClass?.classID || null);
@@ -55,6 +55,10 @@ export default function MainScreen() {
       displayStatus.text = 'Error';
       displayStatus.color = 'red';
   }
+
+  useEffect(() => {
+    refreshFiles();
+  }, [currentStatus]);
 
   return (
     <>

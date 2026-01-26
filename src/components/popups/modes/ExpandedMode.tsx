@@ -11,7 +11,7 @@ interface Props {
 }
 
 type ChosenAnswersType = Record<number, { answer: string, chars: number }>;
-type SuggestionsType = Record<number, { isCorrect: boolean, correctAnswer: string, problems: string[] }>;
+type SuggestionsType = Record<number, { score: number, correctAnswer: string, problems: string[] }>;
 
 export default function ExpandedMode({tasksData}: Props) {
   const [chosenAnswers, setChosenAnswers] = useState<ChosenAnswersType>({});
@@ -42,7 +42,7 @@ export default function ExpandedMode({tasksData}: Props) {
           setSuggestions(() => {
             const suggestionData = data.results.reduce((prev, item) => {
               const singleSuggestion = {
-                isCorrect: item.is_correct,
+                score: item.score,
                 correctAnswer: item.correct_answer,
                 problems: item.problems,
               };
@@ -71,8 +71,8 @@ export default function ExpandedMode({tasksData}: Props) {
               </span>
               <textarea
                 className={`expanded-mode__answer-area ${
-                  suggestions[que.id]?.isCorrect === true ? 'expanded-mode__answer-area--correct'
-                    : suggestions[que.id]?.isCorrect === false ? 'expanded-mode__answer-area--incorrect'
+                  suggestions[que.id]?.score >= 5 ? 'expanded-mode__answer-area--correct'
+                    : suggestions[que.id]?.score < 5 ? 'expanded-mode__answer-area--incorrect'
                       : ''
                 }`}
                 maxLength={500}
@@ -90,7 +90,7 @@ export default function ExpandedMode({tasksData}: Props) {
               </span>
               {suggestions[que.id] && (
                 <div className="flex flex-col">
-                  <p>Your answer is {(suggestions[que.id].correctAnswer) ? 'correct' : 'incorrect'}</p>
+                  <p>Your answer score {suggestions[que.id]?.score}</p>
 
                   <p className="font-bold">Suggested answer:</p>
                   <p className="opacity-80 ml-2">{suggestions[que.id].correctAnswer}</p>
