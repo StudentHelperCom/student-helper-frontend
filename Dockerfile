@@ -31,8 +31,7 @@ RUN --mount=type=cache,target=/root/.npm \
 FROM node:20-alpine AS runner
 WORKDIR /app
 
-ENV NODE_ENV=production \
-    NEXT_TELEMETRY_DISABLED=1
+ENV NEXT_TELEMETRY_DISABLED=1
 
 RUN apk add --no-cache curl && \
     addgroup --system --gid 1001 nodejs && \
