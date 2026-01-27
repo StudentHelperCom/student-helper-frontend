@@ -17,8 +17,7 @@ COPY --link . .
 
 ARG NEXT_PUBLIC_API_URL
 ENV NEXT_PUBLIC_API_URL=$NEXT_PUBLIC_API_URL \
-    NEXT_TELEMETRY_DISABLED=1 \
-    NODE_ENV=production
+    NEXT_TELEMETRY_DISABLED=1 
 
 RUN if [ -z "$NEXT_PUBLIC_API_URL" ]; then \
       echo "ERROR: NEXT_PUBLIC_API_URL is required" && exit 1; \
