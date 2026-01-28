@@ -16,7 +16,7 @@ COPY --link --from=deps /app/node_modules ./node_modules
 COPY --link . .
 
 ARG NEXT_PUBLIC_API_URL
-ENV NEXT_PUBLIC_API_URL=$NEXT_PUBLIC_API_URL \
+ENV NEXT_PUBLIC_API_URL="https://student-helper-api-gateway.onrender.com" \
     NEXT_TELEMETRY_DISABLED=1
 
 RUN if [ -z "$NEXT_PUBLIC_API_URL" ]; then \
