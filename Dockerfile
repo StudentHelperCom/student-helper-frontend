@@ -23,6 +23,10 @@ RUN if [ -z "$NEXT_PUBLIC_API_URL" ]; then \
       echo "ERROR: NEXT_PUBLIC_API_URL is required" && exit 1; \
     fi
 
+ENV NEXTAUTH_URL="http://localhost:3000" \
+    NEXTAUTH_SECRET="alY2t8F0rxOKf+M4wD24qTNNXqZTWYIw6tSRw1JCssA=" \
+    INTERNAL_API_URL="http://localhost:4001"
+
 RUN --mount=type=cache,target=/root/.npm \
     --mount=type=cache,target=/app/.next/cache \
     npm run build
