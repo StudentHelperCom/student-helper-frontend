@@ -1,11 +1,5 @@
 .PHONY: dcfb dcbu dcbd dcfu dcfd dcau dcad dcfp
 
-help:
-	@echo 'Usage: make <target>'
-	@echo ''
-	@echo 'Targets:'
-	@awk 'BEGIN {FS = ":.*?## "} /^[a-zA-Z_-]+:.*?## / {printf "  %-20s %s\n", $$1, $$2}' $(MAKEFILE_LIST)
-
 dcfb:
 	docker-compose --profile frontend build
 
