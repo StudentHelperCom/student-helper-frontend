@@ -17,7 +17,7 @@ COPY --link . .
 
 ARG NEXT_PUBLIC_API_URL
 ENV NEXT_PUBLIC_API_URL=$NEXT_PUBLIC_API_URL \
-    NEXT_TELEMETRY_DISABLED=1 
+    NEXT_TELEMETRY_DISABLED=1
 
 RUN if [ -z "$NEXT_PUBLIC_API_URL" ]; then \
       echo "ERROR: NEXT_PUBLIC_API_URL is required" && exit 1; \
@@ -26,6 +26,7 @@ RUN if [ -z "$NEXT_PUBLIC_API_URL" ]; then \
 ENV NEXTAUTH_URL="http://localhost:3000" \
     NEXTAUTH_SECRET="alY2t8F0rxOKf+M4wD24qTNNXqZTWYIw6tSRw1JCssA=" \
     INTERNAL_API_URL="http://localhost:4001"
+ENV HOSTNAME="0.0.0.0"
 
 RUN --mount=type=cache,target=/root/.npm \
     --mount=type=cache,target=/app/.next/cache \
@@ -35,6 +36,7 @@ FROM node:20-alpine AS runner
 WORKDIR /app
 
 ENV NEXT_TELEMETRY_DISABLED=1
+ENV HOSTNAME="0.0.0.0"
 
 RUN apk add --no-cache curl && \
     addgroup --system --gid 1001 nodejs && \
