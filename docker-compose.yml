@@ -67,15 +67,15 @@ services:
         max-size: "10m"
         max-file: "3"
 
-  cdn-service:
-    image: mionmu/student-helper-cdn-service:latest
-    container_name: student-helper-cdn-service
+  cdn:
+    image: mionmu/student-helper-cdn:latest
+    container_name: student-helper-cdn
     profiles: ["backend","all"]
     restart: unless-stopped
     ports:
       - "3001:3001"
     env_file:
-      - env/.env.cdn-service
+      - env/.env.cdn
       - env/.env.common
     networks:
       - student-helper-network
@@ -99,15 +99,15 @@ services:
         max-size: "10m"
         max-file: "3"
 
-  auth-service:
-    image: mionmu/student-helper-auth-service:latest
-    container_name: student-helper-auth-service
+  auth:
+    image: mionmu/student-helper-auth:latest
+    container_name: student-helper-auth
     profiles: ["backend","all"]
     restart: unless-stopped
     ports:
       - "3002:3002"
     env_file:
-      - env/.env.auth-service
+      - env/.env.auth
       - env/.env.common
     networks:
       - student-helper-network
@@ -131,15 +131,15 @@ services:
         max-size: "10m"
         max-file: "3"
 
-  processing-service:
-    image: mionmu/student-helper-processing-service:latest
-    container_name: student-helper-processing-service
+  processing:
+    image: mionmu/student-helper-processing:latest
+    container_name: student-helper-processing
     profiles: ["backend","all"]
     restart: unless-stopped
     ports:
       - "3003:3003"
     env_file:
-      - env/.env.processing-service
+      - env/.env.processing
       - env/.env.common
     networks:
       - student-helper-network
@@ -163,15 +163,15 @@ services:
         max-size: "10m"
         max-file: "3"
 
-  quiz-service:
-    image: mionmu/student-helper-quiz-service:latest
-    container_name: student-helper-quiz-service
+  quiz:
+    image: mionmu/student-helper-quiz:latest
+    container_name: student-helper-quiz
     profiles: ["backend","all"]
     restart: unless-stopped
     ports:
       - "3004:3004"
     env_file:
-      - env/.env.quiz-service
+      - env/.env.quiz
       - env/.env.common
     networks:
       - student-helper-network
