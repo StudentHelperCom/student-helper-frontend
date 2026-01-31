@@ -22,13 +22,18 @@ export default function NewClassPopup() {
   const { showAlert } = useAlert();
   const { data: session } = useSession();
 
-  const { refreshClasses } = useClassesList();
+  const {classes, refreshClasses } = useClassesList();
 
   const onSubmit = () => {
     const isValid = Object.values(classData).every(value => value.trim().length > 0);
 
     if (!isValid || dateTime === null) {
       showAlert('The fields were filled out incorrectly. Please check the entered data.',);
+      return;
+    }
+
+    if (classes?.findIndex((item) => item.name.toLowerCase() === classData.className.toLowerCase()) !== -1) {
+      showAlert('This class already exists.');
       return;
     }
 
@@ -54,6 +59,12 @@ export default function NewClassPopup() {
         }
       }
     );
+
+    setDateTime(null);
+    setClassData({
+      className: '',
+      examLocation: '',
+    });
   };
 
   return (

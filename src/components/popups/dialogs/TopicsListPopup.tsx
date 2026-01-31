@@ -7,10 +7,10 @@ import {useModeGenerator} from "@src/hooks/useModeGenerator";
 import {PopupName, usePopupManager} from "@components/contexts/PopupManagerContext";
 
 export enum availableModes {
-  'Quiz' = 'Quiz mode',
   'Summary' = 'Summary',
-  'Expanded' = 'Expanded answers',
   'Cards' = 'Flip cards',
+  'Quiz' = 'Quiz mode',
+  'Expanded' = 'Expanded answers',
 }
 
 interface Props {
